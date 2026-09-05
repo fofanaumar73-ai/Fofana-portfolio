@@ -1283,3 +1283,24 @@ span {
     position: relative;
     z-index: 3;
 }
+/* =========================================================
+   PORTFOLIO SLIDE ANIMATION
+   ========================================================= */
+
+.slide-changing {
+    animation: portfolioSlideFade 0.45s ease;
+}
+
+@keyframes portfolioSlideFade {
+
+    0% {
+        opacity: 0.35;
+        transform: scale(1.015);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+}
