@@ -18,9 +18,11 @@ if (menuToggle && navMenu) {
     });
 
     navMenu.querySelectorAll("a").forEach(link => {
+
         link.addEventListener("click", () => {
             navMenu.classList.remove("mobile-active");
         });
+
     });
 
 }
@@ -35,6 +37,8 @@ const faqItems = document.querySelectorAll(".faq-item");
 faqItems.forEach(item => {
 
     const question = item.querySelector(".faq-question");
+
+    if (!question) return;
 
     question.addEventListener("click", () => {
 
@@ -54,26 +58,24 @@ faqItems.forEach(item => {
 
 
 /* =========================================================
-   3. PORTFOLIO SLIDER SYSTEM
+   3. WEB DEVELOPMENT PROJECT SLIDER
    ========================================================= */
 
 /*
-   These arrays are temporary.
+   TEMPORARY PROJECT DATA
 
-   Later, the Admin Dashboard will provide the projects
-   dynamically from the database.
-
-   For now, we're testing the slider functionality.
+   These projects will eventually come from
+   the Admin Dashboard and database.
 */
 
-
 const webProjects = [
+
     {
         category: "WEB DEVELOPMENT",
         title: "Elite Gadgets",
         description: "Premium technology e-commerce website.",
         image: "",
-        link: "#"
+        link: "https://fofanaumar73-ai.github.io/elite-gadgets/"
     },
 
     {
@@ -91,6 +93,7 @@ const webProjects = [
         image: "",
         link: "#"
     }
+
 ];
 
 
@@ -104,21 +107,31 @@ if (webSlider) {
     const previousButton = webSlider.querySelector(".slider-prev");
     const nextButton = webSlider.querySelector(".slider-next");
 
+
     function displayWebProject(index) {
 
         const project = webProjects[index];
 
-        if (!project) return;
+        if (!project || !slide) return;
+
 
         slide.innerHTML = `
+
             <div class="slide-placeholder"
-                ${project.image ? `style="background-image: url('${project.image}'); background-size: cover; background-position: center;"` : ""}>
+                ${
+                    project.image
+                    ? `style="background-image: url('${project.image}'); background-size: cover; background-position: center;"`
+                    : ""
+                }>
+
                 ${
                     project.image
                     ? ""
                     : "<span>PROJECT PREVIEW</span>"
                 }
+
             </div>
+
 
             <div class="slide-info">
 
@@ -128,11 +141,17 @@ if (webSlider) {
 
                 <p>${project.description}</p>
 
-                <a href="${project.link}" class="slide-link">
+                <a
+                    href="${project.link}"
+                    class="slide-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
                     View Project →
                 </a>
 
             </div>
+
         `;
 
     }
@@ -141,1014 +160,166 @@ if (webSlider) {
     displayWebProject(currentWebProject);
 
 
-    nextButton.addEventListener("click", () => {
+    if (nextButton) {
 
-        currentWebProject++;
+        nextButton.addEventListener("click", () => {
 
-        if (currentWebProject >= webProjects.length) {
-            currentWebProject = 0;
-        }
+            currentWebProject++;
 
-        displayWebProject(currentWebProject);
+            if (currentWebProject >= webProjects.length) {
+                currentWebProject = 0;
+            }
 
-    });
+            displayWebProject(currentWebProject);
+
+        });
+
+    }
 
 
-    previousButton.addEventListener("click", () => {
+    if (previousButton) {
 
-        currentWebProject--;
+        previousButton.addEventListener("click", () => {
 
-        if (currentWebProject < 0) {
-            currentWebProject = webProjects.length - 1;
-        }
+            currentWebProject--;
 
-        displayWebProject(currentWebProject);
+            if (currentWebProject < 0) {
+                currentWebProject = webProjects.length - 1;
+            }
 
-    });
+            displayWebProject(currentWebProject);
+
+        });
+
+    }
 
 }
 
 
 /* =========================================================
-   4. CREATIVE DESIGN SLIDERS
+   4. CREATIVE PORTFOLIO SLIDERS
    ========================================================= */
 
 /*
-   Temporary data.
+   TEMPORARY DATA
 
-   These will eventually come from the Admin Dashboard.
+   These are only placeholders for testing.
+
+   Later, the Admin Dashboard will supply
+   the real projects from the database.
 */
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+const creativeSlides = {
 
-    <title>Fofana Umar | Creative Designer & Web Developer</title>
+    "Brochure Design": [
 
-    <meta name="description" content="Fofana Umar — Web Developer and Creative Designer specializing in modern websites, brochures, presentations, ebooks, pitch decks and digital experiences.">
+        {
+            title: "Brochure 01",
+            image: ""
+        },
 
-    <link rel="stylesheet" href="style.css">
-</head>
+        {
+            title: "Brochure 02",
+            image: ""
+        },
 
-<body>
+        {
+            title: "Brochure 03",
+            image: ""
+        },
 
-    <!-- =========================
-         NAVIGATION
-    ========================== -->
+        {
+            title: "Brochure 04",
+            image: ""
+        }
 
-    <header class="navbar">
+    ],
 
-        <div class="nav-container">
 
-            <a href="#home" class="brand">
-                FOFANA<span>.</span>
-            </a>
+    "Presentation Design": [
 
-            <nav class="nav-menu">
-                <a href="#home">Home</a>
-                <a href="#work">Work</a>
-                <a href="#services">Services</a>
-                <a href="#about">About</a>
-                <a href="#faq">FAQ</a>
-                <a href="#contact">Contact</a>
-            </nav>
+        {
+            title: "Presentation 01",
+            image: ""
+        },
 
-            <a href="#contact" class="nav-contact">
-                Let's Talk
-            </a>
+        {
+            title: "Presentation 02",
+            image: ""
+        },
 
-            <button class="menu-toggle" aria-label="Open navigation">
-                ☰
-            </button>
+        {
+            title: "Presentation 03",
+            image: ""
+        }
 
-        </div>
+    ],
 
-    </header>
 
+    "Ebook Design": [
 
-    <main>
+        {
+            title: "Ebook 01",
+            image: ""
+        },
 
-        <!-- =========================
-             HERO SECTION
-        ========================== -->
+        {
+            title: "Ebook 02",
+            image: ""
+        },
 
-        <section id="home" class="hero">
+        {
+            title: "Ebook 03",
+            image: ""
+        }
 
-            <div class="hero-glow glow-one"></div>
-            <div class="hero-glow glow-two"></div>
+    ],
 
-            <div class="hero-content">
 
-                <p class="hero-label">
-                    WEB DEVELOPER & CREATIVE DESIGNER
-                </p>
+    "Instagram Carousel": [
 
-                <h1>
-                    I BUILD DIGITAL
-                    <span>EXPERIENCES</span>
-                    THAT STAND OUT.
-                </h1>
+        {
+            title: "Carousel 01",
+            image: ""
+        },
 
-                <p class="hero-description">
-                    I create modern websites and compelling digital designs
-                    that help brands, businesses and ideas look professional
-                    and make an impact.
-                </p>
+        {
+            title: "Carousel 02",
+            image: ""
+        },
 
-                <div class="hero-buttons">
+        {
+            title: "Carousel 03",
+            image: ""
+        }
 
-                    <a href="#work" class="primary-button">
-                        View My Work
-                    </a>
+    ],
 
-                    <a href="#contact" class="secondary-button">
-                        Let's Work Together
-                    </a>
 
-                </div>
+    "Pitch Deck": [
 
-            </div>
+        {
+            title: "Pitch Deck 01",
+            image: ""
+        },
 
-            <div class="hero-scroll">
-                <span>SCROLL TO EXPLORE</span>
-                <div class="scroll-line"></div>
-            </div>
+        {
+            title: "Pitch Deck 02",
+            image: ""
+        },
 
-        </section>
+        {
+            title: "Pitch Deck 03",
+            image: ""
+        }
 
+    ]
 
-        <!-- =========================
-             FLOATING LOGO
-        ========================== -->
-
-        <section class="logo-showcase">
-
-            <div class="logo-orbit orbit-one"></div>
-            <div class="logo-orbit orbit-two"></div>
-
-            <div class="floating-logo">
-
-                <!--
-                    TEMPORARY LOGO
-
-                    Later, the image here will be controlled
-                    from the Admin Dashboard.
-                -->
-
-                <img 
-    src="images/fofana-tech-logo.png" 
-    alt="Fofana Tech Logo"
-    class="portfolio-logo"
->
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             INTRODUCTION
-        ========================== -->
-
-        <section class="intro-section">
-
-            <p class="section-label">
-                WHAT I DO
-            </p>
-
-            <h2>
-                Turning ideas into
-                <span>powerful digital work.</span>
-            </h2>
-
-            <p>
-                From websites and e-commerce platforms to brochures,
-                presentations, ebooks, social media carousels and pitch decks,
-                I create digital experiences designed to communicate clearly
-                and leave a lasting impression.
-            </p>
-
-        </section>
-
-
-        <!-- =========================
-             WEB DEVELOPMENT
-        ========================== -->
-
-        <section id="work" class="portfolio-section web-projects">
-
-            <div class="section-heading">
-
-                <p class="section-label">
-                    FEATURED WORK
-                </p>
-
-                <h2>
-                    Web Development
-                </h2>
-
-                <p>
-                    Websites built with functionality, responsiveness
-                    and a modern visual experience in mind.
-                </p>
-
-            </div>
-
-
-            <div class="portfolio-slider">
-
-                <button class="slider-arrow slider-prev" aria-label="Previous project">
-                    ←
-                </button>
-
-                <div class="portfolio-slide">
-
-                    <div class="slide-placeholder">
-                        <span>PROJECT PREVIEW</span>
-                    </div>
-
-                    <div class="slide-info">
-
-                        <p>WEB DEVELOPMENT</p>
-
-                        <h3>
-                            Elite Gadgets
-                        </h3>
-
-                        <p>
-                            Premium technology e-commerce website.
-                        </p>
-
-                        <a href="#" class="slide-link">
-                            View Project →
-                        </a>
-
-                    </div>
-
-                </div>
-
-                <button class="slider-arrow slider-next" aria-label="Next project">
-                    →
-                </button>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             BROCHURE DESIGN
-        ========================== -->
-
-        <section class="portfolio-section design-section">
-
-            <div class="section-heading">
-
-                <p class="section-label">
-                    CREATIVE DESIGN
-                </p>
-
-                <h2>
-                    Brochure Design
-                </h2>
-
-                <p>
-                    Professional brochure designs created to communicate
-                    information clearly and represent brands effectively.
-                </p>
-
-            </div>
-
-
-            <div class="full-width-slider">
-
-                <button class="slider-arrow slider-prev">
-                    ←
-                </button>
-
-                <div class="design-preview">
-                    <span>BROCHURE PREVIEW</span>
-                </div>
-
-                <button class="slider-arrow slider-next">
-                    →
-                </button>
-
-            </div>
-
-
-            <a href="#brochure-info" class="learn-more">
-                <span>LEARN MORE</span>
-                <strong>↓</strong>
-            </a>
-
-
-            <div id="brochure-info" class="service-information">
-
-                <h3>
-                    Why does a professional brochure matter?
-                </h3>
-
-                <p>
-                    A well-designed brochure can turn information into a
-                    visual experience, helping businesses communicate their
-                    services, products and identity more effectively.
-                </p>
-
-            </div>
-
-
-            <div class="reviews-placeholder">
-
-                <p class="section-label">
-                    CLIENT REVIEWS
-                </p>
-
-                <h3>
-                    What clients say
-                </h3>
-
-                <p>
-                    Client testimonials will appear here.
-                </p>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             PRESENTATION DESIGN
-        ========================== -->
-
-        <section class="portfolio-section design-section">
-
-            <div class="section-heading">
-
-                <p class="section-label">
-                    CREATIVE DESIGN
-                </p>
-
-                <h2>
-                    Presentation Design
-                </h2>
-
-                <p>
-                    Presentation designs that turn ideas, information and
-                    business stories into engaging visual experiences.
-                </p>
-
-            </div>
-
-
-            <div class="full-width-slider">
-
-                <button class="slider-arrow slider-prev">
-                    ←
-                </button>
-
-                <div class="design-preview">
-                    <span>PRESENTATION PREVIEW</span>
-                </div>
-
-                <button class="slider-arrow slider-next">
-                    →
-                </button>
-
-            </div>
-
-
-            <a href="#" class="learn-more">
-                <span>LEARN MORE</span>
-                <strong>↓</strong>
-            </a>
-
-
-            <div class="reviews-placeholder">
-
-                <p class="section-label">
-                    CLIENT REVIEWS
-                </p>
-
-                <h3>
-                    What clients say
-                </h3>
-
-                <p>
-                    Client testimonials will appear here.
-                </p>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             EBOOK DESIGN
-        ========================== -->
-
-        <section class="portfolio-section design-section">
-
-            <div class="section-heading">
-
-                <p class="section-label">
-                    CREATIVE DESIGN
-                </p>
-
-                <h2>
-                    Ebook Design
-                </h2>
-
-                <p>
-                    Clean and professional ebook designs that make content
-                    easier to read and more visually engaging.
-                </p>
-
-            </div>
-
-
-            <div class="full-width-slider">
-
-                <button class="slider-arrow slider-prev">
-                    ←
-                </button>
-
-                <div class="design-preview">
-                    <span>EBOOK PREVIEW</span>
-                </div>
-
-                <button class="slider-arrow slider-next">
-                    →
-                </button>
-
-            </div>
-
-
-            <a href="#" class="learn-more">
-                <span>LEARN MORE</span>
-                <strong>↓</strong>
-            </a>
-
-
-            <div class="reviews-placeholder">
-
-                <p class="section-label">
-                    CLIENT REVIEWS
-                </p>
-
-                <h3>
-                    What clients say
-                </h3>
-
-                <p>
-                    Client testimonials will appear here.
-                </p>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             INSTAGRAM CAROUSEL
-        ========================== -->
-
-        <section class="portfolio-section design-section">
-
-            <div class="section-heading">
-
-                <p class="section-label">
-                    SOCIAL MEDIA DESIGN
-                </p>
-
-                <h2>
-                    Instagram Carousel
-                </h2>
-
-                <p>
-                    Scroll-stopping carousel designs created to communicate
-                    ideas and keep audiences engaged.
-                </p>
-
-            </div>
-
-
-            <div class="full-width-slider">
-
-                <button class="slider-arrow slider-prev">
-                    ←
-                </button>
-
-                <div class="design-preview">
-                    <span>CAROUSEL PREVIEW</span>
-                </div>
-
-                <button class="slider-arrow slider-next">
-                    →
-                </button>
-
-            </div>
-
-
-            <a href="#" class="learn-more">
-                <span>LEARN MORE</span>
-                <strong>↓</strong>
-            </a>
-
-
-            <div class="reviews-placeholder">
-
-                <p class="section-label">
-                    CLIENT REVIEWS
-                </p>
-
-                <h3>
-                    What clients say
-                </h3>
-
-                <p>
-                    Client testimonials will appear here.
-                </p>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             PITCH DECK
-        ========================== -->
-
-        <section class="portfolio-section design-section">
-
-            <div class="section-heading">
-
-                <p class="section-label">
-                    BUSINESS DESIGN
-                </p>
-
-                <h2>
-                    Pitch Deck
-                </h2>
-
-                <p>
-                    Strategic pitch deck designs built to present ideas,
-                    businesses and opportunities professionally.
-                </p>
-
-            </div>
-
-
-            <div class="full-width-slider">
-
-                <button class="slider-arrow slider-prev">
-                    ←
-                </button>
-
-                <div class="design-preview">
-                    <span>PITCH DECK PREVIEW</span>
-                </div>
-
-                <button class="slider-arrow slider-next">
-                    →
-                </button>
-
-            </div>
-
-
-            <a href="#" class="learn-more">
-                <span>LEARN MORE</span>
-                <strong>↓</strong>
-            </a>
-
-
-            <div class="reviews-placeholder">
-
-                <p class="section-label">
-                    CLIENT REVIEWS
-                </p>
-
-                <h3>
-                    What clients say
-                </h3>
-
-                <p>
-                    Client testimonials will appear here.
-                </p>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             QUALITY DELIVERY
-        ========================== -->
-
-        <section class="quality-section">
-
-            <div class="quality-circle">
-
-                <div class="quality-inner">
-
-                    <strong>100%</strong>
-
-                    <span>QUALITY</span>
-
-                    <span>DELIVERY</span>
-
-                </div>
-
-            </div>
-
-            <p>
-                Every project deserves attention to detail,
-                creativity and professional execution.
-            </p>
-
-        </section>
-
-
-        <!-- =========================
-             WHY CHOOSE ME
-        ========================== -->
-
-        <section id="about" class="why-section">
-
-            <div class="section-heading">
-
-                <p class="section-label">
-                    WHY CHOOSE ME
-                </p>
-
-                <h2>
-                    More than just
-                    <span>good design.</span>
-                </h2>
-
-            </div>
-
-
-            <div class="benefits-grid">
-
-                <article class="benefit-card">
-
-                    <span>01</span>
-
-                    <h3>
-                        Quality First
-                    </h3>
-
-                    <p>
-                        Every project is created with attention to detail
-                        and a strong focus on quality.
-                    </p>
-
-                </article>
-
-
-                <article class="benefit-card">
-
-                    <span>02</span>
-
-                    <h3>
-                        Modern Approach
-                    </h3>
-
-                    <p>
-                        I focus on clean, modern and effective digital
-                        experiences.
-                    </p>
-
-                </article>
-
-
-                <article class="benefit-card">
-
-                    <span>03</span>
-
-                    <h3>
-                        Built For You
-                    </h3>
-
-                    <p>
-                        Every project is tailored to the client's goals,
-                        audience and brand.
-                    </p>
-
-                </article>
-
-
-                <article class="benefit-card">
-
-                    <span>04</span>
-
-                    <h3>
-                        Professional Delivery
-                    </h3>
-
-                    <p>
-                        Clear communication and organized project delivery
-                        from start to finish.
-                    </p>
-
-                </article>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             FAQ
-        ========================== -->
-
-        <section id="faq" class="faq-section">
-
-            <div class="section-heading">
-
-                <p class="section-label">
-                    FAQ
-                </p>
-
-                <h2>
-                    Frequently Asked
-                    <span>Questions.</span>
-                </h2>
-
-            </div>
-
-
-            <div class="faq-container">
-
-                <div class="faq-item">
-
-                    <button class="faq-question">
-                        What services do you offer?
-                        <span>+</span>
-                    </button>
-
-                    <div class="faq-answer">
-                        <p>
-                            I provide web development and creative design
-                            services including websites, brochures,
-                            presentations, ebooks, Instagram carousels
-                            and pitch decks.
-                        </p>
-                    </div>
-
-                </div>
-
-
-                <div class="faq-item">
-
-                    <button class="faq-question">
-                        Can you build a custom website?
-                        <span>+</span>
-                    </button>
-
-                    <div class="faq-answer">
-                        <p>
-                            Yes. Websites can be designed and developed
-                            according to the specific goals and requirements
-                            of a project.
-                        </p>
-                    </div>
-
-                </div>
-
-
-                <div class="faq-item">
-
-                    <button class="faq-question">
-                        How can I request a project?
-                        <span>+</span>
-                    </button>
-
-                    <div class="faq-answer">
-                        <p>
-                            You can contact me through the contact details
-                            provided at the bottom of this website.
-                        </p>
-                    </div>
-
-                </div>
-
-
-                <div class="faq-item">
-
-                    <button class="faq-question">
-                        Do you work with businesses?
-                        <span>+</span>
-                    </button>
-
-                    <div class="faq-answer">
-                        <p>
-                            Yes. Projects can be created for businesses,
-                            personal brands, startups and individuals.
-                        </p>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             EXPERIENCE / STATS
-        ========================== -->
-
-        <section class="stats-section">
-
-            <div class="stat">
-
-                <strong>0+</strong>
-
-                <span>
-                    Years Experience
-                </span>
-
-            </div>
-
-
-            <div class="stat">
-
-                <strong>0+</strong>
-
-                <span>
-                    Projects Completed
-                </span>
-
-            </div>
-
-
-            <div class="stat">
-
-                <strong>0+</strong>
-
-                <span>
-                    Happy Clients
-                </span>
-
-            </div>
-
-
-            <div class="stat">
-
-                <strong>100%</strong>
-
-                <span>
-                    Quality Delivery
-                </span>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             CONTACT
-        ========================== -->
-
-        <section id="contact" class="contact-section">
-
-            <p class="section-label">
-                HAVE A PROJECT?
-            </p>
-
-            <h2>
-                Let's create something
-                <span>great together.</span>
-            </h2>
-
-            <p>
-                Have an idea, project or business that needs a strong
-                digital presence? Let's talk.
-            </p>
-
-            <a href="mailto:your@email.com" class="primary-button">
-                Start a Conversation
-            </a>
-
-        </section>
-
-
-    </main>
-
-
-    <!-- =========================
-         FOOTER
-    ========================== -->
-
-    <footer class="footer">
-
-        <div class="footer-container">
-
-            <div class="footer-brand">
-
-                <a href="#home">
-                    FOFANA<span>.</span>
-                </a>
-
-                <p>
-                    Web Developer & Creative Designer creating modern
-                    digital experiences.
-                </p>
-
-            </div>
-
-
-            <div class="footer-column">
-
-                <h4>
-                    Navigation
-                </h4>
-
-                <a href="#home">Home</a>
-                <a href="#work">Work</a>
-                <a href="#about">About</a>
-                <a href="#faq">FAQ</a>
-                <a href="#contact">Contact</a>
-
-            </div>
-
-
-            <div class="footer-column">
-
-                <h4>
-                    Services
-                </h4>
-
-                <a href="#work">Web Development</a>
-                <a href="#">Brochure Design</a>
-                <a href="#">Presentation Design</a>
-                <a href="#">Ebook Design</a>
-                <a href="#">Pitch Deck</a>
-
-            </div>
-
-
-            <div class="footer-column">
-
-                <h4>
-                    Contact
-                </h4>
-
-                <!--
-                    WE WILL REPLACE THESE WITH YOUR
-                    REAL CONTACT DETAILS LATER.
-                -->
-
-                <a href="mailto:your@email.com">
-                    your@email.com
-                </a>
-
-                <a href="#">
-                    WhatsApp
-                </a>
-
-            </div>
-
-        </div>
-
-
-        <div class="footer-bottom">
-
-            <p>
-                © 2026 Fofana Umar. All rights reserved.
-            </p>
-
-            <p>
-                Built with purpose.
-            </p>
-
-        </div>
-
-    </footer>
-
-
-    <!-- =========================
-         FLOATING EMAIL
-    ========================== -->
-
-    <a href="mailto:your@email.com" class="floating-email">
-        EMAIL
-    </a>
-
-
-    <script src="script.js"></script>
-
-</body>
-</html>
 };
 
 
 /* =========================================================
-   5. CONNECT EACH DESIGN SECTION TO ITS SLIDER
+   5. REUSABLE CREATIVE SLIDER ENGINE
    ========================================================= */
 
 const designSections = document.querySelectorAll(".design-section");
@@ -1156,26 +327,51 @@ const designSections = document.querySelectorAll(".design-section");
 
 designSections.forEach(section => {
 
-    const heading = section.querySelector(".section-heading h2");
+    const heading = section.querySelector(
+        ".section-heading h2"
+    );
 
-    if (!heading) return;
+    const preview = section.querySelector(
+        ".design-preview"
+    );
+
+    const previousButton = section.querySelector(
+        ".slider-prev"
+    );
+
+    const nextButton = section.querySelector(
+        ".slider-next"
+    );
+
+
+    if (
+        !heading ||
+        !preview ||
+        !previousButton ||
+        !nextButton
+    ) {
+        return;
+    }
+
 
     const category = heading.textContent.trim();
 
     const slides = creativeSlides[category];
 
-    if (!slides) return;
 
-
-    const preview = section.querySelector(".design-preview");
-
-    const previousButton = section.querySelector(".slider-prev");
-
-    const nextButton = section.querySelector(".slider-next");
+    if (!slides || slides.length === 0) {
+        return;
+    }
 
 
     let currentSlide = 0;
 
+    let autoSlide;
+
+
+    /* -----------------------------------------------------
+       DISPLAY CURRENT SLIDE
+       ----------------------------------------------------- */
 
     function displayCreativeSlide(index) {
 
@@ -1184,32 +380,45 @@ designSections.forEach(section => {
         if (!selectedSlide) return;
 
 
+        preview.classList.remove("slide-changing");
+
+        void preview.offsetWidth;
+
+
         if (selectedSlide.image) {
 
             preview.style.backgroundImage =
                 `url("${selectedSlide.image}")`;
 
             preview.style.backgroundSize = "cover";
+
             preview.style.backgroundPosition = "center";
 
             preview.innerHTML = "";
 
-        } else {
+        }
+
+        else {
 
             preview.style.backgroundImage = "";
 
-            preview.innerHTML =
-                `<span>${selectedSlide.title}</span>`;
+            preview.innerHTML = `
+                <span>${selectedSlide.title}</span>
+            `;
 
         }
+
+
+        preview.classList.add("slide-changing");
 
     }
 
 
-    displayCreativeSlide(currentSlide);
+    /* -----------------------------------------------------
+       NEXT SLIDE
+       ----------------------------------------------------- */
 
-
-    nextButton.addEventListener("click", () => {
+    function nextSlide() {
 
         currentSlide++;
 
@@ -1219,10 +428,14 @@ designSections.forEach(section => {
 
         displayCreativeSlide(currentSlide);
 
-    });
+    }
 
 
-    previousButton.addEventListener("click", () => {
+    /* -----------------------------------------------------
+       PREVIOUS SLIDE
+       ----------------------------------------------------- */
+
+    function previousSlide() {
 
         currentSlide--;
 
@@ -1232,25 +445,158 @@ designSections.forEach(section => {
 
         displayCreativeSlide(currentSlide);
 
-    });
+    }
+
+
+    /* -----------------------------------------------------
+       BUTTON CONTROLS
+       ----------------------------------------------------- */
+
+    nextButton.addEventListener(
+        "click",
+        () => {
+
+            nextSlide();
+
+            restartAutoSlide();
+
+        }
+    );
+
+
+    previousButton.addEventListener(
+        "click",
+        () => {
+
+            previousSlide();
+
+            restartAutoSlide();
+
+        }
+    );
+
+
+    /* -----------------------------------------------------
+       AUTOMATIC SLIDING
+       ----------------------------------------------------- */
+
+    function startAutoSlide() {
+
+        autoSlide = setInterval(
+            nextSlide,
+            5000
+        );
+
+    }
+
+
+    function stopAutoSlide() {
+
+        clearInterval(autoSlide);
+
+    }
+
+
+    function restartAutoSlide() {
+
+        stopAutoSlide();
+
+        startAutoSlide();
+
+    }
+
+
+    /* -----------------------------------------------------
+       PAUSE WHEN USER HOVERS
+       ----------------------------------------------------- */
+
+    section.addEventListener(
+        "mouseenter",
+        stopAutoSlide
+    );
+
+
+    section.addEventListener(
+        "mouseleave",
+        startAutoSlide
+    );
+
+
+    /* -----------------------------------------------------
+       INITIAL SLIDE
+       ----------------------------------------------------- */
+
+    displayCreativeSlide(currentSlide);
+
+    startAutoSlide();
 
 });
 
 
 /* =========================================================
-   6. KEYBOARD SLIDER SUPPORT
+   6. TOUCH / SWIPE SUPPORT
    ========================================================= */
 
-document.addEventListener("keydown", event => {
+designSections.forEach(section => {
 
-    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") {
-        return;
-    }
+    const preview = section.querySelector(
+        ".design-preview"
+    );
 
-    /*
-       Keyboard support can be expanded later when we have
-       the full dynamic slider system.
-    */
+    if (!preview) return;
+
+
+    let touchStartX = 0;
+
+    let touchEndX = 0;
+
+
+    preview.addEventListener(
+        "touchstart",
+        event => {
+
+            touchStartX =
+                event.changedTouches[0].screenX;
+
+        },
+        { passive: true }
+    );
+
+
+    preview.addEventListener(
+        "touchend",
+        event => {
+
+            touchEndX =
+                event.changedTouches[0].screenX;
+
+
+            const swipeDistance =
+                touchStartX - touchEndX;
+
+
+            if (Math.abs(swipeDistance) < 50) {
+                return;
+            }
+
+
+            const buttonClass =
+                swipeDistance > 0
+                ? ".slider-next"
+                : ".slider-prev";
+
+
+            const button =
+                section.querySelector(buttonClass);
+
+
+            if (button) {
+                button.click();
+            }
+
+        },
+        { passive: true }
+    );
 
 });
 
@@ -1264,79 +610,110 @@ const revealElements = document.querySelectorAll(
 );
 
 
-const revealObserver = new IntersectionObserver(
-    entries => {
+if ("IntersectionObserver" in window) {
 
-        entries.forEach(entry => {
+    const revealObserver = new IntersectionObserver(
+        entries => {
 
-            if (entry.isIntersecting) {
+            entries.forEach(entry => {
 
-                entry.target.classList.add("revealed");
+                if (entry.isIntersecting) {
 
-                revealObserver.unobserve(entry.target);
+                    entry.target.classList.add(
+                        "revealed"
+                    );
 
-            }
+                    revealObserver.unobserve(
+                        entry.target
+                    );
 
-        });
+                }
 
-    },
-    {
-        threshold: 0.12
-    }
-);
+            });
+
+        },
+        {
+            threshold: 0.12
+        }
+    );
 
 
-revealElements.forEach(element => {
+    revealElements.forEach(element => {
 
-    element.classList.add("reveal");
+        element.classList.add("reveal");
 
-    revealObserver.observe(element);
+        revealObserver.observe(element);
 
-});
+    });
+
+}
 
 
 /* =========================================================
    8. ACTIVE NAVIGATION
    ========================================================= */
 
-const sections = document.querySelectorAll("main section[id]");
-const navigationLinks = document.querySelectorAll(".nav-menu a");
+const sections = document.querySelectorAll(
+    "main section[id]"
+);
+
+const navigationLinks = document.querySelectorAll(
+    ".nav-menu a"
+);
 
 
-window.addEventListener("scroll", () => {
+window.addEventListener(
+    "scroll",
+    () => {
 
-    let currentSection = "";
-
-    sections.forEach(section => {
-
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.offsetHeight;
-
-        if (
-            window.scrollY >= sectionTop - 200 &&
-            window.scrollY < sectionTop + sectionHeight - 200
-        ) {
-
-            currentSection = section.getAttribute("id");
-
-        }
-
-    });
+        let currentSection = "";
 
 
-    navigationLinks.forEach(link => {
+        sections.forEach(section => {
 
-        link.classList.remove("active");
+            const sectionTop =
+                section.offsetTop;
 
-        const linkTarget = link.getAttribute("href");
+            const sectionHeight =
+                section.offsetHeight;
 
-        if (linkTarget === `#${currentSection}`) {
-            link.classList.add("active");
-        }
 
-    });
+            if (
+                window.scrollY >= sectionTop - 200 &&
+                window.scrollY <
+                sectionTop + sectionHeight - 200
+            ) {
 
-});
+                currentSection =
+                    section.getAttribute("id");
+
+            }
+
+        });
+
+
+        navigationLinks.forEach(link => {
+
+            link.classList.remove("active");
+
+
+            const linkTarget =
+                link.getAttribute("href");
+
+
+            if (
+                linkTarget ===
+                `#${currentSection}`
+            ) {
+
+                link.classList.add("active");
+
+            }
+
+        });
+
+    }
+);
 
 
 /* =========================================================
