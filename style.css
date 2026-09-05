@@ -1266,3 +1266,15 @@ span {
 .nav-menu a.active {
     color: #b46cff;
 }
+/* =========================================================
+   REAL PORTFOLIO LOGO
+   ========================================================= */
+
+.portfolio-logo {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    border-radius: 50%;
+    position: relative;
+    z-index: 3;
+}
