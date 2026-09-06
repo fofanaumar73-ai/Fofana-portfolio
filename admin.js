@@ -1,73 +1,63 @@
 /* =========================================================
-   FOFANA TECH
-   ADMIN LOGIN
+   FOFANA TECH — ADMIN AUTHENTICATION
    ========================================================= */
 
+const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
+const SUPABASE_KEY = "YOUR_SUPABASE_PUBLISHABLE_KEY";
 
-/* ---------------------------------------------------------
-   GET THE LOGIN FORM
-   --------------------------------------------------------- */
+const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
 
 const adminLoginForm =
     document.getElementById("adminLoginForm");
-
 
 const loginMessage =
     document.getElementById("loginMessage");
 
 
-/* ---------------------------------------------------------
-   LOGIN FORM SUBMISSION
-   --------------------------------------------------------- */
-
 if (adminLoginForm) {
 
-    adminLoginForm.addEventListener(
-        "submit",
-        event => {
+    adminLoginForm.addEventListener("submit", async (event) => {
 
-            /*
-               Prevent the browser from refreshing
-               the page when the form is submitted.
-            */
+        event.preventDefault();
 
-            event.preventDefault();
+        const email =
+            document.getElementById("adminEmail").value.trim();
 
-
-            /*
-               Get the values entered by the user.
-            */
-
-            const email =
-                document.getElementById("adminEmail").value.trim();
-
-            const password =
-                document.getElementById("adminPassword").value;
+        const password =
+            document.getElementById("adminPassword").value;
 
 
-            /*
-               Temporary test message.
+        loginMessage.textContent = "Signing in...";
 
-               We are NOT checking the password here.
 
-               Supabase Authentication will handle
-               the real login later.
-            */
+        const { data, error } =
+            await supabaseClient.auth.signInWithPassword({
+                email: email,
+                password: password
+            });
 
-            if (!email || !password) {
 
-                loginMessage.textContent =
-                    "Please enter your email and password.";
-
-                return;
-
-            }
-
+        if (error) {
 
             loginMessage.textContent =
-                "Authentication will be connected soon.";
+                "Invalid email or password.";
 
+            console.error(error);
+
+            return;
         }
-    );
+
+
+        loginMessage.textContent =
+            "Login successful. Opening dashboard...";
+
+
+        window.location.href = "dashboard.html";
+
+    });
 
 }
