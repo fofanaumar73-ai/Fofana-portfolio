@@ -125,6 +125,22 @@ async function checkAdminSession() {
 
 }
 
-    
+   /* =========================================================
+   ADD PROJECT BUTTON
+   ========================================================= */
+
+const addProjectButton =
+    document.getElementById("addProjectButton");
+
+
+if (addProjectButton) {
+
+    addProjectButton.addEventListener("click", () => {
+
+        window.location.href = "add-project.html";
+
+    });
+
+} 
 
 
