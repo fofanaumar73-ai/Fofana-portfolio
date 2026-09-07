@@ -2005,3 +2005,242 @@ span {
     }
 
 }
+/* =========================================================
+   ADD PROJECT FORM
+   ========================================================= */
+
+.project-form-card {
+    width: 100%;
+    max-width: 850px;
+    margin: 0 auto;
+
+    padding: 40px;
+
+    box-sizing: border-box;
+
+    background: rgba(255, 255, 255, 0.045);
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    border-radius: 24px;
+
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3);
+}
+
+
+/* FORM GROUP */
+
+.project-form-group {
+    margin-bottom: 24px;
+}
+
+
+.project-form-group label {
+    display: block;
+
+    margin-bottom: 9px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    opacity: 0.85;
+}
+
+
+/* INPUTS */
+
+.project-form-group input,
+.project-form-group select,
+.project-form-group textarea {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 15px 16px;
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+
+    border-radius: 12px;
+
+    outline: none;
+
+    background: rgba(0, 0, 0, 0.22);
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease;
+}
+
+
+/* TEXTAREA */
+
+.project-form-group textarea {
+    resize: vertical;
+
+    min-height: 150px;
+
+    line-height: 1.6;
+}
+
+
+/* PLACEHOLDER */
+
+.project-form-group input::placeholder,
+.project-form-group textarea::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+
+/* SELECT OPTIONS */
+
+.project-form-group select option {
+    background: #100d19;
+
+    color: #ffffff;
+}
+
+
+/* FOCUS */
+
+.project-form-group input:focus,
+.project-form-group select:focus,
+.project-form-group textarea:focus {
+
+    border-color: rgba(170, 100, 255, 0.75);
+
+    background: rgba(0, 0, 0, 0.3);
+
+    box-shadow:
+        0 0 0 4px rgba(150, 70, 255, 0.1);
+}
+
+
+/* FILE INPUT */
+
+.project-form-group input[type="file"] {
+
+    padding: 12px;
+
+    cursor: pointer;
+}
+
+
+.project-form-group input[type="file"]::file-selector-button {
+
+    margin-right: 12px;
+
+    padding: 9px 14px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: rgba(150, 70, 255, 0.2);
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+
+/* SMALL HELP TEXT */
+
+.project-form-group small {
+
+    display: block;
+
+    margin-top: 8px;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+
+    opacity: 0.45;
+}
+
+
+/* CHECKBOX */
+
+.project-checkbox {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin: 10px 0 28px;
+}
+
+
+.project-checkbox input {
+
+    width: 17px;
+    height: 17px;
+
+    accent-color: #9b5cff;
+
+    cursor: pointer;
+}
+
+
+.project-checkbox label {
+
+    font-size: 13px;
+
+    opacity: 0.75;
+
+    cursor: pointer;
+}
+
+
+/* SUBMIT BUTTON */
+
+.project-submit-button {
+
+    width: 100%;
+
+    padding: 15px 20px;
+
+    margin-top: 5px;
+
+    background: linear-gradient(
+        135deg,
+        #9b5cff,
+        #6330d8
+    );
+
+    border: none;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+    .project-form-card {
+
+        padding: 25px 20px;
+
+        border-radius: 20px;
+    }
+
+}
