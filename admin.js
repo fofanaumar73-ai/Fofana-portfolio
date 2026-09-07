@@ -167,7 +167,7 @@ if (projectForm) {
 
 
             projectMessage.textContent =
-                "Saving project...";
+                "Preparing project...";
 
 
             /* -------------------------------------------------
@@ -175,26 +175,58 @@ if (projectForm) {
             ------------------------------------------------- */
 
             const title =
-                document.getElementById("projectTitle").value.trim();
+                document
+                    .getElementById("projectTitle")
+                    .value
+                    .trim();
+
 
             const category =
-                document.getElementById("projectCategory").value;
+                document
+                    .getElementById("projectCategory")
+                    .value;
+
 
             const description =
-                document.getElementById("projectDescription").value.trim();
+                document
+                    .getElementById("projectDescription")
+                    .value
+                    .trim();
+
 
             const projectLink =
-                document.getElementById("projectLink").value.trim();
+                document
+                    .getElementById("projectLink")
+                    .value
+                    .trim();
+
 
             const featured =
-                document.getElementById("projectFeatured").checked;
+                document
+                    .getElementById("projectFeatured")
+                    .checked;
+
 
             const status =
-                document.getElementById("projectStatus").value;
+                document
+                    .getElementById("projectStatus")
+                    .value;
+
+
+            const coverImage =
+                document
+                    .getElementById("projectImage")
+                    .files[0];
+
+
+            const projectFiles =
+                document
+                    .getElementById("projectFiles")
+                    .files;
 
 
             /* -------------------------------------------------
-               CHECK LOGIN SESSION
+               CHECK LOGIN
             ------------------------------------------------- */
 
             const { data: sessionData } =
@@ -218,13 +250,189 @@ if (projectForm) {
 
 
             /* -------------------------------------------------
-               SAVE PROJECT
+               CHECK COVER IMAGE
             ------------------------------------------------- */
 
-            const { data, error } =
+            if (!coverImage) {
+
+                projectMessage.textContent =
+                    "Please choose a cover image.";
+
+                return;
+            }
+
+
+            /* -------------------------------------------------
+               CREATE UNIQUE PROJECT FOLDER
+            ------------------------------------------------- */
+
+            const projectId =
+                crypto.randomUUID();
+
+
+            const uploadedImageUrls = [];
+
+
+            /* -------------------------------------------------
+               UPLOAD COVER IMAGE
+            ------------------------------------------------- */
+
+            projectMessage.textContent =
+                "Uploading cover image...";
+
+
+            const coverExtension =
+                coverImage.name
+                    .split(".")
+                    .pop()
+                    .toLowerCase();
+
+
+            const coverPath =
+                `${projectId}/cover.${coverExtension}`;
+
+
+            const { error: coverUploadError } =
+                await supabaseClient
+                    .storage
+                    .from("portfolio-projects")
+                    .upload(
+                        coverPath,
+                        coverImage,
+                        {
+                            cacheControl: "3600",
+                            upsert: false
+                        }
+                    );
+
+
+            if (coverUploadError) {
+
+                console.error(
+                    "COVER UPLOAD ERROR:",
+                    coverUploadError
+                );
+
+                projectMessage.textContent =
+                    "Cover image upload failed.";
+
+                return;
+            }
+
+
+            /* -------------------------------------------------
+               GET COVER IMAGE URL
+            ------------------------------------------------- */
+
+            const {
+                data: coverPublicUrlData
+            } =
+                supabaseClient
+                    .storage
+                    .from("portfolio-projects")
+                    .getPublicUrl(
+                        coverPath
+                    );
+
+
+            const coverImageUrl =
+                coverPublicUrlData.publicUrl;
+
+
+            /* -------------------------------------------------
+               UPLOAD ADDITIONAL PROJECT IMAGES
+            ------------------------------------------------- */
+
+            projectMessage.textContent =
+                "Uploading project images...";
+
+
+            for (
+                let i = 0;
+                i < projectFiles.length;
+                i++
+            ) {
+
+                const file =
+                    projectFiles[i];
+
+
+                const extension =
+                    file.name
+                        .split(".")
+                        .pop()
+                        .toLowerCase();
+
+
+                const filePath =
+                    `${projectId}/page-${i + 1}.${extension}`;
+
+
+                const {
+                    error: imageUploadError
+                } =
+                    await supabaseClient
+                        .storage
+                        .from("portfolio-projects")
+                        .upload(
+                            filePath,
+                            file,
+                            {
+                                cacheControl: "3600",
+                                upsert: false
+                            }
+                        );
+
+
+                if (imageUploadError) {
+
+                    console.error(
+                        "PROJECT IMAGE ERROR:",
+                        imageUploadError
+                    );
+
+                    projectMessage.textContent =
+                        `Image ${i + 1} failed to upload.`;
+
+                    return;
+                }
+
+
+                const {
+                    data: publicUrlData
+                } =
+                    supabaseClient
+                        .storage
+                        .from("portfolio-projects")
+                        .getPublicUrl(
+                            filePath
+                        );
+
+
+                uploadedImageUrls.push(
+                    publicUrlData.publicUrl
+                );
+
+            }
+
+
+            /* -------------------------------------------------
+               SAVE PROJECT TO DATABASE
+            ------------------------------------------------- */
+
+            projectMessage.textContent =
+                "Saving project...";
+
+
+            const {
+                data: projectData,
+                error: projectError
+            } =
                 await supabaseClient
                     .from("projects")
                     .insert({
+
+                        id: projectId,
 
                         title: title,
 
@@ -235,9 +443,17 @@ if (projectForm) {
                         project_link:
                             projectLink || null,
 
-                        featured: featured,
+                        cover_image_url:
+                            coverImageUrl,
 
-                        status: status
+                        project_images:
+                            uploadedImageUrls,
+
+                        featured:
+                            featured,
+
+                        status:
+                            status
 
                     })
                     .select()
@@ -245,18 +461,18 @@ if (projectForm) {
 
 
             /* -------------------------------------------------
-               HANDLE ERROR
+               DATABASE ERROR
             ------------------------------------------------- */
 
-            if (error) {
+            if (projectError) {
 
                 console.error(
-                    "PROJECT ERROR:",
-                    error
+                    "PROJECT DATABASE ERROR:",
+                    projectError
                 );
 
                 projectMessage.textContent =
-                    error.message;
+                    projectError.message;
 
                 return;
             }
@@ -267,13 +483,13 @@ if (projectForm) {
             ------------------------------------------------- */
 
             console.log(
-                "Project created:",
-                data
+                "PROJECT CREATED:",
+                projectData
             );
 
 
             projectMessage.textContent =
-                "Project saved successfully!";
+                "Project published successfully!";
 
 
             projectForm.reset();
