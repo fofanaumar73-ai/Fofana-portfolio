@@ -2,7 +2,7 @@
    FOFANA TECH — ADMIN AUTHENTICATION
    ========================================================= */
 
-const SUPABASE_URL = "https://uryfgatzyesolwwmugin.supabase.co/rest/v1/";
+const SUPABASE_URL = "https://uryfgatzyesolwwugin.supabase.co";
 const SUPABASE_KEY = "sb_publishable_QL4lxGKETA1_xMFFJ7RV5g_Wuyi_x-d";
 
 const supabaseClient = window.supabase.createClient(
