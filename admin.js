@@ -11,6 +11,10 @@ const supabaseClient = window.supabase.createClient(
 );
 
 
+/* =========================================================
+   LOGIN
+   ========================================================= */
+
 const adminLoginForm =
     document.getElementById("adminLoginForm");
 
@@ -20,44 +24,107 @@ const loginMessage =
 
 if (adminLoginForm) {
 
-    adminLoginForm.addEventListener("submit", async (event) => {
+    adminLoginForm.addEventListener(
+        "submit",
+        async (event) => {
 
-        event.preventDefault();
+            event.preventDefault();
 
-        const email =
-            document.getElementById("adminEmail").value.trim();
+            const email =
+                document.getElementById("adminEmail").value.trim();
 
-        const password =
-            document.getElementById("adminPassword").value;
+            const password =
+                document.getElementById("adminPassword").value;
 
-
-        loginMessage.textContent = "Signing in...";
-
-
-        const { data, error } =
-            await supabaseClient.auth.signInWithPassword({
-                email: email,
-                password: password
-            });
+            loginMessage.textContent =
+                "Signing in...";
 
 
-        if (error) {
+            const { error } =
+                await supabaseClient.auth.signInWithPassword({
+                    email,
+                    password
+                });
 
-    console.error("SUPABASE ERROR:", error);
 
-    loginMessage.textContent =
-        error.message;
+            if (error) {
 
-    return;
+                console.error(error);
+
+                loginMessage.textContent =
+                    error.message;
+
+                return;
+            }
+
+
+            loginMessage.textContent =
+                "Login successful. Opening dashboard...";
+
+
+            setTimeout(() => {
+
+                window.location.href =
+                    "dashboard.html";
+
+            }, 700);
+
+        }
+    );
+
 }
 
 
-        loginMessage.textContent =
-            "Login successful. Opening dashboard...";
+/* =========================================================
+   PROTECT DASHBOARD
+   ========================================================= */
+
+const logoutButton =
+    document.getElementById("logoutButton");
 
 
-        window.location.href = "dashboard.html";
+if (logoutButton) {
 
-    });
+    checkAdminSession();
+
+
+    logoutButton.addEventListener(
+        "click",
+        async () => {
+
+            await supabaseClient.auth.signOut();
+
+            window.location.href =
+                "admin.html";
+
+        }
+    );
 
 }
+
+
+async function checkAdminSession() {
+
+    const { data } =
+        await supabaseClient.auth.getSession();
+
+
+    if (!data.session) {
+
+        window.location.href =
+            "admin.html";
+
+        return;
+    }
+
+
+    console.log(
+        "Authenticated admin:",
+        data.session.user.email
+    );
+
+}
+
+    
+
+
