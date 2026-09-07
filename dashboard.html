@@ -1,1 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Dashboard | Fofana Tech</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body class="dashboard-page">
+
+
+    <header class="dashboard-header">
+
+        <div class="dashboard-container">
+
+            <a href="index.html" class="brand">
+                FOFANA<span>.</span>
+            </a>
+
+            <button
+                id="logoutButton"
+                class="dashboard-logout"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <main class="dashboard-main">
+
+        <div class="dashboard-container">
+
+
+            <div class="dashboard-heading">
+
+                <p class="admin-label">
+                    PRIVATE AREA
+                </p>
+
+                <h1>
+                    Admin Dashboard
+                </h1>
+
+                <p>
+                    Manage your portfolio from one place.
+                </p>
+
+            </div>
+
+
+            <!-- DASHBOARD CARDS -->
+
+            <section class="dashboard-grid">
+
+
+                <div class="dashboard-card">
+
+                    <span class="dashboard-card-icon">
+                        +
+                    </span>
+
+                    <h2>
+                        Add Project
+                    </h2>
+
+                    <p>
+                        Add a new portfolio project.
+                    </p>
+
+                    <button class="dashboard-button">
+                        Add Project
+                    </button>
+
+                </div>
+
+
+                <div class="dashboard-card">
+
+                    <span class="dashboard-card-icon">
+                        ◈
+                    </span>
+
+                    <h2>
+                        Manage Projects
+                    </h2>
+
+                    <p>
+                        Edit or remove existing projects.
+                    </p>
+
+                    <button class="dashboard-button">
+                        Manage Projects
+                    </button>
+
+                </div>
+
+
+                <div class="dashboard-card">
+
+                    <span class="dashboard-card-icon">
+                        ★
+                    </span>
+
+                    <h2>
+                        Client Reviews
+                    </h2>
+
+                    <p>
+                        Manage testimonials from clients.
+                    </p>
+
+                    <button class="dashboard-button">
+                        Manage Reviews
+                    </button>
+
+                </div>
+
+
+                <div class="dashboard-card">
+
+                    <span class="dashboard-card-icon">
+                        ⚙
+                    </span>
+
+                    <h2>
+                        Portfolio Settings
+                    </h2>
+
+                    <p>
+                        Manage your portfolio content.
+                    </p>
+
+                    <button class="dashboard-button">
+                        Settings
+                    </button>
+
+                </div>
+
+
+            </section>
+
+
+        </div>
+
+    </main>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="admin.js"></script>
+
+
+</body>
+
+</html>
