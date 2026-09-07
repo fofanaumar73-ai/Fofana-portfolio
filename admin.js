@@ -43,13 +43,13 @@ if (adminLoginForm) {
 
         if (error) {
 
-            loginMessage.textContent =
-                "Invalid email or password.";
+    console.error("SUPABASE ERROR:", error);
 
-            console.error(error);
+    loginMessage.textContent =
+        error.message;
 
-            return;
-        }
+    return;
+}
 
 
         loginMessage.textContent =
