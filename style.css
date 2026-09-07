@@ -1711,3 +1711,297 @@ span {
     }
 
 }
+/* =========================================================
+   ADMIN DASHBOARD
+   ========================================================= */
+
+.dashboard-page {
+    min-height: 100vh;
+    margin: 0;
+    background:
+        radial-gradient(
+            circle at 15% 15%,
+            rgba(150, 70, 255, 0.15),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 85% 80%,
+            rgba(100, 40, 220, 0.13),
+            transparent 35%
+        ),
+        #090711;
+
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   DASHBOARD HEADER
+   ========================================================= */
+
+.dashboard-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+    background: rgba(9, 7, 17, 0.8);
+
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+
+.dashboard-container {
+    width: min(1150px, calc(100% - 40px));
+
+    margin: 0 auto;
+}
+
+
+.dashboard-header .dashboard-container {
+    min-height: 80px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+/* =========================================================
+   LOGOUT
+   ========================================================= */
+
+.dashboard-logout {
+    padding: 10px 20px;
+
+    border: 1px solid rgba(255, 255, 255, 0.14);
+
+    border-radius: 10px;
+
+    background: rgba(255, 255, 255, 0.05);
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.25s ease,
+        transform 0.25s ease;
+}
+
+
+.dashboard-logout:hover {
+    background: rgba(255, 255, 255, 0.1);
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   DASHBOARD MAIN
+   ========================================================= */
+
+.dashboard-main {
+    padding: 80px 0 100px;
+}
+
+
+.dashboard-heading {
+    margin-bottom: 50px;
+}
+
+
+.dashboard-heading h1 {
+    margin: 8px 0 12px;
+
+    font-size: clamp(38px, 6vw, 62px);
+
+    line-height: 1;
+
+    letter-spacing: -2px;
+}
+
+
+.dashboard-heading > p:last-child {
+    margin: 0;
+
+    font-size: 15px;
+
+    opacity: 0.6;
+}
+
+
+/* =========================================================
+   DASHBOARD GRID
+   ========================================================= */
+
+.dashboard-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 22px;
+}
+
+
+.dashboard-card {
+    padding: 32px;
+
+    min-height: 220px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    background: rgba(255, 255, 255, 0.045);
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    border-radius: 22px;
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    transition:
+        transform 0.3s ease,
+        border-color 0.3s ease,
+        background 0.3s ease;
+}
+
+
+.dashboard-card:hover {
+    transform: translateY(-6px);
+
+    background: rgba(255, 255, 255, 0.065);
+
+    border-color: rgba(170, 100, 255, 0.4);
+}
+
+
+/* =========================================================
+   CARD ICON
+   ========================================================= */
+
+.dashboard-card-icon {
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 24px;
+
+    border-radius: 14px;
+
+    background: rgba(150, 70, 255, 0.14);
+
+    border: 1px solid rgba(170, 100, 255, 0.2);
+
+    font-size: 22px;
+
+    color: #ffffff;
+}
+
+
+.dashboard-card h2 {
+    margin: 0 0 10px;
+
+    font-size: 21px;
+}
+
+
+.dashboard-card p {
+    margin: 0 0 25px;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+
+    opacity: 0.55;
+}
+
+
+/* =========================================================
+   DASHBOARD BUTTON
+   ========================================================= */
+
+.dashboard-button {
+    margin-top: auto;
+
+    padding: 11px 18px;
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+
+    border-radius: 10px;
+
+    background: rgba(255, 255, 255, 0.06);
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.25s ease,
+        transform 0.25s ease;
+}
+
+
+.dashboard-button:hover {
+    background: rgba(150, 70, 255, 0.25);
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   DASHBOARD MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .dashboard-container {
+        width: min(
+            100% - 30px,
+            1150px
+        );
+    }
+
+
+    .dashboard-main {
+        padding: 55px 0 70px;
+    }
+
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .dashboard-card {
+        min-height: 200px;
+
+        padding: 26px;
+    }
+
+
+    .dashboard-heading {
+        margin-bottom: 35px;
+    }
+
+}
