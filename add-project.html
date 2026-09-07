@@ -1,1 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Add Project | Fofana Tech</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body class="dashboard-page">
+
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+
+    <header class="dashboard-header">
+
+        <div class="dashboard-container">
+
+            <a href="dashboard.html" class="brand">
+                FOFANA<span>.</span>
+            </a>
+
+            <a
+                href="dashboard.html"
+                class="dashboard-logout"
+            >
+                ← Dashboard
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================
+         ADD PROJECT
+    ========================== -->
+
+    <main class="dashboard-main">
+
+        <div class="dashboard-container">
+
+
+            <div class="dashboard-heading">
+
+                <p class="admin-label">
+                    PORTFOLIO MANAGEMENT
+                </p>
+
+                <h1>
+                    Add Project
+                </h1>
+
+                <p>
+                    Add a new project to your portfolio.
+                </p>
+
+            </div>
+
+
+            <!-- =========================
+                 PROJECT FORM
+            ========================== -->
+
+            <section class="project-form-card">
+
+
+                <form id="projectForm">
+
+
+                    <!-- PROJECT TITLE -->
+
+                    <div class="project-form-group">
+
+                        <label for="projectTitle">
+                            Project Title
+                        </label>
+
+                        <input
+                            type="text"
+                            id="projectTitle"
+                            placeholder="e.g. Luxury Real Estate Brochure"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- CATEGORY -->
+
+                    <div class="project-form-group">
+
+                        <label for="projectCategory">
+                            Project Category
+                        </label>
+
+                        <select
+                            id="projectCategory"
+                            required
+                        >
+
+                            <option value="">
+                                Select a category
+                            </option>
+
+                            <option value="Brochure Design">
+                                Brochure Design
+                            </option>
+
+                            <option value="Ebook Design">
+                                Ebook Design
+                            </option>
+
+                            <option value="Presentation Design">
+                                Presentation Design
+                            </option>
+
+                            <option value="Instagram Carousel">
+                                Instagram Carousel
+                            </option>
+
+                            <option value="Pitch Deck">
+                                Pitch Deck
+                            </option>
+
+                            <option value="Web Development">
+                                Web Development
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- DESCRIPTION -->
+
+                    <div class="project-form-group">
+
+                        <label for="projectDescription">
+                            Project Description
+                        </label>
+
+                        <textarea
+                            id="projectDescription"
+                            rows="6"
+                            placeholder="Tell visitors what this project is about..."
+                            required
+                        ></textarea>
+
+                    </div>
+
+
+                    <!-- PROJECT LINK -->
+
+                    <div class="project-form-group">
+
+                        <label for="projectLink">
+                            Project Link
+                        </label>
+
+                        <input
+                            type="url"
+                            id="projectLink"
+                            placeholder="https://example.com"
+                        >
+
+                        <small>
+                            Optional — useful for websites or live projects.
+                        </small>
+
+                    </div>
+
+
+                    <!-- COVER IMAGE -->
+
+                    <div class="project-form-group">
+
+                        <label for="projectImage">
+                            Cover Image
+                        </label>
+
+                        <input
+                            type="file"
+                            id="projectImage"
+                            accept="image/*"
+                        >
+
+                        <small>
+                            This will be the main image displayed for the project.
+                        </small>
+
+                    </div>
+
+
+                    <!-- PROJECT FILES -->
+
+                    <div class="project-form-group">
+
+                        <label for="projectFiles">
+                            Project Images / Pages
+                        </label>
+
+                        <input
+                            type="file"
+                            id="projectFiles"
+                            accept="image/*"
+                            multiple
+                        >
+
+                        <small>
+                            You can select multiple images for brochures,
+                            ebooks, presentations, carousels and pitch decks.
+                        </small>
+
+                    </div>
+
+
+                    <!-- FEATURED -->
+
+                    <div class="project-checkbox">
+
+                        <input
+                            type="checkbox"
+                            id="projectFeatured"
+                        >
+
+                        <label for="projectFeatured">
+                            Feature this project on the homepage
+                        </label>
+
+                    </div>
+
+
+                    <!-- STATUS -->
+
+                    <div class="project-form-group">
+
+                        <label for="projectStatus">
+                            Project Status
+                        </label>
+
+                        <select id="projectStatus">
+
+                            <option value="published">
+                                Published
+                            </option>
+
+                            <option value="draft">
+                                Draft
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- SUBMIT -->
+
+                    <button
+                        type="submit"
+                        class="dashboard-button project-submit-button"
+                    >
+                        Publish Project
+                    </button>
+
+
+                    <p
+                        id="projectMessage"
+                        class="login-message"
+                    ></p>
+
+
+                </form>
+
+
+            </section>
+
+
+        </div>
+
+    </main>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="admin.js"></script>
+
+
+</body>
+
+</html>
