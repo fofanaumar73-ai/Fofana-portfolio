@@ -723,3 +723,138 @@ window.addEventListener(
 console.log(
     "Fofana Portfolio is ready."
 );
+/* =========================================================
+   LOAD PORTFOLIO PROJECTS FROM SUPABASE
+   ========================================================= */
+
+const PORTFOLIO_SUPABASE_URL =
+    "YOUR_PORTFOLIO_SUPABASE_URL";
+
+const PORTFOLIO_SUPABASE_KEY =
+    "YOUR_PORTFOLIO_PUBLISHABLE_KEY";
+
+const portfolioSupabase =
+    window.supabase.createClient(
+        PORTFOLIO_SUPABASE_URL,
+        PORTFOLIO_SUPABASE_KEY
+    );
+
+
+async function loadPortfolioProjects() {
+
+    const { data: projects, error } =
+        await portfolioSupabase
+            .from("projects")
+            .select("*")
+            .eq("status", "published")
+            .order("created_at", {
+                ascending: false
+            });
+
+
+    if (error) {
+
+        console.error(
+            "PORTFOLIO PROJECT ERROR:",
+            error
+        );
+
+        return;
+    }
+
+
+    console.log(
+        "Portfolio projects:",
+        projects
+    );
+
+
+    displayPortfolioProjects(projects);
+
+}
+
+
+/* =========================================================
+   DISPLAY PROJECTS
+   ========================================================= */
+
+function displayPortfolioProjects(projects) {
+
+    const portfolioContainer =
+        document.getElementById(
+            "portfolioProjects"
+        );
+
+
+    if (!portfolioContainer) {
+        return;
+    }
+
+
+    portfolioContainer.innerHTML = "";
+
+
+    projects.forEach(project => {
+
+        const projectCard =
+            document.createElement("article");
+
+
+        projectCard.className =
+            "portfolio-project";
+
+
+        projectCard.innerHTML = `
+
+            <div class="portfolio-project-image">
+
+                <img
+                    src="${project.cover_image_url}"
+                    alt="${project.title}"
+                    loading="lazy"
+                >
+
+            </div>
+
+
+            <div class="portfolio-project-info">
+
+                <p class="portfolio-project-category">
+                    ${project.category}
+                </p>
+
+                <h3>
+                    ${project.title}
+                </h3>
+
+                <p>
+                    ${project.description}
+                </p>
+
+
+                <button
+                    class="portfolio-learn-more"
+                    data-project-id="${project.id}"
+                >
+                    LEARN MORE
+                </button>
+
+            </div>
+
+        `;
+
+
+        portfolioContainer.appendChild(
+            projectCard
+        );
+
+    });
+
+}
+
+
+/* =========================================================
+   START
+   ========================================================= */
+
+loadPortfolioProjects();
