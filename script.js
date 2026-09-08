@@ -728,10 +728,10 @@ console.log(
    ========================================================= */
 
 const PORTFOLIO_SUPABASE_URL =
-    "YOUR_PORTFOLIO_SUPABASE_URL";
+    "https://uryfgatzyesolwwmugin.supabase.co";
 
 const PORTFOLIO_SUPABASE_KEY =
-    "YOUR_PORTFOLIO_PUBLISHABLE_KEY";
+    "sb_publishable_QL4lxGKETA1_xMFFJ7RV5g_Wuyi_x-d";
 
 const portfolioSupabase =
     window.supabase.createClient(
