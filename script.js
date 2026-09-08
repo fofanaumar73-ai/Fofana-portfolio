@@ -2,337 +2,935 @@
    FOFANA PORTFOLIO — MAIN JAVASCRIPT
    ========================================================= */
 
+
 /* =========================================================
    1. SUPABASE INITIALIZATION
    ========================================================= */
 
-const PORTFOLIO_SUPABASE_URL = "https://uryfgatzyesolwwmugin.supabase.co";
-const PORTFOLIO_SUPABASE_KEY = "sb_publishable_QL4lxGKETA1_xMFFJ7RV5g_Wuyi_x-d";
+const PORTFOLIO_SUPABASE_URL =
+    "https://uryfgatzyesolwwmugin.supabase.co";
 
-const portfolioSupabase = window.supabase.createClient(
-    PORTFOLIO_SUPABASE_URL,
-    PORTFOLIO_SUPABASE_KEY
-);
+const PORTFOLIO_SUPABASE_KEY =
+    "sb_publishable_QL4lxGKETA1_xMFFJ7RV5g_Wuyi_x-d";
+
+
+const portfolioSupabase =
+    window.supabase.createClient(
+        PORTFOLIO_SUPABASE_URL,
+        PORTFOLIO_SUPABASE_KEY
+    );
+
 
 
 /* =========================================================
    2. MOBILE NAVIGATION
    ========================================================= */
 
-const menuToggle = document.querySelector(".menu-toggle");
-const navMenu = document.querySelector(".nav-menu");
+const menuToggle =
+    document.querySelector(".menu-toggle");
+
+const navMenu =
+    document.querySelector(".nav-menu");
+
 
 if (menuToggle && navMenu) {
+
     menuToggle.addEventListener("click", () => {
-        navMenu.classList.toggle("mobile-active");
+
+        navMenu.classList.toggle(
+            "mobile-active"
+        );
+
     });
 
+
     navMenu.querySelectorAll("a").forEach(link => {
+
         link.addEventListener("click", () => {
-            navMenu.classList.remove("mobile-active");
+
+            navMenu.classList.remove(
+                "mobile-active"
+            );
+
         });
+
     });
+
 }
+
 
 
 /* =========================================================
    3. FAQ ACCORDION
    ========================================================= */
 
-const faqItems = document.querySelectorAll(".faq-item");
+const faqItems =
+    document.querySelectorAll(".faq-item");
+
 
 faqItems.forEach(item => {
-    const question = item.querySelector(".faq-question");
+
+    const question =
+        item.querySelector(".faq-question");
+
 
     if (!question) return;
 
+
     question.addEventListener("click", () => {
-        const alreadyOpen = item.classList.contains("active");
+
+        const alreadyOpen =
+            item.classList.contains("active");
+
 
         faqItems.forEach(otherItem => {
-            otherItem.classList.remove("active");
+
+            otherItem.classList.remove(
+                "active"
+            );
+
         });
 
+
         if (!alreadyOpen) {
-            item.classList.add("active");
+
+            item.classList.add(
+                "active"
+            );
+
         }
+
     });
+
 });
 
 
+
 /* =========================================================
-   4. FETCH AND POPULATE SUPABASE PROJECTS
+   4. CATEGORY HELPERS
+   ========================================================= */
+
+function normalizeCategory(category) {
+
+    if (!category) {
+        return "";
+    }
+
+
+    return category
+        .toLowerCase()
+        .trim()
+        .replace(/_/g, "-")
+        .replace(/\s+/g, "-");
+
+}
+
+
+
+function getCategoryContainer(category) {
+
+    const normalized =
+        normalizeCategory(category);
+
+
+    const containers = {
+
+        "web-development":
+            "webDevelopmentProjects",
+
+        "brochure-design":
+            "brochureProjects",
+
+        "presentation-design":
+            "presentationProjects",
+
+        "ebook-design":
+            "ebookProjects",
+
+        "instagram-carousel":
+            "carouselProjects",
+
+        "pitch-deck":
+            "pitchDeckProjects"
+
+    };
+
+
+    const containerId =
+        containers[normalized];
+
+
+    if (!containerId) {
+        return null;
+    }
+
+
+    return document.getElementById(
+        containerId
+    );
+
+}
+
+
+
+/* =========================================================
+   5. CREATE PROJECT CARD
+   ========================================================= */
+
+function createProjectCard(project) {
+
+    const card =
+        document.createElement("article");
+
+
+    card.className =
+        "portfolio-project-card";
+
+
+    const cover =
+        project.cover_image_url ||
+        (
+            project.project_images &&
+            project.project_images.length
+                ? project.project_images[0]
+                : ""
+        );
+
+
+    const category =
+        project.category
+            ? project.category
+                .replace(/-/g, " ")
+                .toUpperCase()
+            : "PROJECT";
+
+
+    card.innerHTML = `
+
+        <div class="portfolio-project-image">
+
+            ${
+                cover
+
+                ? `
+                    <img
+                        src="${escapeHtml(cover)}"
+                        alt="${escapeHtml(project.title)}"
+                        loading="lazy"
+                    >
+                `
+
+                : `
+                    <div class="project-image-placeholder">
+                        <span>
+                            PROJECT PREVIEW
+                        </span>
+                    </div>
+                `
+            }
+
+        </div>
+
+
+        <div class="portfolio-project-info">
+
+            <p class="portfolio-project-category">
+                ${escapeHtml(category)}
+            </p>
+
+
+            <h3>
+                ${escapeHtml(project.title)}
+            </h3>
+
+
+            <p>
+                ${escapeHtml(project.description || "")}
+            </p>
+
+
+            <a
+                href="project.html?id=${encodeURIComponent(project.id)}"
+                class="portfolio-learn-more"
+            >
+                ${
+                    normalizeCategory(project.category)
+                    === "web-development"
+
+                    ? "VIEW PROJECT →"
+
+                    : "LEARN MORE →"
+                }
+            </a>
+
+        </div>
+
+    `;
+
+
+    return card;
+
+}
+
+
+
+/* =========================================================
+   6. BASIC HTML ESCAPE
+   ========================================================= */
+
+function escapeHtml(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+
+/* =========================================================
+   7. DISPLAY PROJECTS BY CATEGORY
+   ========================================================= */
+
+function displayProjects(projects) {
+
+    const containers = [
+
+        "webDevelopmentProjects",
+
+        "brochureProjects",
+
+        "presentationProjects",
+
+        "ebookProjects",
+
+        "carouselProjects",
+
+        "pitchDeckProjects"
+
+    ];
+
+
+    containers.forEach(id => {
+
+        const container =
+            document.getElementById(id);
+
+
+        if (container) {
+
+            container.innerHTML = "";
+
+        }
+
+    });
+
+
+    projects.forEach(project => {
+
+        const container =
+            getCategoryContainer(
+                project.category
+            );
+
+
+        if (!container) {
+
+            console.warn(
+                "Unknown project category:",
+                project.category
+            );
+
+            return;
+
+        }
+
+
+        const card =
+            createProjectCard(project);
+
+
+        container.appendChild(card);
+
+    });
+
+}
+
+
+
+/* =========================================================
+   8. LOAD PROJECTS FROM SUPABASE
    ========================================================= */
 
 async function loadPortfolioProjects() {
+
     try {
-        const { data: projects, error } = await portfolioSupabase
-            .from("projects")
-            .select("*")
-            .eq("status", "published")
-            .order("created_at", { ascending: false });
+
+        const {
+            data: projects,
+            error
+        } =
+            await portfolioSupabase
+
+                .from("projects")
+
+                .select("*")
+
+                .eq(
+                    "status",
+                    "published"
+                )
+
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                );
+
 
         if (error) {
-            console.error("PORTFOLIO PROJECT ERROR:", error);
+
+            console.error(
+                "PORTFOLIO PROJECT ERROR:",
+                error
+            );
+
+            return;
+
+        }
+
+
+        console.log(
+            "Portfolio projects loaded:",
+            projects
+        );
+
+
+        if (!projects) {
             return;
         }
 
-        console.log("Portfolio projects loaded from Supabase:", projects);
 
-        if (!projects || projects.length === 0) return;
+        displayProjects(
+            projects
+        );
 
-        // Categorize projects matching backend keys
-        const categorized = {
-            web: projects.filter(p => p.category === "web-development" || p.category === "WEB DEVELOPMENT"),
-            brochure: projects.filter(p => p.category === "brochure-design" || p.category === "Brochure Design"),
-            presentation: projects.filter(p => p.category === "presentation-design" || p.category === "Presentation Design"),
-            ebook: projects.filter(p => p.category === "ebook-design" || p.category === "Ebook Design"),
-            carousel: projects.filter(p => p.category === "instagram-carousel" || p.category === "Instagram Carousel"),
-            pitchDeck: projects.filter(p => p.category === "pitch-deck" || p.category === "Pitch Deck")
-        };
 
-        // Initialize Web Slider with real data
-        if (categorized.web.length > 0) {
-            initWebSlider(categorized.web);
+    } catch (error) {
+
+        console.error(
+            "Unexpected portfolio error:",
+            error
+        );
+
+    }
+
+}
+
+
+
+/* =========================================================
+   9. PROJECT DETAIL PAGE
+   ========================================================= */
+
+async function loadProjectDetails() {
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    const projectId =
+        params.get("id");
+
+
+    if (!projectId) {
+
+        showProjectError(
+            "No project was selected."
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        const {
+            data: project,
+            error
+        } =
+            await portfolioSupabase
+
+                .from("projects")
+
+                .select("*")
+
+                .eq(
+                    "id",
+                    projectId
+                )
+
+                .eq(
+                    "status",
+                    "published"
+                )
+
+                .single();
+
+
+        if (error || !project) {
+
+            console.error(
+                "PROJECT DETAIL ERROR:",
+                error
+            );
+
+
+            showProjectError(
+                "Project could not be found."
+            );
+
+
+            return;
+
         }
 
-        // Initialize Creative Sliders with real data
-        initCreativeSliders({
-            "Brochure Design": categorized.brochure,
-            "Presentation Design": categorized.presentation,
-            "Ebook Design": categorized.ebook,
-            "Instagram Carousel": categorized.carousel,
-            "Pitch Deck": categorized.pitchDeck
-        });
 
-    } catch (err) {
-        console.error("Unexpected error loading projects:", err);
+        displayProjectDetails(
+            project
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Unexpected detail error:",
+            error
+        );
+
+
+        showProjectError(
+            "Something went wrong while loading this project."
+        );
+
     }
+
 }
 
 
-/* =========================================================
-   5. WEB DEVELOPMENT SLIDER ENGINE (DYNAMIC)
-   ========================================================= */
-
-function initWebSlider(projects) {
-    let currentWebProject = 0;
-    const webSlider = document.querySelector(".portfolio-slider");
-
-    if (!webSlider) return;
-
-    const slide = webSlider.querySelector(".portfolio-slide");
-    const previousButton = webSlider.querySelector(".slider-prev");
-    const nextButton = webSlider.querySelector(".slider-next");
-
-    function displayWebProject(index) {
-        const project = projects[index];
-        if (!project || !slide) return;
-
-        const imageUrl = project.cover_image_url || "";
-
-        slide.innerHTML = `
-            <div class="slide-placeholder"
-                ${imageUrl ? `style="background-image: url('${imageUrl}'); background-size: cover; background-position: center;"` : ''}>
-                ${!imageUrl ? `<span>${project.title}</span>` : ''}
-            </div>
-
-            <div class="slide-info">
-                <p>${project.category.replace("-", " ").toUpperCase()}</p>
-                <h3>${project.title}</h3>
-                <p>${project.description || ''}</p>
-                ${project.project_link ? `
-                    <a href="${project.project_link}" class="slide-link" target="_blank" rel="noopener noreferrer">
-                        View Project →
-                    </a>` : ''}
-            </div>
-        `;
-    }
-
-    displayWebProject(currentWebProject);
-
-    if (nextButton) {
-        nextButton.addEventListener("click", () => {
-            currentWebProject = (currentWebProject + 1) % projects.length;
-            displayWebProject(currentWebProject);
-        });
-    }
-
-    if (previousButton) {
-        previousButton.addEventListener("click", () => {
-            currentWebProject = (currentWebProject - 1 + projects.length) % projects.length;
-            displayWebProject(currentWebProject);
-        });
-    }
-}
-
 
 /* =========================================================
-   6. CREATIVE SLIDER ENGINE (DYNAMIC)
+   10. DISPLAY PROJECT DETAILS
    ========================================================= */
 
-function initCreativeSliders(creativeData) {
-    const designSections = document.querySelectorAll(".design-section");
+function displayProjectDetails(project) {
 
-    designSections.forEach(section => {
-        const heading = section.querySelector(".section-heading h2");
-        const preview = section.querySelector(".design-preview");
-        const previousButton = section.querySelector(".slider-prev");
-        const nextButton = section.querySelector(".slider-next");
+    const title =
+        document.getElementById(
+            "projectTitle"
+        );
 
-        if (!heading || !preview || !previousButton || !nextButton) return;
 
-        const categoryTitle = heading.textContent.trim();
-        const slides = creativeData[categoryTitle];
+    const category =
+        document.getElementById(
+            "projectCategory"
+        );
 
-        if (!slides || slides.length === 0) return;
 
-        let currentSlide = 0;
-        let autoSlide;
+    const description =
+        document.getElementById(
+            "projectDescription"
+        );
 
-        function displayCreativeSlide(index) {
-            const selectedSlide = slides[index];
-            if (!selectedSlide) return;
 
-            const imageUrl = selectedSlide.cover_image_url || (selectedSlide.project_images && selectedSlide.project_images[0]);
+    const cover =
+        document.getElementById(
+            "projectCover"
+        );
 
-            preview.classList.remove("slide-changing");
-            void preview.offsetWidth;
 
-            if (imageUrl) {
-                preview.style.backgroundImage = `url("${imageUrl}")`;
-                preview.style.backgroundSize = "cover";
-                preview.style.backgroundPosition = "center";
-                preview.innerHTML = "";
-            } else {
-                preview.style.backgroundImage = "";
-                preview.innerHTML = `<span>${selectedSlide.title}</span>`;
+    const gallery =
+        document.getElementById(
+            "projectGallery"
+        );
+
+
+    const externalLink =
+        document.getElementById(
+            "projectExternalLink"
+        );
+
+
+    if (title) {
+
+        title.textContent =
+            project.title;
+
+    }
+
+
+    if (category) {
+
+        category.textContent =
+            project.category
+                ? project.category
+                    .replace(/-/g, " ")
+                    .toUpperCase()
+                : "";
+
+    }
+
+
+    if (description) {
+
+        description.textContent =
+            project.description || "";
+
+    }
+
+
+    /* ---------------------------------------------------------
+       COVER
+    --------------------------------------------------------- */
+
+    if (cover) {
+
+        const coverUrl =
+            project.cover_image_url;
+
+
+        if (coverUrl) {
+
+            cover.src =
+                coverUrl;
+
+            cover.alt =
+                project.title;
+
+            cover.style.display =
+                "block";
+
+        } else {
+
+            cover.style.display =
+                "none";
+
+        }
+
+    }
+
+
+    /* ---------------------------------------------------------
+       PROJECT LINK
+    --------------------------------------------------------- */
+
+    if (externalLink) {
+
+        if (project.project_link) {
+
+            externalLink.href =
+                project.project_link;
+
+            externalLink.style.display =
+                "inline-flex";
+
+        } else {
+
+            externalLink.style.display =
+                "none";
+
+        }
+
+    }
+
+
+    /* ---------------------------------------------------------
+       GALLERY
+    --------------------------------------------------------- */
+
+    if (gallery) {
+
+        gallery.innerHTML = "";
+
+
+        const images =
+            Array.isArray(
+                project.project_images
+            )
+                ? project.project_images
+                : [];
+
+
+        images.forEach(
+            (imageUrl, index) => {
+
+                if (!imageUrl) {
+                    return;
+                }
+
+
+                const image =
+                    document.createElement(
+                        "img"
+                    );
+
+
+                image.src =
+                    imageUrl;
+
+
+                image.alt =
+                    `${project.title} - Page ${index + 1}`;
+
+
+                image.loading =
+                    "lazy";
+
+
+                image.className =
+                    "project-gallery-image";
+
+
+                gallery.appendChild(
+                    image
+                );
+
             }
+        );
 
-            preview.classList.add("slide-changing");
-        }
+    }
 
-        function nextSlide() {
-            currentSlide = (currentSlide + 1) % slides.length;
-            displayCreativeSlide(currentSlide);
-        }
 
-        function previousSlide() {
-            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-            displayCreativeSlide(currentSlide);
-        }
+    document.title =
+        `${project.title} | Fofana Umar`;
 
-        nextButton.addEventListener("click", () => {
-            nextSlide();
-            restartAutoSlide();
-        });
-
-        previousButton.addEventListener("click", () => {
-            previousSlide();
-            restartAutoSlide();
-        });
-
-        function startAutoSlide() {
-            autoSlide = setInterval(nextSlide, 5000);
-        }
-
-        function stopAutoSlide() {
-            clearInterval(autoSlide);
-        }
-
-        function restartAutoSlide() {
-            stopAutoSlide();
-            startAutoSlide();
-        }
-
-        section.addEventListener("mouseenter", stopAutoSlide);
-        section.addEventListener("mouseleave", startAutoSlide);
-
-        displayCreativeSlide(currentSlide);
-        startAutoSlide();
-    });
 }
 
 
-/* =========================================================
-   7. TOUCH / SWIPE SUPPORT
-   ========================================================= */
-
-document.querySelectorAll(".design-section").forEach(section => {
-    const preview = section.querySelector(".design-preview");
-    if (!preview) return;
-
-    let touchStartX = 0;
-    let touchEndX = 0;
-
-    preview.addEventListener("touchstart", event => {
-        touchStartX = event.changedTouches[0].screenX;
-    }, { passive: true });
-
-    preview.addEventListener("touchend", event => {
-        touchEndX = event.changedTouches[0].screenX;
-        const swipeDistance = touchStartX - touchEndX;
-
-        if (Math.abs(swipeDistance) < 50) return;
-
-        const buttonClass = swipeDistance > 0 ? ".slider-next" : ".slider-prev";
-        const button = section.querySelector(buttonClass);
-
-        if (button) button.click();
-    }, { passive: true });
-});
-
 
 /* =========================================================
-   8. SCROLL REVEAL & ACTIVE NAVIGATION
+   11. PROJECT ERROR
    ========================================================= */
 
-const revealElements = document.querySelectorAll(".section-heading, .benefit-card, .stat, .service-information");
+function showProjectError(message) {
 
-if ("IntersectionObserver" in window) {
-    const revealObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add("revealed");
-                revealObserver.unobserve(entry.target);
+    const loading =
+        document.getElementById(
+            "projectLoading"
+        );
+
+
+    const errorBox =
+        document.getElementById(
+            "projectError"
+        );
+
+
+    if (loading) {
+
+        loading.style.display =
+            "none";
+
+    }
+
+
+    if (errorBox) {
+
+        errorBox.textContent =
+            message;
+
+        errorBox.style.display =
+            "block";
+
+    }
+
+}
+
+
+
+/* =========================================================
+   12. SCROLL REVEAL
+   ========================================================= */
+
+const revealElements =
+    document.querySelectorAll(
+        ".section-heading, .benefit-card, .stat, .service-information"
+    );
+
+
+if (
+    "IntersectionObserver"
+    in window
+) {
+
+    const revealObserver =
+        new IntersectionObserver(
+            (entries) => {
+
+                entries.forEach(
+                    entry => {
+
+                        if (
+                            entry.isIntersecting
+                        ) {
+
+                            entry.target.classList.add(
+                                "revealed"
+                            );
+
+
+                            revealObserver.unobserve(
+                                entry.target
+                            );
+
+                        }
+
+                    }
+                );
+
+            },
+            {
+                threshold: 0.12
             }
-        });
-    }, { threshold: 0.12 });
+        );
 
-    revealElements.forEach(element => {
-        element.classList.add("reveal");
-        revealObserver.observe(element);
-    });
+
+    revealElements.forEach(
+        element => {
+
+            element.classList.add(
+                "reveal"
+            );
+
+
+            revealObserver.observe(
+                element
+            );
+
+        }
+    );
+
 }
 
-const sections = document.querySelectorAll("main section[id]");
-const navigationLinks = document.querySelectorAll(".nav-menu a");
-
-window.addEventListener("scroll", () => {
-    let currentSection = "";
-
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.offsetHeight;
-
-        if (window.scrollY >= sectionTop - 200 && window.scrollY < sectionTop + sectionHeight - 200) {
-            currentSection = section.getAttribute("id");
-        }
-    });
-
-    navigationLinks.forEach(link => {
-        link.classList.remove("active");
-        if (link.getAttribute("href") === `#${currentSection}`) {
-            link.classList.add("active");
-        }
-    });
-});
 
 
 /* =========================================================
-   9. INITIALIZE
+   13. ACTIVE NAVIGATION
    ========================================================= */
 
-document.addEventListener("DOMContentLoaded", () => {
-    loadPortfolioProjects();
-});
+const sections =
+    document.querySelectorAll(
+        "main section[id]"
+    );
+
+
+const navigationLinks =
+    document.querySelectorAll(
+        ".nav-menu a"
+    );
+
+
+window.addEventListener(
+    "scroll",
+    () => {
+
+        let currentSection =
+            "";
+
+
+        sections.forEach(
+            section => {
+
+                const sectionTop =
+                    section.offsetTop;
+
+
+                const sectionHeight =
+                    section.offsetHeight;
+
+
+                if (
+                    window.scrollY >=
+                    sectionTop - 200 &&
+
+                    window.scrollY <
+                    sectionTop +
+                    sectionHeight -
+                    200
+                ) {
+
+                    currentSection =
+                        section.getAttribute(
+                            "id"
+                        );
+
+                }
+
+            }
+        );
+
+
+        navigationLinks.forEach(
+            link => {
+
+                link.classList.remove(
+                    "active"
+                );
+
+
+                if (
+                    link.getAttribute(
+                        "href"
+                    ) ===
+                    `#${currentSection}`
+                ) {
+
+                    link.classList.add(
+                        "active"
+                    );
+
+                }
+
+            }
+        );
+
+    }
+);
+
+
+
+/* =========================================================
+   14. INITIALIZE
+   ========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        const isProjectPage =
+            window.location.pathname
+                .toLowerCase()
+                .includes(
+                    "project.html"
+                );
+
+
+        if (isProjectPage) {
+
+            loadProjectDetails();
+
+        } else {
+
+            loadPortfolioProjects();
+
+        }
+
+    }
+);
