@@ -1,1 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Project | Fofana Umar
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         NAVIGATION
+    ========================== -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a
+                href="index.html"
+                class="brand"
+            >
+                FOFANA<span>.</span>
+            </a>
+
+
+            <nav class="nav-menu">
+
+                <a href="index.html#home">
+                    Home
+                </a>
+
+                <a href="index.html#work">
+                    Work
+                </a>
+
+                <a href="index.html#services">
+                    Services
+                </a>
+
+                <a href="index.html#about">
+                    About
+                </a>
+
+                <a href="index.html#faq">
+                    FAQ
+                </a>
+
+                <a href="index.html#contact">
+                    Contact
+                </a>
+
+            </nav>
+
+
+            <a
+                href="index.html#contact"
+                class="nav-contact"
+            >
+                Let's Talk
+            </a>
+
+
+            <button
+                class="menu-toggle"
+                aria-label="Open navigation"
+            >
+                ☰
+            </button>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =========================
+         PROJECT PAGE
+    ========================== -->
+
+    <main class="project-detail-page">
+
+
+        <!-- LOADING -->
+
+        <div
+            id="projectLoading"
+            class="project-loading"
+        >
+
+            Loading project...
+
+        </div>
+
+
+
+        <!-- ERROR -->
+
+        <div
+            id="projectError"
+            class="project-error"
+            style="display: none;"
+        ></div>
+
+
+
+        <!-- PROJECT CONTENT -->
+
+        <article class="project-detail">
+
+
+            <!-- CATEGORY -->
+
+            <p
+                id="projectCategory"
+                class="section-label"
+            ></p>
+
+
+
+            <!-- TITLE -->
+
+            <h1
+                id="projectTitle"
+                class="project-detail-title"
+            ></h1>
+
+
+
+            <!-- DESCRIPTION -->
+
+            <p
+                id="projectDescription"
+                class="project-detail-description"
+            ></p>
+
+
+
+            <!-- COVER IMAGE -->
+
+            <div class="project-detail-cover">
+
+                <img
+                    id="projectCover"
+                    src=""
+                    alt=""
+                >
+
+            </div>
+
+
+
+            <!-- PROJECT PAGES -->
+
+            <section class="project-pages">
+
+                <div class="section-heading">
+
+                    <p class="section-label">
+                        PROJECT
+                    </p>
+
+
+                    <h2>
+                        Project Preview
+                    </h2>
+
+                </div>
+
+
+                <div
+                    id="projectGallery"
+                    class="project-gallery"
+                ></div>
+
+            </section>
+
+
+
+            <!-- EXTERNAL WEBSITE -->
+
+            <a
+                id="projectExternalLink"
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="primary-button"
+                style="display: none;"
+            >
+                Visit Live Project →
+            </a>
+
+
+
+            <!-- BACK -->
+
+            <div class="project-back">
+
+                <a
+                    href="index.html#work"
+                    class="secondary-button"
+                >
+                    ← Back to My Work
+                </a>
+
+            </div>
+
+
+        </article>
+
+    </main>
+
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div class="footer-brand">
+
+                <a href="index.html">
+                    FOFANA<span>.</span>
+                </a>
+
+
+                <p>
+
+                    Web Developer & Creative Designer creating
+                    modern digital experiences.
+
+                </p>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h4>
+                    Navigation
+                </h4>
+
+
+                <a href="index.html#home">
+                    Home
+                </a>
+
+                <a href="index.html#work">
+                    Work
+                </a>
+
+                <a href="index.html#about">
+                    About
+                </a>
+
+                <a href="index.html#faq">
+                    FAQ
+                </a>
+
+                <a href="index.html#contact">
+                    Contact
+                </a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h4>
+                    Services
+                </h4>
+
+
+                <a href="index.html#work">
+                    Web Development
+                </a>
+
+                <a href="index.html#work">
+                    Brochure Design
+                </a>
+
+                <a href="index.html#work">
+                    Presentation Design
+                </a>
+
+                <a href="index.html#work">
+                    Ebook Design
+                </a>
+
+                <a href="index.html#work">
+                    Pitch Deck
+                </a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h4>
+                    Contact
+                </h4>
+
+
+                <a
+                    href="mailto:fofanawebpro@gmail.com"
+                >
+                    fofanawebpro@gmail.com
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 Fofana Umar. All rights reserved.
+            </p>
+
+
+            <p>
+                Built with purpose.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- =========================
+         SUPABASE
+    ========================== -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+    <!-- =========================
+         MAIN JAVASCRIPT
+    ========================== -->
+
+    <script src="script.js"></script>
+
+
+</body>
+
+</html>
