@@ -2245,7 +2245,7 @@ span {
 
 }
 /* =========================================================
-   PORTFOLIO SLIDER
+   FINAL PORTFOLIO SLIDER FIX
    ========================================================= */
 
 .portfolio-slider,
@@ -2258,36 +2258,176 @@ span {
     position: relative;
 }
 
+/* Each slide */
 .portfolio-slider-track .portfolio-slide {
     display: none;
     width: 100%;
+    min-height: 600px;
+
+    flex-direction: row;
+    align-items: stretch;
+
+    position: relative;
+    overflow: hidden;
 }
 
+/* Active slide */
 .portfolio-slider-track .portfolio-slide.active {
     display: flex;
 }
 
-.slide-preview {
+
+/* =========================================================
+   IMAGE AREA
+   ========================================================= */
+
+.portfolio-slider-track .slide-preview {
     width: 60%;
-    min-height: 400px;
+    min-height: 600px;
+
+    flex: 0 0 60%;
+
+    position: relative;
     overflow: hidden;
-}
 
-.slide-preview img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-.slide-placeholder {
-    width: 100%;
-    min-height: 400px;
     display: flex;
     align-items: center;
     justify-content: center;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(180,108,255,0.15),
+            rgba(255,255,255,0.02) 60%
+        );
 }
 
-.slide-info {
-    flex: 1;
+.portfolio-slider-track .slide-preview img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+    object-position: center;
+
+    position: absolute;
+    inset: 0;
+}
+
+
+/* =========================================================
+   PLACEHOLDER
+   ========================================================= */
+
+.portfolio-slider-track .slide-placeholder {
+    width: 100%;
+    height: 100%;
+    min-height: 600px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: absolute;
+    inset: 0;
+}
+
+
+/* =========================================================
+   PROJECT INFORMATION
+   ========================================================= */
+
+.portfolio-slider-track .slide-info {
+    position: relative;
+
+    left: auto;
+    right: auto;
+    top: auto;
+    bottom: auto;
+
+    width: 40%;
+    max-width: none;
+
+    flex: 0 0 40%;
+
+    padding: 70px 6%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    z-index: 2;
+
+    background: rgba(9, 7, 15, 0.88);
+}
+
+.portfolio-slider-track .slide-info p:first-child {
+    color: #b46cff;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.portfolio-slider-track .slide-info h3 {
+    font-size: clamp(2rem, 4vw, 4rem);
+    line-height: 1;
+    margin: 0 0 20px;
+}
+
+.portfolio-slider-track .slide-info > p:not(:first-child) {
+    color: rgba(255,255,255,0.6);
+    line-height: 1.7;
+    max-width: 430px;
+}
+
+.portfolio-slider-track .slide-link {
+    display: inline-block;
+
+    width: fit-content;
+
+    margin-top: 25px;
+
+    color: #ffffff;
+
+    border-bottom: 1px solid #b46cff;
+
+    padding-bottom: 5px;
+}
+
+
+/* =========================================================
+   MOBILE SLIDER
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .portfolio-slider-track .portfolio-slide {
+        flex-direction: column;
+
+        min-height: auto;
+    }
+
+    .portfolio-slider-track .slide-preview {
+        width: 100%;
+        flex: none;
+
+        height: 420px;
+        min-height: 420px;
+    }
+
+    .portfolio-slider-track .slide-info {
+        width: 100%;
+        flex: none;
+
+        padding: 35px 25px 45px;
+
+        background: rgba(9, 7, 15, 0.96);
+    }
+
+    .portfolio-slider-track .slide-info h3 {
+        font-size: 2.2rem;
+    }
+
 }
