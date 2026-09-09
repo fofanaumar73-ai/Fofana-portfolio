@@ -1,936 +1,1055 @@
 /* =========================================================
-   FOFANA PORTFOLIO — MAIN JAVASCRIPT
-   ========================================================= */
+   FOFANA PORTFOLIO — MAIN JAVASCRIPT
+   ========================================================= */
 
 
 /* =========================================================
-   1. SUPABASE INITIALIZATION
-   ========================================================= */
+   1. SUPABASE INITIALIZATION
+   ========================================================= */
 
 const PORTFOLIO_SUPABASE_URL =
-    "https://uryfgatzyesolwwmugin.supabase.co";
+    "https://uryfgatzyesolwwmugin.supabase.co";
 
 const PORTFOLIO_SUPABASE_KEY =
-    "sb_publishable_QL4lxGKETA1_xMFFJ7RV5g_Wuyi_x-d";
-
+    "sb_publishable_QL4lxGKETA1_xMFFJ7RV5g_Wuyi_x-d";
 
 const portfolioSupabase =
-    window.supabase.createClient(
-        PORTFOLIO_SUPABASE_URL,
-        PORTFOLIO_SUPABASE_KEY
-    );
-
+    window.supabase.createClient(
+        PORTFOLIO_SUPABASE_URL,
+        PORTFOLIO_SUPABASE_KEY
+    );
 
 
 /* =========================================================
-   2. MOBILE NAVIGATION
-   ========================================================= */
+   2. MOBILE NAVIGATION
+   ========================================================= */
 
 const menuToggle =
-    document.querySelector(".menu-toggle");
+    document.querySelector(".menu-toggle");
 
 const navMenu =
-    document.querySelector(".nav-menu");
-
+    document.querySelector(".nav-menu");
 
 if (menuToggle && navMenu) {
 
-    menuToggle.addEventListener("click", () => {
+    menuToggle.addEventListener("click", () => {
 
-        navMenu.classList.toggle(
-            "mobile-active"
-        );
+        navMenu.classList.toggle("mobile-active");
 
-    });
+    });
 
+    navMenu.querySelectorAll("a").forEach(link => {
 
-    navMenu.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", () => {
 
-        link.addEventListener("click", () => {
+            navMenu.classList.remove("mobile-active");
 
-            navMenu.classList.remove(
-                "mobile-active"
-            );
+        });
 
-        });
-
-    });
+    });
 
 }
 
 
-
 /* =========================================================
-   3. FAQ ACCORDION
-   ========================================================= */
+   3. FAQ ACCORDION
+   ========================================================= */
 
 const faqItems =
-    document.querySelectorAll(".faq-item");
-
+    document.querySelectorAll(".faq-item");
 
 faqItems.forEach(item => {
 
-    const question =
-        item.querySelector(".faq-question");
+    const question =
+        item.querySelector(".faq-question");
 
+    if (!question) return;
 
-    if (!question) return;
+    question.addEventListener("click", () => {
 
+        const alreadyOpen =
+            item.classList.contains("active");
 
-    question.addEventListener("click", () => {
+        faqItems.forEach(otherItem => {
 
-        const alreadyOpen =
-            item.classList.contains("active");
+            otherItem.classList.remove("active");
 
+        });
 
-        faqItems.forEach(otherItem => {
+        if (!alreadyOpen) {
 
-            otherItem.classList.remove(
-                "active"
-            );
+            item.classList.add("active");
 
-        });
+        }
 
-
-        if (!alreadyOpen) {
-
-            item.classList.add(
-                "active"
-            );
-
-        }
-
-    });
+    });
 
 });
 
 
-
 /* =========================================================
-   4. CATEGORY HELPERS
-   ========================================================= */
+   4. CATEGORY HELPERS
+   ========================================================= */
 
 function normalizeCategory(category) {
 
-    if (!category) {
-        return "";
-    }
+    if (!category) {
+        return "";
+    }
 
-
-    return category
-        .toLowerCase()
-        .trim()
-        .replace(/_/g, "-")
-        .replace(/\s+/g, "-");
-
-}
-
-
-
-function getCategoryContainer(category) {
-
-    const normalized =
-        normalizeCategory(category);
-
-
-    const containers = {
-
-        "web-development":
-            "webDevelopmentProjects",
-
-        "brochure-design":
-            "brochureProjects",
-
-        "presentation-design":
-            "presentationProjects",
-
-        "ebook-design":
-            "ebookProjects",
-
-        "instagram-carousel":
-            "carouselProjects",
-
-        "pitch-deck":
-            "pitchDeckProjects"
-
-    };
-
-
-    const containerId =
-        containers[normalized];
-
-
-    if (!containerId) {
-        return null;
-    }
-
-
-    return document.getElementById(
-        containerId
-    );
+    return category
+        .toLowerCase()
+        .trim()
+        .replace(/_/g, "-")
+        .replace(/\s+/g, "-");
 
 }
-
 
 
 /* =========================================================
-   5. CREATE PROJECT CARD
-   ========================================================= */
-
-function createProjectCard(project) {
-
-    const card =
-        document.createElement("article");
-
-
-    card.className =
-        "portfolio-project-card";
-
-
-    const cover =
-        project.cover_image_url ||
-        (
-            project.project_images &&
-            project.project_images.length
-                ? project.project_images[0]
-                : ""
-        );
-
-
-    const category =
-        project.category
-            ? project.category
-                .replace(/-/g, " ")
-                .toUpperCase()
-            : "PROJECT";
-
-
-    card.innerHTML = `
-
-        <div class="portfolio-project-image">
-
-            ${
-                cover
-
-                ? `
-                    <img
-                        src="${escapeHtml(cover)}"
-                        alt="${escapeHtml(project.title)}"
-                        loading="lazy"
-                    >
-                `
-
-                : `
-                    <div class="project-image-placeholder">
-                        <span>
-                            PROJECT PREVIEW
-                        </span>
-                    </div>
-                `
-            }
-
-        </div>
-
-
-        <div class="portfolio-project-info">
-
-            <p class="portfolio-project-category">
-                ${escapeHtml(category)}
-            </p>
-
-
-            <h3>
-                ${escapeHtml(project.title)}
-            </h3>
-
-
-            <p>
-                ${escapeHtml(project.description || "")}
-            </p>
-
-
-            <a
-                href="project.html?id=${encodeURIComponent(project.id)}"
-                class="portfolio-learn-more"
-            >
-                ${
-                    normalizeCategory(project.category)
-                    === "web-development"
-
-                    ? "VIEW PROJECT →"
-
-                    : "LEARN MORE →"
-                }
-            </a>
-
-        </div>
-
-    `;
-
-
-    return card;
-
-}
-
-
-
-/* =========================================================
-   6. BASIC HTML ESCAPE
-   ========================================================= */
+   5. HTML ESCAPE
+   ========================================================= */
 
 function escapeHtml(value) {
 
-    return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 
 }
 
 
-
 /* =========================================================
-   7. DISPLAY PROJECTS BY CATEGORY
-   ========================================================= */
+   6. CREATE PROJECT SLIDE
+   ========================================================= */
 
-function displayProjects(projects) {
+function createProjectSlide(project, category) {
 
-    const containers = [
+    const slide =
+        document.createElement("div");
 
-        "webDevelopmentProjects",
+    slide.className = "portfolio-slide";
 
-        "brochureProjects",
+    const cover =
+        project.cover_image_url ||
+        (
+            Array.isArray(project.project_images) &&
+            project.project_images.length
+                ? project.project_images[0]
+                : ""
+        );
 
-        "presentationProjects",
+    const title =
+        project.title || "Untitled Project";
 
-        "ebookProjects",
+    const description =
+        project.description || "";
 
-        "carouselProjects",
+    const normalized =
+        normalizeCategory(category);
 
-        "pitchDeckProjects"
+    const buttonText =
+        normalized === "web-development"
+            ? "VIEW PROJECT →"
+            : "LEARN MORE →";
 
-    ];
+    slide.innerHTML = `
 
+        <div class="slide-preview">
 
-    containers.forEach(id => {
+            ${
+                cover
 
-        const container =
-            document.getElementById(id);
+                    ? `
+                        <img
+                            src="${escapeHtml(cover)}"
+                            alt="${escapeHtml(title)}"
+                            loading="lazy"
+                        >
+                    `
 
+                    : `
+                        <div class="slide-placeholder">
+                            <span>
+                                PROJECT PREVIEW
+                            </span>
+                        </div>
+                    `
+            }
 
-        if (container) {
+        </div>
 
-            container.innerHTML = "";
+        <div class="slide-info">
 
-        }
+            <p>
+                ${escapeHtml(
+                    category
+                        .replace(/-/g, " ")
+                        .toUpperCase()
+                )}
+            </p>
 
-    });
+            <h3>
+                ${escapeHtml(title)}
+            </h3>
 
+            <p>
+                ${escapeHtml(description)}
+            </p>
 
-    projects.forEach(project => {
+            <a
+                href="project.html?id=${encodeURIComponent(project.id)}"
+                class="slide-link"
+            >
+                ${buttonText}
+            </a>
 
-        const container =
-            getCategoryContainer(
-                project.category
-            );
+        </div>
 
+    `;
 
-        if (!container) {
-
-            console.warn(
-                "Unknown project category:",
-                project.category
-            );
-
-            return;
-
-        }
-
-
-        const card =
-            createProjectCard(project);
-
-
-        container.appendChild(card);
-
-    });
+    return slide;
 
 }
 
 
+/* =========================================================
+   7. INITIALIZE SLIDER
+   ========================================================= */
+
+function initializeSlider(slider, projects, category) {
+
+    if (!slider) return;
+
+    const previousButton =
+        slider.querySelector(".slider-prev");
+
+    const nextButton =
+        slider.querySelector(".slider-next");
+
+    let slides = [];
+    let currentIndex = 0;
+    let autoSlideTimer = null;
+
+    /*
+       Find the existing slide container.
+    */
+
+    const existingSlide =
+        slider.querySelector(".portfolio-slide") ||
+        slider.querySelector(".design-preview");
+
+    /*
+       If no projects exist, leave the placeholder.
+    */
+
+    if (!projects || projects.length === 0) {
+
+        return;
+
+    }
+
+
+    /*
+       Create a dedicated track.
+    */
+
+    let track =
+        slider.querySelector(".portfolio-slider-track");
+
+    if (!track) {
+
+        track =
+            document.createElement("div");
+
+        track.className =
+            "portfolio-slider-track";
+
+        slider.insertBefore(
+            track,
+            nextButton
+        );
+
+    }
+
+    track.innerHTML = "";
+
+    /*
+       Create all project slides.
+    */
+
+    projects.forEach(project => {
+
+        const slide =
+            createProjectSlide(
+                project,
+                category
+            );
+
+        track.appendChild(slide);
+
+    });
+
+    slides =
+        Array.from(
+            track.children
+        );
+
+
+    /*
+       Hide all slides except first.
+    */
+
+    function showSlide(index) {
+
+        if (!slides.length) return;
+
+        currentIndex =
+            (index + slides.length) %
+            slides.length;
+
+        slides.forEach((slide, i) => {
+
+            slide.classList.toggle(
+                "active",
+                i === currentIndex
+            );
+
+        });
+
+    }
+
+
+    /*
+       NEXT
+    */
+
+    function nextSlide() {
+
+        showSlide(
+            currentIndex + 1
+        );
+
+    }
+
+
+    /*
+       PREVIOUS
+    */
+
+    function previousSlide() {
+
+        showSlide(
+            currentIndex - 1
+        );
+
+    }
+
+
+    /*
+       RESET AUTO SLIDE TIMER
+    */
+
+    function resetAutoSlide() {
+
+        clearInterval(
+            autoSlideTimer
+        );
+
+        if (slides.length > 1) {
+
+            autoSlideTimer =
+                setInterval(
+                    nextSlide,
+                    5000
+                );
+
+        }
+
+    }
+
+
+    /*
+       NEXT BUTTON
+    */
+
+    if (nextButton) {
+
+        nextButton.addEventListener(
+            "click",
+            () => {
+
+                nextSlide();
+
+                resetAutoSlide();
+
+            }
+        );
+
+    }
+
+
+    /*
+       PREVIOUS BUTTON
+    */
+
+    if (previousButton) {
+
+        previousButton.addEventListener(
+            "click",
+            () => {
+
+                previousSlide();
+
+                resetAutoSlide();
+
+            }
+        );
+
+    }
+
+
+    /*
+       START FIRST SLIDE
+    */
+
+    showSlide(0);
+
+    resetAutoSlide();
+
+
+    /*
+       Pause when mouse is over slider.
+       This prevents the slide changing while
+       someone is reading it.
+    */
+
+    slider.addEventListener(
+        "mouseenter",
+        () => {
+
+            clearInterval(
+                autoSlideTimer
+            );
+
+        }
+    );
+
+
+    slider.addEventListener(
+        "mouseleave",
+        () => {
+
+            resetAutoSlide();
+
+        }
+    );
+
+}
+
 
 /* =========================================================
-   8. LOAD PROJECTS FROM SUPABASE
-   ========================================================= */
+   8. LOAD PORTFOLIO PROJECTS
+   ========================================================= */
 
 async function loadPortfolioProjects() {
 
-    try {
+    try {
 
-        const {
-            data: projects,
-            error
-        } =
-            await portfolioSupabase
+        const {
+            data: projects,
+            error
+        } =
+            await portfolioSupabase
 
-                .from("projects")
+                .from("projects")
 
-                .select("*")
+                .select("*")
 
-                .eq(
-                    "status",
-                    "published"
-                )
+                .eq(
+                    "status",
+                    "published"
+                )
 
-                .order(
-                    "created_at",
-                    {
-                        ascending: false
-                    }
-                );
-
-
-        if (error) {
-
-            console.error(
-                "PORTFOLIO PROJECT ERROR:",
-                error
-            );
-
-            return;
-
-        }
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                );
 
 
-        console.log(
-            "Portfolio projects loaded:",
-            projects
-        );
+        if (error) {
+
+            console.error(
+                "PORTFOLIO PROJECT ERROR:",
+                error
+            );
+
+            return;
+
+        }
 
 
-        if (!projects) {
-            return;
-        }
+        console.log(
+            "Portfolio projects loaded:",
+            projects
+        );
 
 
-        displayProjects(
-            projects
-        );
+        if (!projects) {
+            return;
+        }
 
 
-    } catch (error) {
+        initializePortfolioSliders(
+            projects
+        );
 
-        console.error(
-            "Unexpected portfolio error:",
-            error
-        );
 
-    }
+    } catch (error) {
+
+        console.error(
+            "Unexpected portfolio error:",
+            error
+        );
+
+    }
 
 }
 
 
+/* =========================================================
+   9. INITIALIZE ALL PORTFOLIO SLIDERS
+   ========================================================= */
+
+function initializePortfolioSliders(
+    projects
+) {
+
+    const sections =
+        document.querySelectorAll(
+            "[data-category]"
+        );
+
+
+    sections.forEach(section => {
+
+        const category =
+            normalizeCategory(
+                section.dataset.category
+            );
+
+
+        if (!category) return;
+
+
+        const categoryProjects =
+            projects.filter(project => {
+
+                return normalizeCategory(
+                    project.category
+                ) === category;
+
+            });
+
+
+        const slider =
+            section.querySelector(
+                ".portfolio-slider, .full-width-slider"
+            );
+
+
+        if (!slider) return;
+
+
+        initializeSlider(
+            slider,
+            categoryProjects,
+            category
+        );
+
+    });
+
+}
+
 
 /* =========================================================
-   9. PROJECT DETAIL PAGE
-   ========================================================= */
+   10. PROJECT DETAIL PAGE
+   ========================================================= */
 
 async function loadProjectDetails() {
 
-    const params =
-        new URLSearchParams(
-            window.location.search
-        );
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+    const projectId =
+        params.get("id");
 
 
-    const projectId =
-        params.get("id");
+    if (!projectId) {
+
+        showProjectError(
+            "No project was selected."
+        );
+
+        return;
+
+    }
 
 
-    if (!projectId) {
+    try {
 
-        showProjectError(
-            "No project was selected."
-        );
+        const {
+            data: project,
+            error
+        } =
+            await portfolioSupabase
 
-        return;
+                .from("projects")
 
-    }
+                .select("*")
 
+                .eq(
+                    "id",
+                    projectId
+                )
 
-    try {
+                .eq(
+                    "status",
+                    "published"
+                )
 
-        const {
-            data: project,
-            error
-        } =
-            await portfolioSupabase
-
-                .from("projects")
-
-                .select("*")
-
-                .eq(
-                    "id",
-                    projectId
-                )
-
-                .eq(
-                    "status",
-                    "published"
-                )
-
-                .single();
+                .single();
 
 
-        if (error || !project) {
+        if (error || !project) {
 
-            console.error(
-                "PROJECT DETAIL ERROR:",
-                error
-            );
+            console.error(
+                "PROJECT DETAIL ERROR:",
+                error
+            );
 
+            showProjectError(
+                "Project could not be found."
+            );
 
-            showProjectError(
-                "Project could not be found."
-            );
+            return;
 
-
-            return;
-
-        }
+        }
 
 
-        displayProjectDetails(
-            project
-        );
+        displayProjectDetails(
+            project
+        );
 
 
-    } catch (error) {
+    } catch (error) {
 
-        console.error(
-            "Unexpected detail error:",
-            error
-        );
+        console.error(
+            "Unexpected detail error:",
+            error
+        );
 
+        showProjectError(
+            "Something went wrong while loading this project."
+        );
 
-        showProjectError(
-            "Something went wrong while loading this project."
-        );
-
-    }
+    }
 
 }
 
 
-
 /* =========================================================
-   10. DISPLAY PROJECT DETAILS
-   ========================================================= */
+   11. DISPLAY PROJECT DETAILS
+   ========================================================= */
 
 function displayProjectDetails(project) {
 
-    const title =
-        document.getElementById(
-            "projectTitle"
-        );
+    const title =
+        document.getElementById(
+            "projectTitle"
+        );
 
+    const category =
+        document.getElementById(
+            "projectCategory"
+        );
 
-    const category =
-        document.getElementById(
-            "projectCategory"
-        );
+    const description =
+        document.getElementById(
+            "projectDescription"
+        );
 
+    const cover =
+        document.getElementById(
+            "projectCover"
+        );
 
-    const description =
-        document.getElementById(
-            "projectDescription"
-        );
+    const gallery =
+        document.getElementById(
+            "projectGallery"
+        );
 
+    const externalLink =
+        document.getElementById(
+            "projectExternalLink"
+        );
 
-    const cover =
-        document.getElementById(
-            "projectCover"
-        );
 
+    if (title) {
 
-    const gallery =
-        document.getElementById(
-            "projectGallery"
-        );
+        title.textContent =
+            project.title || "";
 
+    }
 
-    const externalLink =
-        document.getElementById(
-            "projectExternalLink"
-        );
 
+    if (category) {
 
-    if (title) {
+        category.textContent =
+            project.category
+                ? project.category
+                    .replace(/-/g, " ")
+                    .toUpperCase()
+                : "";
 
-        title.textContent =
-            project.title;
+    }
 
-    }
 
+    if (description) {
 
-    if (category) {
+        description.textContent =
+            project.description || "";
 
-        category.textContent =
-            project.category
-                ? project.category
-                    .replace(/-/g, " ")
-                    .toUpperCase()
-                : "";
+    }
 
-    }
 
+    /* COVER */
 
-    if (description) {
+    if (cover) {
 
-        description.textContent =
-            project.description || "";
+        const coverUrl =
+            project.cover_image_url;
 
-    }
+        if (coverUrl) {
 
+            cover.src =
+                coverUrl;
 
-    /* ---------------------------------------------------------
-       COVER
-    --------------------------------------------------------- */
+            cover.alt =
+                project.title || "";
 
-    if (cover) {
+            cover.style.display =
+                "block";
 
-        const coverUrl =
-            project.cover_image_url;
+        } else {
 
+            cover.style.display =
+                "none";
 
-        if (coverUrl) {
+        }
 
-            cover.src =
-                coverUrl;
+    }
 
-            cover.alt =
-                project.title;
 
-            cover.style.display =
-                "block";
+    /* PROJECT LINK */
 
-        } else {
+    if (externalLink) {
 
-            cover.style.display =
-                "none";
+        if (project.project_link) {
 
-        }
+            externalLink.href =
+                project.project_link;
 
-    }
+            externalLink.target =
+                "_blank";
 
+            externalLink.rel =
+                "noopener noreferrer";
 
-    /* ---------------------------------------------------------
-       PROJECT LINK
-    --------------------------------------------------------- */
+            externalLink.style.display =
+                "inline-flex";
 
-    if (externalLink) {
+        } else {
 
-        if (project.project_link) {
+            externalLink.style.display =
+                "none";
 
-            externalLink.href =
-                project.project_link;
+        }
 
-            externalLink.style.display =
-                "inline-flex";
+    }
 
-        } else {
 
-            externalLink.style.display =
-                "none";
+    /* GALLERY */
 
-        }
+    if (gallery) {
 
-    }
+        gallery.innerHTML = "";
 
+        const images =
+            Array.isArray(
+                project.project_images
+            )
+                ? project.project_images
+                : [];
 
-    /* ---------------------------------------------------------
-       GALLERY
-    --------------------------------------------------------- */
 
-    if (gallery) {
+        images.forEach(
+            (imageUrl, index) => {
 
-        gallery.innerHTML = "";
+                if (!imageUrl) {
+                    return;
+                }
 
 
-        const images =
-            Array.isArray(
-                project.project_images
-            )
-                ? project.project_images
-                : [];
+                const image =
+                    document.createElement(
+                        "img"
+                    );
 
 
-        images.forEach(
-            (imageUrl, index) => {
+                image.src =
+                    imageUrl;
 
-                if (!imageUrl) {
-                    return;
-                }
+                image.alt =
+                    `${project.title} - Page ${index + 1}`;
 
+                image.loading =
+                    "lazy";
 
-                const image =
-                    document.createElement(
-                        "img"
-                    );
+                image.className =
+                    "project-gallery-image";
 
 
-                image.src =
-                    imageUrl;
+                gallery.appendChild(
+                    image
+                );
 
+            }
+        );
 
-                image.alt =
-                    `${project.title} - Page ${index + 1}`;
+    }
 
 
-                image.loading =
-                    "lazy";
-
-
-                image.className =
-                    "project-gallery-image";
-
-
-                gallery.appendChild(
-                    image
-                );
-
-            }
-        );
-
-    }
-
-
-    document.title =
-        `${project.title} | Fofana Umar`;
+    document.title =
+        `${project.title} | Fofana Umar`;
 
 }
 
 
-
 /* =========================================================
-   11. PROJECT ERROR
-   ========================================================= */
+   12. PROJECT ERROR
+   ========================================================= */
 
 function showProjectError(message) {
 
-    const loading =
-        document.getElementById(
-            "projectLoading"
-        );
+    const loading =
+        document.getElementById(
+            "projectLoading"
+        );
+
+    const errorBox =
+        document.getElementById(
+            "projectError"
+        );
 
 
-    const errorBox =
-        document.getElementById(
-            "projectError"
-        );
+    if (loading) {
+
+        loading.style.display =
+            "none";
+
+    }
 
 
-    if (loading) {
+    if (errorBox) {
 
-        loading.style.display =
-            "none";
+        errorBox.textContent =
+            message;
 
-    }
+        errorBox.style.display =
+            "block";
 
-
-    if (errorBox) {
-
-        errorBox.textContent =
-            message;
-
-        errorBox.style.display =
-            "block";
-
-    }
+    }
 
 }
 
 
-
 /* =========================================================
-   12. SCROLL REVEAL
-   ========================================================= */
+   13. SCROLL REVEAL
+   ========================================================= */
 
 const revealElements =
-    document.querySelectorAll(
-        ".section-heading, .benefit-card, .stat, .service-information"
-    );
+    document.querySelectorAll(
+        ".section-heading, .benefit-card, .stat, .service-information"
+    );
 
 
 if (
-    "IntersectionObserver"
-    in window
+    "IntersectionObserver"
+    in window
 ) {
 
-    const revealObserver =
-        new IntersectionObserver(
-            (entries) => {
+    const revealObserver =
+        new IntersectionObserver(
+            (entries) => {
 
-                entries.forEach(
-                    entry => {
+                entries.forEach(
+                    entry => {
 
-                        if (
-                            entry.isIntersecting
-                        ) {
+                        if (
+                            entry.isIntersecting
+                        ) {
 
-                            entry.target.classList.add(
-                                "revealed"
-                            );
+                            entry.target.classList.add(
+                                "revealed"
+                            );
 
+                            revealObserver.unobserve(
+                                entry.target
+                            );
 
-                            revealObserver.unobserve(
-                                entry.target
-                            );
+                        }
 
-                        }
+                    }
+                );
 
-                    }
-                );
-
-            },
-            {
-                threshold: 0.12
-            }
-        );
-
-
-    revealElements.forEach(
-        element => {
-
-            element.classList.add(
-                "reveal"
-            );
+            },
+            {
+                threshold: 0.12
+            }
+        );
 
 
-            revealObserver.observe(
-                element
-            );
+    revealElements.forEach(
+        element => {
 
-        }
-    );
+            element.classList.add(
+                "reveal"
+            );
+
+            revealObserver.observe(
+                element
+            );
+
+        }
+    );
 
 }
 
 
-
 /* =========================================================
-   13. ACTIVE NAVIGATION
-   ========================================================= */
+   14. ACTIVE NAVIGATION
+   ========================================================= */
 
 const sections =
-    document.querySelectorAll(
-        "main section[id]"
-    );
-
+    document.querySelectorAll(
+        "main section[id]"
+    );
 
 const navigationLinks =
-    document.querySelectorAll(
-        ".nav-menu a"
-    );
+    document.querySelectorAll(
+        ".nav-menu a"
+    );
 
 
 window.addEventListener(
-    "scroll",
-    () => {
+    "scroll",
+    () => {
 
-        let currentSection =
-            "";
-
-
-        sections.forEach(
-            section => {
-
-                const sectionTop =
-                    section.offsetTop;
+        let currentSection = "";
 
 
-                const sectionHeight =
-                    section.offsetHeight;
+        sections.forEach(
+            section => {
+
+                const sectionTop =
+                    section.offsetTop;
+
+                const sectionHeight =
+                    section.offsetHeight;
 
 
-                if (
-                    window.scrollY >=
-                    sectionTop - 200 &&
+                if (
+                    window.scrollY >=
+                    sectionTop - 200 &&
 
-                    window.scrollY <
-                    sectionTop +
-                    sectionHeight -
-                    200
-                ) {
+                    window.scrollY <
+                    sectionTop +
+                    sectionHeight -
+                    200
+                ) {
 
-                    currentSection =
-                        section.getAttribute(
-                            "id"
-                        );
+                    currentSection =
+                        section.getAttribute(
+                            "id"
+                        );
 
-                }
+                }
 
-            }
-        );
-
-
-        navigationLinks.forEach(
-            link => {
-
-                link.classList.remove(
-                    "active"
-                );
+            }
+        );
 
 
-                if (
-                    link.getAttribute(
-                        "href"
-                    ) ===
-                    `#${currentSection}`
-                ) {
+        navigationLinks.forEach(
+            link => {
 
-                    link.classList.add(
-                        "active"
-                    );
+                link.classList.remove(
+                    "active"
+                );
 
-                }
 
-            }
-        );
+                if (
+                    link.getAttribute(
+                        "href"
+                    ) ===
+                    `#${currentSection}`
+                ) {
 
-    }
+                    link.classList.add(
+                        "active"
+                    );
+
+                }
+
+            }
+        );
+
+    }
 );
 
 
-
 /* =========================================================
-   14. INITIALIZE
-   ========================================================= */
+   15. INITIALIZE
+   ========================================================= */
 
 document.addEventListener(
-    "DOMContentLoaded",
-    () => {
+    "DOMContentLoaded",
+    () => {
 
-        const isProjectPage =
-            window.location.pathname
-                .toLowerCase()
-                .includes(
-                    "project.html"
-                );
+        const isProjectPage =
+            window.location.pathname
+                .toLowerCase()
+                .includes(
+                    "project.html"
+                );
 
 
-        if (isProjectPage) {
+        if (isProjectPage) {
 
-            loadProjectDetails();
+            loadProjectDetails();
 
-        } else {
+        } else {
 
-            loadPortfolioProjects();
+            loadPortfolioProjects();
 
-        }
+        }
 
-    }
+    }
 );
