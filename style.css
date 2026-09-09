@@ -2244,3 +2244,50 @@ span {
     }
 
 }
+/* =========================================================
+   PORTFOLIO SLIDER
+   ========================================================= */
+
+.portfolio-slider,
+.full-width-slider {
+    position: relative;
+}
+
+.portfolio-slider-track {
+    width: 100%;
+    position: relative;
+}
+
+.portfolio-slider-track .portfolio-slide {
+    display: none;
+    width: 100%;
+}
+
+.portfolio-slider-track .portfolio-slide.active {
+    display: flex;
+}
+
+.slide-preview {
+    width: 60%;
+    min-height: 400px;
+    overflow: hidden;
+}
+
+.slide-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.slide-placeholder {
+    width: 100%;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slide-info {
+    flex: 1;
+}
