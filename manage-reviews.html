@@ -9,7 +9,7 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Manage Reviews | Fofana</title>
+    <title>Manage Reviews — FOFANA</title>
 
     <link
         rel="stylesheet"
@@ -17,33 +17,41 @@
     >
 </head>
 
+
 <body class="dashboard-page">
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
 
     <header class="dashboard-header">
 
         <div class="dashboard-container">
 
             <a
-                href="dashboard.html"
+                href="index.html"
                 class="brand"
             >
                 FOFANA<span>.</span>
             </a>
 
+
             <div class="manage-header-actions">
 
                 <button
+                    type="button"
+                    class="dashboard-button"
                     id="addReviewButton"
-                    class="dashboard-logout"
                 >
                     + Add Review
                 </button>
 
+
                 <a
                     href="dashboard.html"
-                    class="dashboard-logout"
+                    class="dashboard-button"
                 >
-                    ← Dashboard
+                    Dashboard
                 </a>
 
             </div>
@@ -53,14 +61,22 @@
     </header>
 
 
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
     <main class="dashboard-main">
 
         <div class="dashboard-container">
 
+
+            <!-- PAGE HEADING -->
+
             <div class="dashboard-heading">
 
                 <p class="admin-label">
-                    PORTFOLIO MANAGEMENT
+                    PRIVATE AREA
                 </p>
 
                 <h1>
@@ -68,48 +84,77 @@
                 </h1>
 
                 <p>
-                    Add, edit, publish and manage client testimonials.
+                    Add, edit and manage client testimonials.
                 </p>
 
             </div>
 
 
-            <section class="review-controls">
 
-                <input
-                    type="search"
-                    id="reviewSearch"
-                    placeholder="Search reviews..."
-                >
+            <!-- =================================================
+                 CONTROLS
+            ================================================== -->
 
-                <select id="reviewStatusFilter">
-
-                    <option value="">
-                        All Status
-                    </option>
-
-                    <option value="published">
-                        Published
-                    </option>
-
-                    <option value="draft">
-                        Draft
-                    </option>
-
-                </select>
-
-            </section>
+            <div class="project-management-controls">
 
 
-            <p
+                <!-- SEARCH -->
+
+                <div class="project-search-box">
+
+                    <input
+                        type="search"
+                        id="reviewSearch"
+                        placeholder="Search reviews..."
+                        autocomplete="off"
+                    >
+
+                </div>
+
+
+
+                <!-- STATUS -->
+
+                <div class="project-filter-box">
+
+                    <select id="reviewStatusFilter">
+
+                        <option value="">
+                            All Status
+                        </option>
+
+                        <option value="published">
+                            Published
+                        </option>
+
+                        <option value="draft">
+                            Draft
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- MESSAGE -->
+
+            <div
                 id="reviewMessage"
-                class="login-message"
-            ></p>
+                class="manage-message"
+            ></div>
 
+
+
+            <!-- =================================================
+                 REVIEWS
+            ================================================== -->
 
             <section
                 id="reviewsContainer"
-                class="reviews-management-grid"
+                class="review-management-grid"
             >
 
                 <div class="project-loading">
@@ -123,6 +168,7 @@
     </main>
 
 
+
     <!-- =====================================================
          REVIEW MODAL
     ====================================================== -->
@@ -133,6 +179,9 @@
     >
 
         <div class="edit-project-modal-card">
+
+
+            <!-- MODAL HEADER -->
 
             <div class="edit-project-modal-header">
 
@@ -148,10 +197,12 @@
 
                 </div>
 
+
                 <button
                     type="button"
-                    id="closeReviewModal"
                     class="close-edit-project"
+                    id="closeReviewModal"
+                    aria-label="Close"
                 >
                     ×
                 </button>
@@ -159,7 +210,15 @@
             </div>
 
 
-            <form id="reviewForm">
+
+            <!-- =================================================
+                 FORM
+            ================================================== -->
+
+            <form
+                id="reviewForm"
+                class="edit-project-form"
+            >
 
                 <input
                     type="hidden"
@@ -167,7 +226,9 @@
                 >
 
 
-                <div class="project-form-group">
+                <!-- CLIENT NAME -->
+
+                <div class="form-group">
 
                     <label for="clientName">
                         Client Name
@@ -176,14 +237,17 @@
                     <input
                         type="text"
                         id="clientName"
-                        placeholder="e.g. Sarah Johnson"
+                        placeholder="e.g. Ahmed Yusuf"
                         required
                     >
 
                 </div>
 
 
-                <div class="project-form-group">
+
+                <!-- CLIENT ROLE -->
+
+                <div class="form-group">
 
                     <label for="clientRole">
                         Client Role / Business
@@ -192,29 +256,35 @@
                     <input
                         type="text"
                         id="clientRole"
-                        placeholder="e.g. Founder, Luxe Homes"
+                        placeholder="e.g. Business Owner"
                     >
 
                 </div>
 
 
-                <div class="project-form-group">
+
+                <!-- REVIEW -->
+
+                <div class="form-group">
 
                     <label for="reviewText">
-                        Client Review
+                        Review
                     </label>
 
                     <textarea
                         id="reviewText"
                         rows="6"
-                        placeholder="What did the client say about your work?"
+                        placeholder="Write the client's testimonial..."
                         required
                     ></textarea>
 
                 </div>
 
 
-                <div class="project-form-group">
+
+                <!-- RATING -->
+
+                <div class="form-group">
 
                     <label for="reviewRating">
                         Rating
@@ -247,21 +317,31 @@
                 </div>
 
 
-                <div class="project-checkbox">
 
-                    <input
-                        type="checkbox"
-                        id="reviewFeatured"
-                    >
+                <!-- FEATURED -->
 
-                    <label for="reviewFeatured">
-                        Feature this review
+                <div class="form-checkbox">
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            id="reviewFeatured"
+                        >
+
+                        <span>
+                            Featured Review
+                        </span>
+
                     </label>
 
                 </div>
 
 
-                <div class="project-form-group">
+
+                <!-- STATUS -->
+
+                <div class="form-group">
 
                     <label for="reviewStatus">
                         Status
@@ -282,25 +362,32 @@
                 </div>
 
 
-                <p
-                    id="reviewFormMessage"
-                    class="login-message"
-                ></p>
 
+                <!-- FORM MESSAGE -->
+
+                <div
+                    id="reviewFormMessage"
+                    class="manage-message"
+                ></div>
+
+
+
+                <!-- ACTIONS -->
 
                 <div class="edit-project-form-actions">
 
                     <button
                         type="button"
-                        id="cancelReview"
                         class="dashboard-button"
+                        id="cancelReview"
                     >
                         Cancel
                     </button>
 
+
                     <button
                         type="submit"
-                        class="dashboard-button project-submit-button"
+                        class="dashboard-button"
                     >
                         Save Review
                     </button>
@@ -314,9 +401,12 @@
     </div>
 
 
-    <script
-        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
-    ></script>
+
+    <!-- =====================================================
+         SUPABASE
+    ====================================================== -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script src="admin.js"></script>
 
