@@ -40,9 +40,12 @@ const isDashboardPage =
 const isAddProjectPage =
     currentPage === "add-project.html";
 
+const isManageProjectsPage =
+    currentPage === "manage-projects.html";
+
 
 /* =========================================================
-   3. CHECK AUTHENTICATION
+   3. GET CURRENT SESSION
 ========================================================= */
 
 async function getCurrentSession() {
@@ -121,6 +124,7 @@ if (adminLoginForm) {
 
             loginButton.textContent =
                 "Logging in...";
+
 
             try {
 
@@ -233,7 +237,7 @@ async function protectAdminPage() {
 
 
 /* =========================================================
-   6. REDIRECT IF ALREADY LOGGED IN
+   6. REDIRECT ALREADY LOGGED-IN USER
 ========================================================= */
 
 async function redirectIfAlreadyLoggedIn() {
@@ -323,7 +327,36 @@ if (addProjectButton) {
 
 
 /* =========================================================
-   9. FILE NAME CLEANER
+   9. MANAGE PROJECTS BUTTON
+========================================================= */
+
+const manageProjectsButton =
+    document.getElementById(
+        "manageProjectsButton"
+    );
+
+if (manageProjectsButton) {
+
+    manageProjectsButton.addEventListener(
+        "click",
+        async () => {
+
+            const session =
+                await protectAdminPage();
+
+            if (!session) {
+                return;
+            }
+
+            window.location.href =
+                "manage-projects.html";
+        }
+    );
+}
+
+
+/* =========================================================
+   10. CLEAN FILE NAME
 ========================================================= */
 
 function cleanFileName(fileName) {
@@ -336,7 +369,7 @@ function cleanFileName(fileName) {
 
 
 /* =========================================================
-   10. UPLOAD FILE TO SUPABASE STORAGE
+   11. UPLOAD PROJECT FILE
 ========================================================= */
 
 async function uploadProjectFile(
@@ -352,9 +385,12 @@ async function uploadProjectFile(
         typeof crypto !== "undefined" &&
         crypto.randomUUID
             ? crypto.randomUUID()
-            : Date.now() + "-" + Math.random()
-                .toString(36)
-                .substring(2);
+            : Date.now() +
+              "-" +
+              Math.random()
+                  .toString(36)
+                  .substring(2);
+
 
     const filePath =
         `projects/${folder}/${prefix}-${uniqueId}-${safeName}`;
@@ -400,17 +436,19 @@ async function uploadProjectFile(
     }
 
 
-    return data.publicUrl;
+    return {
+        url: data.publicUrl,
+        path: filePath
+    };
 }
 
 
 /* =========================================================
-   11. ADD PROJECT FORM
+   12. ADD PROJECT FORM
 ========================================================= */
 
 const projectForm =
     document.getElementById("projectForm");
-
 
 if (projectForm) {
 
@@ -420,10 +458,6 @@ if (projectForm) {
 
             event.preventDefault();
 
-
-            /* -----------------------------------------
-               GET FORM ELEMENTS
-            ----------------------------------------- */
 
             const titleInput =
                 document.getElementById(
@@ -476,10 +510,6 @@ if (projectForm) {
                 );
 
 
-            /* -----------------------------------------
-               GET VALUES
-            ----------------------------------------- */
-
             const title =
                 titleInput.value.trim();
 
@@ -493,7 +523,8 @@ if (projectForm) {
                 projectLinkInput.value.trim();
 
             const coverFile =
-                coverImageInput.files[0] || null;
+                coverImageInput.files[0] ||
+                null;
 
             const galleryFiles =
                 Array.from(
@@ -506,10 +537,6 @@ if (projectForm) {
             const status =
                 statusInput.value;
 
-
-            /* -----------------------------------------
-               BASIC VALIDATION
-            ----------------------------------------- */
 
             if (!title) {
 
@@ -547,10 +574,6 @@ if (projectForm) {
             }
 
 
-            /* -----------------------------------------
-               CHECK LOGIN
-            ----------------------------------------- */
-
             const session =
                 await protectAdminPage();
 
@@ -558,10 +581,6 @@ if (projectForm) {
                 return;
             }
 
-
-            /* -----------------------------------------
-               DISABLE BUTTON
-            ----------------------------------------- */
 
             submitButton.disabled = true;
 
@@ -577,11 +596,12 @@ if (projectForm) {
 
             try {
 
-                /* -------------------------------------
-                   STEP 1 — CREATE PROJECT RECORD
-                ------------------------------------- */
+                /* CREATE DATABASE RECORD */
 
-                const { data: projectData, error: insertError } =
+                const {
+                    data: projectData,
+                    error: insertError
+                } =
                     await portfolioSupabase
                         .from("projects")
                         .insert({
@@ -593,11 +613,14 @@ if (projectForm) {
                             description: description,
 
                             project_link:
-                                projectLink || null,
+                                projectLink ||
+                                null,
 
-                            featured: featured,
+                            featured:
+                                featured,
 
-                            status: status
+                            status:
+                                status
 
                         })
                         .select()
@@ -605,11 +628,6 @@ if (projectForm) {
 
 
                 if (insertError) {
-
-                    console.error(
-                        "PROJECT INSERT ERROR:",
-                        insertError
-                    );
 
                     throw insertError;
                 }
@@ -619,11 +637,10 @@ if (projectForm) {
                     projectData.id;
 
 
-                /* -------------------------------------
-                   STEP 2 — UPLOAD COVER IMAGE
-                ------------------------------------- */
+                /* COVER IMAGE */
 
-                let coverImageUrl = null;
+                let coverImageUrl =
+                    null;
 
 
                 if (coverFile) {
@@ -632,20 +649,23 @@ if (projectForm) {
                         "Uploading cover image...";
 
 
-                    coverImageUrl =
+                    const coverResult =
                         await uploadProjectFile(
                             coverFile,
                             projectId,
                             "cover"
                         );
+
+
+                    coverImageUrl =
+                        coverResult.url;
                 }
 
 
-                /* -------------------------------------
-                   STEP 3 — UPLOAD PROJECT IMAGES
-                ------------------------------------- */
+                /* GALLERY IMAGES */
 
-                const projectImageUrls = [];
+                const projectImageUrls =
+                    [];
 
 
                 if (galleryFiles.length > 0) {
@@ -657,10 +677,10 @@ if (projectForm) {
                     ) {
 
                         projectMessage.textContent =
-                            `Uploading project image ${i + 1} of ${galleryFiles.length}...`;
+                            `Uploading image ${i + 1} of ${galleryFiles.length}...`;
 
 
-                        const imageUrl =
+                        const result =
                             await uploadProjectFile(
                                 galleryFiles[i],
                                 projectId,
@@ -669,17 +689,17 @@ if (projectForm) {
 
 
                         projectImageUrls.push(
-                            imageUrl
+                            result.url
                         );
                     }
                 }
 
 
-                /* -------------------------------------
-                   STEP 4 — UPDATE PROJECT WITH IMAGES
-                ------------------------------------- */
+                /* UPDATE PROJECT */
 
-                const { error: updateError } =
+                const {
+                    error: updateError
+                } =
                     await portfolioSupabase
                         .from("projects")
                         .update({
@@ -699,18 +719,9 @@ if (projectForm) {
 
                 if (updateError) {
 
-                    console.error(
-                        "PROJECT IMAGE UPDATE ERROR:",
-                        updateError
-                    );
-
                     throw updateError;
                 }
 
-
-                /* -------------------------------------
-                   STEP 5 — SUCCESS
-                ------------------------------------- */
 
                 projectMessage.textContent =
                     "Project published successfully!";
@@ -723,16 +734,8 @@ if (projectForm) {
                     "Published ✓";
 
 
-                /* -------------------------------------
-                   RESET FORM
-                ------------------------------------- */
-
                 projectForm.reset();
 
-
-                /* -------------------------------------
-                   RETURN BUTTON AFTER SHORT DELAY
-                ------------------------------------- */
 
                 setTimeout(() => {
 
@@ -773,7 +776,1402 @@ if (projectForm) {
 
 
 /* =========================================================
-   12. INITIALIZATION
+   13. MANAGE PROJECTS
+========================================================= */
+
+const projectsContainer =
+    document.getElementById(
+        "projectsContainer"
+    );
+
+
+if (projectsContainer) {
+
+    let allProjects = [];
+
+
+    const searchInput =
+        document.getElementById(
+            "projectSearch"
+        );
+
+    const categoryFilter =
+        document.getElementById(
+            "categoryFilter"
+        );
+
+    const statusFilter =
+        document.getElementById(
+            "statusFilter"
+        );
+
+    const manageMessage =
+        document.getElementById(
+            "manageMessage"
+        );
+
+
+    /* -----------------------------------------
+       LOAD PROJECTS
+    ----------------------------------------- */
+
+    async function loadProjects() {
+
+        const session =
+            await protectAdminPage();
+
+        if (!session) {
+            return;
+        }
+
+
+        projectsContainer.innerHTML = `
+            <div class="project-loading">
+                Loading projects...
+            </div>
+        `;
+
+
+        const {
+            data,
+            error
+        } =
+            await portfolioSupabase
+                .from("projects")
+                .select("*")
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                );
+
+
+        if (error) {
+
+            console.error(
+                "LOAD PROJECTS ERROR:",
+                error
+            );
+
+
+            projectsContainer.innerHTML = `
+                <div class="project-empty">
+                    <h3>Unable to load projects</h3>
+                    <p>${escapeAdminHtml(error.message)}</p>
+                </div>
+            `;
+
+            return;
+        }
+
+
+        allProjects =
+            data || [];
+
+
+        renderProjects();
+    }
+
+
+    /* -----------------------------------------
+       ESCAPE HTML
+    ----------------------------------------- */
+
+    function escapeAdminHtml(value) {
+
+        if (value === null ||
+            value === undefined) {
+
+            return "";
+        }
+
+
+        return String(value)
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+            .replace(
+                /</g,
+                "&lt;"
+            )
+            .replace(
+                />/g,
+                "&gt;"
+            )
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+            .replace(
+                /'/g,
+                "&#039;"
+            );
+    }
+
+
+    /* -----------------------------------------
+       GET COVER IMAGE
+    ----------------------------------------- */
+
+    function getProjectCover(project) {
+
+        if (
+            project.cover_image_url &&
+            project.cover_image_url.trim()
+        ) {
+
+            return project.cover_image_url;
+        }
+
+
+        if (
+            Array.isArray(
+                project.project_images
+            ) &&
+            project.project_images.length > 0
+        ) {
+
+            return project.project_images[0];
+        }
+
+
+        return "";
+    }
+
+
+    /* -----------------------------------------
+       RENDER PROJECTS
+    ----------------------------------------- */
+
+    function renderProjects() {
+
+        const searchTerm =
+            searchInput
+                ? searchInput.value
+                    .trim()
+                    .toLowerCase()
+                : "";
+
+
+        const selectedCategory =
+            categoryFilter
+                ? categoryFilter.value
+                : "";
+
+
+        const selectedStatus =
+            statusFilter
+                ? statusFilter.value
+                : "";
+
+
+        const filteredProjects =
+            allProjects.filter(
+                project => {
+
+                    const matchesSearch =
+                        !searchTerm ||
+                        project.title
+                            ?.toLowerCase()
+                            .includes(
+                                searchTerm
+                            ) ||
+                        project.description
+                            ?.toLowerCase()
+                            .includes(
+                                searchTerm
+                            );
+
+
+                    const matchesCategory =
+                        !selectedCategory ||
+                        project.category ===
+                            selectedCategory;
+
+
+                    const matchesStatus =
+                        !selectedStatus ||
+                        project.status ===
+                            selectedStatus;
+
+
+                    return (
+                        matchesSearch &&
+                        matchesCategory &&
+                        matchesStatus
+                    );
+                }
+            );
+
+
+        if (
+            filteredProjects.length === 0
+        ) {
+
+            projectsContainer.innerHTML = `
+                <div class="project-empty">
+                    <div class="empty-icon">◈</div>
+                    <h3>No projects found</h3>
+                    <p>Try another search or add a new project.</p>
+                </div>
+            `;
+
+            return;
+        }
+
+
+        projectsContainer.innerHTML =
+            filteredProjects
+                .map(
+                    project =>
+                        createProjectCard(
+                            project
+                        )
+                )
+                .join("");
+
+
+        attachProjectActions();
+    }
+
+
+    /* -----------------------------------------
+       CREATE PROJECT CARD
+    ----------------------------------------- */
+
+    function createProjectCard(
+        project
+    ) {
+
+        const cover =
+            getProjectCover(project);
+
+
+        const imageHtml =
+            cover
+                ? `
+                    <img
+                        src="${escapeAdminHtml(cover)}"
+                        alt="${escapeAdminHtml(project.title)}"
+                        class="manage-project-image"
+                    >
+                  `
+                : `
+                    <div class="manage-project-no-image">
+                        <span>NO IMAGE</span>
+                    </div>
+                  `;
+
+
+        const statusClass =
+            project.status === "published"
+                ? "status-published"
+                : "status-draft";
+
+
+        const featuredHtml =
+            project.featured
+                ? `
+                    <span class="project-featured-badge">
+                        ★ Featured
+                    </span>
+                  `
+                : "";
+
+
+        return `
+            <article
+                class="manage-project-card"
+                data-project-id="${escapeAdminHtml(project.id)}"
+            >
+
+                <div class="manage-project-image-wrap">
+
+                    ${imageHtml}
+
+                </div>
+
+
+                <div class="manage-project-content">
+
+                    <div class="manage-project-top">
+
+                        <span class="project-category-badge">
+                            ${escapeAdminHtml(project.category)}
+                        </span>
+
+                        <span class="project-status-badge ${statusClass}">
+                            ${escapeAdminHtml(
+                                project.status ||
+                                "draft"
+                            )}
+                        </span>
+
+                    </div>
+
+
+                    <h2>
+                        ${escapeAdminHtml(project.title)}
+                    </h2>
+
+
+                    <p>
+                        ${escapeAdminHtml(
+                            project.description ||
+                            "No description."
+                        )}
+                    </p>
+
+
+                    <div class="manage-project-meta">
+
+                        ${featuredHtml}
+
+                    </div>
+
+
+                    <div class="manage-project-actions">
+
+                        <button
+                            type="button"
+                            class="dashboard-button edit-project-button"
+                            data-id="${escapeAdminHtml(project.id)}"
+                        >
+                            Edit
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="dashboard-button toggle-project-button"
+                            data-id="${escapeAdminHtml(project.id)}"
+                        >
+                            ${
+                                project.status === "published"
+                                    ? "Set Draft"
+                                    : "Publish"
+                            }
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="dashboard-button feature-project-button"
+                            data-id="${escapeAdminHtml(project.id)}"
+                        >
+                            ${
+                                project.featured
+                                    ? "Unfeature"
+                                    : "Feature"
+                            }
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="dashboard-button delete-project-button"
+                            data-id="${escapeAdminHtml(project.id)}"
+                        >
+                            Delete
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+        `;
+    }
+
+
+    /* -----------------------------------------
+       ATTACH BUTTON ACTIONS
+    ----------------------------------------- */
+
+    function attachProjectActions() {
+
+        document
+            .querySelectorAll(
+                ".edit-project-button"
+            )
+            .forEach(button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        const project =
+                            allProjects.find(
+                                item =>
+                                    item.id ===
+                                    button.dataset.id
+                            );
+
+
+                        if (project) {
+
+                            openEditProject(
+                                project
+                            );
+                        }
+                    }
+                );
+            });
+
+
+        document
+            .querySelectorAll(
+                ".toggle-project-button"
+            )
+            .forEach(button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        toggleProjectStatus(
+                            button.dataset.id
+                        );
+                    }
+                );
+            });
+
+
+        document
+            .querySelectorAll(
+                ".feature-project-button"
+            )
+            .forEach(button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        toggleFeatured(
+                            button.dataset.id
+                        );
+                    }
+                );
+            });
+
+
+        document
+            .querySelectorAll(
+                ".delete-project-button"
+            )
+            .forEach(button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        deleteProject(
+                            button.dataset.id
+                        );
+                    }
+                );
+            });
+    }
+
+
+    /* -----------------------------------------
+       TOGGLE STATUS
+    ----------------------------------------- */
+
+    async function toggleProjectStatus(
+        projectId
+    ) {
+
+        const project =
+            allProjects.find(
+                item =>
+                    item.id === projectId
+            );
+
+
+        if (!project) {
+            return;
+        }
+
+
+        const newStatus =
+            project.status === "published"
+                ? "draft"
+                : "published";
+
+
+        const {
+            error
+        } =
+            await portfolioSupabase
+                .from("projects")
+                .update({
+                    status: newStatus
+                })
+                .eq(
+                    "id",
+                    projectId
+                );
+
+
+        if (error) {
+
+            console.error(
+                "STATUS UPDATE ERROR:",
+                error
+            );
+
+            alert(
+                "Could not update project status."
+            );
+
+            return;
+        }
+
+
+        await loadProjects();
+    }
+
+
+    /* -----------------------------------------
+       TOGGLE FEATURED
+    ----------------------------------------- */
+
+    async function toggleFeatured(
+        projectId
+    ) {
+
+        const project =
+            allProjects.find(
+                item =>
+                    item.id === projectId
+            );
+
+
+        if (!project) {
+            return;
+        }
+
+
+        const {
+            error
+        } =
+            await portfolioSupabase
+                .from("projects")
+                .update({
+                    featured:
+                        !project.featured
+                })
+                .eq(
+                    "id",
+                    projectId
+                );
+
+
+        if (error) {
+
+            console.error(
+                "FEATURE UPDATE ERROR:",
+                error
+            );
+
+            alert(
+                "Could not update featured status."
+            );
+
+            return;
+        }
+
+
+        await loadProjects();
+    }
+
+
+    /* -----------------------------------------
+       DELETE PROJECT
+    ----------------------------------------- */
+
+    async function deleteProject(
+        projectId
+    ) {
+
+        const project =
+            allProjects.find(
+                item =>
+                    item.id === projectId
+            );
+
+
+        if (!project) {
+            return;
+        }
+
+
+        const confirmed =
+            confirm(
+                `Delete "${project.title}"?\n\nThis will permanently remove the project from your portfolio.`
+            );
+
+
+        if (!confirmed) {
+            return;
+        }
+
+
+        manageMessage.textContent =
+            "Deleting project...";
+
+        manageMessage.style.color =
+            "#b46cff";
+
+
+        try {
+
+            /* DELETE DATABASE RECORD */
+
+            const {
+                error
+            } =
+                await portfolioSupabase
+                    .from("projects")
+                    .delete()
+                    .eq(
+                        "id",
+                        projectId
+                    );
+
+
+            if (error) {
+
+                throw error;
+            }
+
+
+            /*
+               Storage cleanup is attempted below.
+               If Storage delete permissions are not
+               configured, the database deletion still
+               succeeds.
+            */
+
+            const storagePaths =
+                getProjectStoragePaths(
+                    project
+                );
+
+
+            if (
+                storagePaths.length > 0
+            ) {
+
+                const {
+                    error: storageError
+                } =
+                    await portfolioSupabase
+                        .storage
+                        .from(
+                            "portfolio-projects"
+                        )
+                        .remove(
+                            storagePaths
+                        );
+
+
+                if (storageError) {
+
+                    console.warn(
+                        "STORAGE CLEANUP WARNING:",
+                        storageError
+                    );
+                }
+            }
+
+
+            manageMessage.textContent =
+                "Project deleted.";
+
+            manageMessage.style.color =
+                "#7dff9b";
+
+
+            await loadProjects();
+
+
+        } catch (error) {
+
+            console.error(
+                "DELETE PROJECT ERROR:",
+                error
+            );
+
+
+            manageMessage.textContent =
+                error.message ||
+                "Could not delete project.";
+
+            manageMessage.style.color =
+                "#ff6b6b";
+        }
+    }
+
+
+    /* -----------------------------------------
+       GET STORAGE PATHS
+    ----------------------------------------- */
+
+    function getProjectStoragePaths(
+        project
+    ) {
+
+        const paths = [];
+
+
+        /*
+           Supabase public URLs normally contain:
+
+           /storage/v1/object/public/
+           portfolio-projects/
+           projects/...
+        */
+
+        const urls = [];
+
+
+        if (project.cover_image_url) {
+
+            urls.push(
+                project.cover_image_url
+            );
+        }
+
+
+        if (
+            Array.isArray(
+                project.project_images
+            )
+        ) {
+
+            urls.push(
+                ...project.project_images
+            );
+        }
+
+
+        urls.forEach(url => {
+
+            try {
+
+                const marker =
+                    "/portfolio-projects/";
+
+
+                const index =
+                    url.indexOf(
+                        marker
+                    );
+
+
+                if (
+                    index !== -1
+                ) {
+
+                    const path =
+                        decodeURIComponent(
+                            url.substring(
+                                index +
+                                marker.length
+                            )
+                        );
+
+
+                    if (path) {
+
+                        paths.push(
+                            path
+                        );
+                    }
+                }
+
+            } catch (error) {
+
+                console.warn(
+                    "Could not parse storage URL:",
+                    url
+                );
+            }
+        });
+
+
+        return [
+            ...new Set(paths)
+        ];
+    }
+
+
+    /* -----------------------------------------
+       EDIT PROJECT
+    ----------------------------------------- */
+
+    function openEditProject(
+        project
+    ) {
+
+        const modal =
+            document.getElementById(
+                "editProjectModal"
+            );
+
+
+        if (!modal) {
+            return;
+        }
+
+
+        document.getElementById(
+            "editProjectId"
+        ).value =
+            project.id;
+
+
+        document.getElementById(
+            "editProjectTitle"
+        ).value =
+            project.title || "";
+
+
+        document.getElementById(
+            "editProjectCategory"
+        ).value =
+            project.category || "";
+
+
+        document.getElementById(
+            "editProjectDescription"
+        ).value =
+            project.description || "";
+
+
+        document.getElementById(
+            "editProjectLink"
+        ).value =
+            project.project_link || "";
+
+
+        document.getElementById(
+            "editProjectFeatured"
+        ).checked =
+            Boolean(
+                project.featured
+            );
+
+
+        document.getElementById(
+            "editProjectStatus"
+        ).value =
+            project.status ||
+            "draft";
+
+
+        const currentCover =
+            document.getElementById(
+                "currentCoverImage"
+            );
+
+
+        if (
+            currentCover &&
+            project.cover_image_url
+        ) {
+
+            currentCover.innerHTML = `
+                <img
+                    src="${escapeAdminHtml(project.cover_image_url)}"
+                    alt="Current cover"
+                >
+                <span>Current cover image</span>
+            `;
+
+        } else if (currentCover) {
+
+            currentCover.innerHTML =
+                "<span>No cover image</span>";
+        }
+
+
+        const editMessage =
+            document.getElementById(
+                "editProjectMessage"
+            );
+
+
+        if (editMessage) {
+
+            editMessage.textContent =
+                "";
+        }
+
+
+        modal.classList.add(
+            "active"
+        );
+
+
+        document.body.classList.add(
+            "modal-open"
+        );
+    }
+
+
+    /* -----------------------------------------
+       CLOSE EDIT MODAL
+    ----------------------------------------- */
+
+    function closeEditProject() {
+
+        const modal =
+            document.getElementById(
+                "editProjectModal"
+            );
+
+
+        if (!modal) {
+            return;
+        }
+
+
+        modal.classList.remove(
+            "active"
+        );
+
+
+        document.body.classList.remove(
+            "modal-open"
+        );
+    }
+
+
+    const closeEditButton =
+        document.getElementById(
+            "closeEditProject"
+        );
+
+
+    const cancelEditButton =
+        document.getElementById(
+            "cancelEditProject"
+        );
+
+
+    if (closeEditButton) {
+
+        closeEditButton.addEventListener(
+            "click",
+            closeEditProject
+        );
+    }
+
+
+    if (cancelEditButton) {
+
+        cancelEditButton.addEventListener(
+            "click",
+            closeEditProject
+        );
+    }
+
+
+    /* -----------------------------------------
+       CLOSE WHEN CLICKING OUTSIDE
+    ----------------------------------------- */
+
+    const editModal =
+        document.getElementById(
+            "editProjectModal"
+        );
+
+
+    if (editModal) {
+
+        editModal.addEventListener(
+            "click",
+            event => {
+
+                if (
+                    event.target ===
+                    editModal
+                ) {
+
+                    closeEditProject();
+                }
+            }
+        );
+    }
+
+
+    /* -----------------------------------------
+       SAVE EDITED PROJECT
+    ----------------------------------------- */
+
+    const editProjectForm =
+        document.getElementById(
+            "editProjectForm"
+        );
+
+
+    if (editProjectForm) {
+
+        editProjectForm.addEventListener(
+            "submit",
+            async event => {
+
+                event.preventDefault();
+
+
+                const editMessage =
+                    document.getElementById(
+                        "editProjectMessage"
+                    );
+
+
+                const saveButton =
+                    editProjectForm.querySelector(
+                        "button[type='submit']"
+                    );
+
+
+                const projectId =
+                    document.getElementById(
+                        "editProjectId"
+                    ).value;
+
+
+                const title =
+                    document.getElementById(
+                        "editProjectTitle"
+                    ).value.trim();
+
+
+                const category =
+                    document.getElementById(
+                        "editProjectCategory"
+                    ).value;
+
+
+                const description =
+                    document.getElementById(
+                        "editProjectDescription"
+                    ).value.trim();
+
+
+                const projectLink =
+                    document.getElementById(
+                        "editProjectLink"
+                    ).value.trim();
+
+
+                const featured =
+                    document.getElementById(
+                        "editProjectFeatured"
+                    ).checked;
+
+
+                const status =
+                    document.getElementById(
+                        "editProjectStatus"
+                    ).value;
+
+
+                const newCover =
+                    document.getElementById(
+                        "editProjectImage"
+                    ).files[0] ||
+                    null;
+
+
+                const newGalleryFiles =
+                    Array.from(
+                        document.getElementById(
+                            "editProjectFiles"
+                        ).files
+                    );
+
+
+                if (!title) {
+
+                    editMessage.textContent =
+                        "Project title is required.";
+
+                    editMessage.style.color =
+                        "#ff6b6b";
+
+                    return;
+                }
+
+
+                if (!category) {
+
+                    editMessage.textContent =
+                        "Please select a category.";
+
+                    editMessage.style.color =
+                        "#ff6b6b";
+
+                    return;
+                }
+
+
+                if (!description) {
+
+                    editMessage.textContent =
+                        "Project description is required.";
+
+                    editMessage.style.color =
+                        "#ff6b6b";
+
+                    return;
+                }
+
+
+                saveButton.disabled =
+                    true;
+
+                saveButton.textContent =
+                    "Saving...";
+
+
+                try {
+
+                    const project =
+                        allProjects.find(
+                            item =>
+                                item.id ===
+                                projectId
+                        );
+
+
+                    if (!project) {
+
+                        throw new Error(
+                            "Project could not be found."
+                        );
+                    }
+
+
+                    let coverImageUrl =
+                        project.cover_image_url ||
+                        null;
+
+
+                    let projectImageUrls =
+                        Array.isArray(
+                            project.project_images
+                        )
+                            ? [
+                                ...project.project_images
+                              ]
+                            : [];
+
+
+                    /* NEW COVER */
+
+                    if (newCover) {
+
+                        editMessage.textContent =
+                            "Uploading new cover image...";
+
+
+                        const result =
+                            await uploadProjectFile(
+                                newCover,
+                                projectId,
+                                "cover"
+                            );
+
+
+                        coverImageUrl =
+                            result.url;
+                    }
+
+
+                    /* NEW GALLERY */
+
+                    if (
+                        newGalleryFiles.length >
+                        0
+                    ) {
+
+                        projectImageUrls = [];
+
+
+                        for (
+                            let i = 0;
+                            i < newGalleryFiles.length;
+                            i++
+                        ) {
+
+                            editMessage.textContent =
+                                `Uploading image ${i + 1} of ${newGalleryFiles.length}...`;
+
+
+                            const result =
+                                await uploadProjectFile(
+                                    newGalleryFiles[i],
+                                    projectId,
+                                    `gallery-${i + 1}`
+                                );
+
+
+                            projectImageUrls.push(
+                                result.url
+                            );
+                        }
+                    }
+
+
+                    editMessage.textContent =
+                        "Updating project...";
+
+
+                    const {
+                        error
+                    } =
+                        await portfolioSupabase
+                            .from("projects")
+                            .update({
+
+                                title: title,
+
+                                category: category,
+
+                                description:
+                                    description,
+
+                                project_link:
+                                    projectLink ||
+                                    null,
+
+                                featured:
+                                    featured,
+
+                                status:
+                                    status,
+
+                                cover_image_url:
+                                    coverImageUrl,
+
+                                project_images:
+                                    projectImageUrls
+
+                            })
+                            .eq(
+                                "id",
+                                projectId
+                            );
+
+
+                    if (error) {
+
+                        throw error;
+                    }
+
+
+                    editMessage.textContent =
+                        "Project updated successfully!";
+
+                    editMessage.style.color =
+                        "#7dff9b";
+
+
+                    saveButton.textContent =
+                        "Saved ✓";
+
+
+                    await loadProjects();
+
+
+                    setTimeout(() => {
+
+                        closeEditProject();
+
+                        saveButton.disabled =
+                            false;
+
+                        saveButton.textContent =
+                            "Save Changes";
+
+                    }, 900);
+
+
+                } catch (error) {
+
+                    console.error(
+                        "EDIT PROJECT ERROR:",
+                        error
+                    );
+
+
+                    editMessage.textContent =
+                        error.message ||
+                        "Could not update project.";
+
+                    editMessage.style.color =
+                        "#ff6b6b";
+
+
+                    saveButton.disabled =
+                        false;
+
+                    saveButton.textContent =
+                        "Save Changes";
+                }
+            }
+        );
+    }
+
+
+    /* -----------------------------------------
+       FILTER EVENTS
+    ----------------------------------------- */
+
+    if (searchInput) {
+
+        searchInput.addEventListener(
+            "input",
+            renderProjects
+        );
+    }
+
+
+    if (categoryFilter) {
+
+        categoryFilter.addEventListener(
+            "change",
+            renderProjects
+        );
+    }
+
+
+    if (statusFilter) {
+
+        statusFilter.addEventListener(
+            "change",
+            renderProjects
+        );
+    }
+
+
+    /* -----------------------------------------
+       INITIAL LOAD
+    ----------------------------------------- */
+
+    loadProjects();
+}
+
+
+/* =========================================================
+   14. INITIALIZATION
 ========================================================= */
 
 document.addEventListener(
@@ -790,7 +2188,8 @@ document.addEventListener(
 
         if (
             isDashboardPage ||
-            isAddProjectPage
+            isAddProjectPage ||
+            isManageProjectsPage
         ) {
 
             await protectAdminPage();
