@@ -1,1 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Manage Projects | Fofana</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body class="dashboard-page">
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="dashboard-header">
+
+        <div class="dashboard-container">
+
+            <a
+                href="dashboard.html"
+                class="brand"
+            >
+                FOFANA<span>.</span>
+            </a>
+
+
+            <div class="manage-header-actions">
+
+                <a
+                    href="add-project.html"
+                    class="dashboard-logout"
+                >
+                    + Add Project
+                </a>
+
+
+                <a
+                    href="dashboard.html"
+                    class="dashboard-logout"
+                >
+                    ← Dashboard
+                </a>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="dashboard-main">
+
+        <div class="dashboard-container">
+
+
+            <!-- HEADING -->
+
+            <div class="dashboard-heading">
+
+                <p class="admin-label">
+                    PORTFOLIO MANAGEMENT
+                </p>
+
+                <h1>
+                    Manage Projects
+                </h1>
+
+                <p>
+                    Edit, publish, feature or remove your portfolio projects.
+                </p>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 CONTROLS
+            ================================================== -->
+
+            <section class="project-management-controls">
+
+                <div class="project-search-box">
+
+                    <input
+                        type="search"
+                        id="projectSearch"
+                        placeholder="Search projects..."
+                    >
+
+                </div>
+
+
+                <div class="project-filter-box">
+
+                    <select id="categoryFilter">
+
+                        <option value="">
+                            All Categories
+                        </option>
+
+                        <option value="Web Development">
+                            Web Development
+                        </option>
+
+                        <option value="Brochure Design">
+                            Brochure Design
+                        </option>
+
+                        <option value="Ebook Design">
+                            Ebook Design
+                        </option>
+
+                        <option value="Presentation Design">
+                            Presentation Design
+                        </option>
+
+                        <option value="Instagram Carousel">
+                            Instagram Carousel
+                        </option>
+
+                        <option value="Pitch Deck">
+                            Pitch Deck
+                        </option>
+
+                    </select>
+
+
+                    <select id="statusFilter">
+
+                        <option value="">
+                            All Status
+                        </option>
+
+                        <option value="published">
+                            Published
+                        </option>
+
+                        <option value="draft">
+                            Draft
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </section>
+
+
+
+            <p
+                id="manageMessage"
+                class="login-message"
+            ></p>
+
+
+
+            <!-- =================================================
+                 PROJECTS
+            ================================================== -->
+
+            <section
+                id="projectsContainer"
+                class="manage-projects-grid"
+            >
+
+                <div class="project-loading">
+                    Loading projects...
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         EDIT PROJECT MODAL
+    ====================================================== -->
+
+    <div
+        id="editProjectModal"
+        class="edit-project-modal"
+    >
+
+        <div class="edit-project-modal-card">
+
+
+            <!-- MODAL HEADER -->
+
+            <div class="edit-project-modal-header">
+
+                <div>
+
+                    <p class="admin-label">
+                        PROJECT MANAGEMENT
+                    </p>
+
+                    <h2>
+                        Edit Project
+                    </h2>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="closeEditProject"
+                    class="close-edit-project"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+
+            <!-- EDIT FORM -->
+
+            <form id="editProjectForm">
+
+
+                <input
+                    type="hidden"
+                    id="editProjectId"
+                >
+
+
+                <div class="project-form-group">
+
+                    <label for="editProjectTitle">
+                        Project Title
+                    </label>
+
+                    <input
+                        type="text"
+                        id="editProjectTitle"
+                        required
+                    >
+
+                </div>
+
+
+
+                <div class="project-form-group">
+
+                    <label for="editProjectCategory">
+                        Project Category
+                    </label>
+
+                    <select
+                        id="editProjectCategory"
+                        required
+                    >
+
+                        <option value="Web Development">
+                            Web Development
+                        </option>
+
+                        <option value="Brochure Design">
+                            Brochure Design
+                        </option>
+
+                        <option value="Ebook Design">
+                            Ebook Design
+                        </option>
+
+                        <option value="Presentation Design">
+                            Presentation Design
+                        </option>
+
+                        <option value="Instagram Carousel">
+                            Instagram Carousel
+                        </option>
+
+                        <option value="Pitch Deck">
+                            Pitch Deck
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <div class="project-form-group">
+
+                    <label for="editProjectDescription">
+                        Project Description
+                    </label>
+
+                    <textarea
+                        id="editProjectDescription"
+                        rows="6"
+                        required
+                    ></textarea>
+
+                </div>
+
+
+
+                <div class="project-form-group">
+
+                    <label for="editProjectLink">
+                        Project Link
+                    </label>
+
+                    <input
+                        type="url"
+                        id="editProjectLink"
+                        placeholder="https://example.com"
+                    >
+
+                    <small>
+                        Optional — useful for live websites.
+                    </small>
+
+                </div>
+
+
+
+                <!-- CURRENT COVER -->
+
+                <div
+                    id="currentCoverImage"
+                    class="current-cover-image"
+                >
+                    <span>
+                        No cover image
+                    </span>
+                </div>
+
+
+
+                <!-- NEW COVER -->
+
+                <div class="project-form-group">
+
+                    <label for="editProjectImage">
+                        Replace Cover Image
+                    </label>
+
+                    <input
+                        type="file"
+                        id="editProjectImage"
+                        accept="image/*"
+                    >
+
+                    <small>
+                        Leave empty to keep the current cover.
+                    </small>
+
+                </div>
+
+
+
+                <!-- GALLERY -->
+
+                <div class="project-form-group">
+
+                    <label for="editProjectFiles">
+                        Replace Project Images / Pages
+                    </label>
+
+                    <input
+                        type="file"
+                        id="editProjectFiles"
+                        accept="image/*"
+                        multiple
+                    >
+
+                    <small>
+                        Leave empty to keep the existing pages.
+                        If you select new images, they will replace the existing gallery.
+                    </small>
+
+                </div>
+
+
+
+                <!-- FEATURED -->
+
+                <div class="project-checkbox">
+
+                    <input
+                        type="checkbox"
+                        id="editProjectFeatured"
+                    >
+
+                    <label for="editProjectFeatured">
+                        Feature this project on the homepage
+                    </label>
+
+                </div>
+
+
+
+                <!-- STATUS -->
+
+                <div class="project-form-group">
+
+                    <label for="editProjectStatus">
+                        Project Status
+                    </label>
+
+                    <select id="editProjectStatus">
+
+                        <option value="published">
+                            Published
+                        </option>
+
+                        <option value="draft">
+                            Draft
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- MESSAGE -->
+
+                <p
+                    id="editProjectMessage"
+                    class="login-message"
+                ></p>
+
+
+
+                <!-- BUTTONS -->
+
+                <div class="edit-project-form-actions">
+
+                    <button
+                        type="button"
+                        id="cancelEditProject"
+                        class="dashboard-button"
+                    >
+                        Cancel
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="dashboard-button project-submit-button"
+                    >
+                        Save Changes
+                    </button>
+
+                </div>
+
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         SCRIPTS
+    ====================================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
+
+    <script src="admin.js"></script>
+
+</body>
+
+</html>
