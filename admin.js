@@ -2215,13 +2215,1192 @@ document.addEventListener(
         }
 
 
-        if (
-            isDashboardPage ||
-            isAddProjectPage ||
-            isManageProjectsPage
-        ) {
+if (
+    isDashboardPage ||
+    isAddProjectPage ||
+    isManageProjectsPage ||
+    isManageReviewsPage
+) {
 
             await protectAdminPage();
         }
     }
 );
+
+
+/* =========================================================
+   15. MANAGE REVIEWS
+========================================================= */
+
+const reviewsContainer =
+    document.getElementById(
+        "reviewsContainer"
+    );
+
+
+if (
+    reviewsContainer &&
+    isManageReviewsPage
+) {
+
+    let allReviews = [];
+
+
+    const reviewSearch =
+        document.getElementById(
+            "reviewSearch"
+        );
+
+
+    const reviewStatusFilter =
+        document.getElementById(
+            "reviewStatusFilter"
+        );
+
+
+    const reviewMessage =
+        document.getElementById(
+            "reviewMessage"
+        );
+
+
+    const reviewModal =
+        document.getElementById(
+            "reviewModal"
+        );
+
+
+    const reviewForm =
+        document.getElementById(
+            "reviewForm"
+        );
+
+
+
+    /* =====================================================
+       ESCAPE HTML
+    ====================================================== */
+
+    function escapeReviewHtml(value) {
+
+        if (
+            value === null ||
+            value === undefined
+        ) {
+            return "";
+        }
+
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+
+
+    /* =====================================================
+       LOAD REVIEWS
+    ====================================================== */
+
+    async function loadReviews() {
+
+        const session =
+            await protectAdminPage();
+
+        if (!session) {
+            return;
+        }
+
+
+        reviewsContainer.innerHTML = `
+            <div class="project-loading">
+                Loading reviews...
+            </div>
+        `;
+
+
+        const {
+            data,
+            error
+        } =
+            await portfolioSupabase
+                .from("reviews")
+                .select("*")
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                );
+
+
+        if (error) {
+
+            console.error(
+                "LOAD REVIEWS ERROR:",
+                error
+            );
+
+
+            reviewsContainer.innerHTML = `
+                <div class="project-empty">
+
+                    <div class="empty-icon">
+                        ★
+                    </div>
+
+                    <h3>
+                        Unable to load reviews
+                    </h3>
+
+                    <p>
+                        ${escapeReviewHtml(
+                            error.message
+                        )}
+                    </p>
+
+                </div>
+            `;
+
+            return;
+        }
+
+
+        allReviews =
+            data || [];
+
+
+        renderReviews();
+    }
+
+
+
+    /* =====================================================
+       RENDER REVIEWS
+    ====================================================== */
+
+    function renderReviews() {
+
+        const searchTerm =
+            reviewSearch
+                ? reviewSearch.value
+                    .trim()
+                    .toLowerCase()
+                : "";
+
+
+        const selectedStatus =
+            reviewStatusFilter
+                ? reviewStatusFilter.value
+                : "";
+
+
+        const filteredReviews =
+            allReviews.filter(
+                review => {
+
+                    const matchesSearch =
+                        !searchTerm ||
+                        review.client_name
+                            ?.toLowerCase()
+                            .includes(
+                                searchTerm
+                            ) ||
+                        review.client_role
+                            ?.toLowerCase()
+                            .includes(
+                                searchTerm
+                            ) ||
+                        review.review
+                            ?.toLowerCase()
+                            .includes(
+                                searchTerm
+                            );
+
+
+                    const matchesStatus =
+                        !selectedStatus ||
+                        review.status ===
+                            selectedStatus;
+
+
+                    return (
+                        matchesSearch &&
+                        matchesStatus
+                    );
+                }
+            );
+
+
+        if (
+            filteredReviews.length === 0
+        ) {
+
+            reviewsContainer.innerHTML = `
+                <div class="project-empty">
+
+                    <div class="empty-icon">
+                        ★
+                    </div>
+
+                    <h3>
+                        No reviews found
+                    </h3>
+
+                    <p>
+                        Add your first client review.
+                    </p>
+
+                </div>
+            `;
+
+            return;
+        }
+
+
+        reviewsContainer.innerHTML =
+            filteredReviews
+                .map(
+                    review =>
+                        createReviewCard(
+                            review
+                        )
+                )
+                .join("");
+
+
+        attachReviewActions();
+    }
+
+
+
+    /* =====================================================
+       CREATE REVIEW CARD
+    ====================================================== */
+
+    function createReviewCard(
+        review
+    ) {
+
+        const rating =
+            Number(
+                review.rating || 5
+            );
+
+
+        const stars =
+            "★".repeat(rating) +
+            "☆".repeat(
+                5 - rating
+            );
+
+
+        const statusClass =
+            review.status === "published"
+                ? "status-published"
+                : "status-draft";
+
+
+        const featuredHtml =
+            review.featured
+                ? `
+                    <span class="project-featured-badge">
+                        ★ Featured
+                    </span>
+                  `
+                : "";
+
+
+        return `
+            <article
+                class="review-management-card"
+                data-review-id="${escapeReviewHtml(
+                    review.id
+                )}"
+            >
+
+                <div class="review-management-top">
+
+                    <span
+                        class="project-status-badge ${statusClass}"
+                    >
+                        ${escapeReviewHtml(
+                            review.status ||
+                            "draft"
+                        )}
+                    </span>
+
+                    ${featuredHtml}
+
+                </div>
+
+
+                <div class="review-stars">
+                    ${stars}
+                </div>
+
+
+                <blockquote>
+                    “${escapeReviewHtml(
+                        review.review
+                    )}”
+                </blockquote>
+
+
+                <div class="review-client">
+
+                    <strong>
+                        ${escapeReviewHtml(
+                            review.client_name
+                        )}
+                    </strong>
+
+                    ${
+                        review.client_role
+                            ? `
+                                <span>
+                                    ${escapeReviewHtml(
+                                        review.client_role
+                                    )}
+                                </span>
+                              `
+                            : ""
+                    }
+
+                </div>
+
+
+                <div class="manage-project-actions">
+
+                    <button
+                        type="button"
+                        class="dashboard-button edit-review-button"
+                        data-id="${escapeReviewHtml(
+                            review.id
+                        )}"
+                    >
+                        Edit
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="dashboard-button toggle-review-button"
+                        data-id="${escapeReviewHtml(
+                            review.id
+                        )}"
+                    >
+                        ${
+                            review.status ===
+                            "published"
+                                ? "Set Draft"
+                                : "Publish"
+                        }
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="dashboard-button feature-review-button"
+                        data-id="${escapeReviewHtml(
+                            review.id
+                        )}"
+                    >
+                        ${
+                            review.featured
+                                ? "Unfeature"
+                                : "Feature"
+                        }
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="dashboard-button delete-review-button"
+                        data-id="${escapeReviewHtml(
+                            review.id
+                        )}"
+                    >
+                        Delete
+                    </button>
+
+                </div>
+
+            </article>
+        `;
+    }
+
+
+
+    /* =====================================================
+       ATTACH REVIEW ACTIONS
+    ====================================================== */
+
+    function attachReviewActions() {
+
+        document
+            .querySelectorAll(
+                ".edit-review-button"
+            )
+            .forEach(button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        const review =
+                            allReviews.find(
+                                item =>
+                                    item.id ===
+                                    button.dataset.id
+                            );
+
+
+                        if (review) {
+
+                            openReviewModal(
+                                review
+                            );
+                        }
+                    }
+                );
+            });
+
+
+
+        document
+            .querySelectorAll(
+                ".toggle-review-button"
+            )
+            .forEach(button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        toggleReviewStatus(
+                            button.dataset.id
+                        );
+                    }
+                );
+            });
+
+
+
+        document
+            .querySelectorAll(
+                ".feature-review-button"
+            )
+            .forEach(button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        toggleReviewFeatured(
+                            button.dataset.id
+                        );
+                    }
+                );
+            });
+
+
+
+        document
+            .querySelectorAll(
+                ".delete-review-button"
+            )
+            .forEach(button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        deleteReview(
+                            button.dataset.id
+                        );
+                    }
+                );
+            });
+    }
+
+
+
+    /* =====================================================
+       OPEN MODAL
+    ====================================================== */
+
+    function openReviewModal(
+        review = null
+    ) {
+
+        if (!reviewModal) {
+            return;
+        }
+
+
+        document.getElementById(
+            "reviewModalTitle"
+        ).textContent =
+            review
+                ? "Edit Review"
+                : "Add Review";
+
+
+        document.getElementById(
+            "reviewId"
+        ).value =
+            review
+                ? review.id
+                : "";
+
+
+        document.getElementById(
+            "clientName"
+        ).value =
+            review?.client_name || "";
+
+
+        document.getElementById(
+            "clientRole"
+        ).value =
+            review?.client_role || "";
+
+
+        document.getElementById(
+            "reviewText"
+        ).value =
+            review?.review || "";
+
+
+        document.getElementById(
+            "reviewRating"
+        ).value =
+            String(
+                review?.rating || 5
+            );
+
+
+        document.getElementById(
+            "reviewFeatured"
+        ).checked =
+            Boolean(
+                review?.featured
+            );
+
+
+        document.getElementById(
+            "reviewStatus"
+        ).value =
+            review?.status ||
+            "published";
+
+
+        const formMessage =
+            document.getElementById(
+                "reviewFormMessage"
+            );
+
+
+        if (formMessage) {
+            formMessage.textContent =
+                "";
+        }
+
+
+        reviewModal.classList.add(
+            "active"
+        );
+
+
+        document.body.classList.add(
+            "modal-open"
+        );
+    }
+
+
+
+    /* =====================================================
+       CLOSE MODAL
+    ====================================================== */
+
+    function closeReviewModal() {
+
+        if (!reviewModal) {
+            return;
+        }
+
+
+        reviewModal.classList.remove(
+            "active"
+        );
+
+
+        document.body.classList.remove(
+            "modal-open"
+        );
+
+
+        if (reviewForm) {
+            reviewForm.reset();
+        }
+    }
+
+
+
+    /* =====================================================
+       ADD REVIEW BUTTON
+    ====================================================== */
+
+    const addReviewButton =
+        document.getElementById(
+            "addReviewButton"
+        );
+
+
+    if (addReviewButton) {
+
+        addReviewButton.addEventListener(
+            "click",
+            () => {
+
+                openReviewModal();
+            }
+        );
+    }
+
+
+
+    /* =====================================================
+       CLOSE BUTTONS
+    ====================================================== */
+
+    const closeReviewButton =
+        document.getElementById(
+            "closeReviewModal"
+        );
+
+
+    const cancelReviewButton =
+        document.getElementById(
+            "cancelReview"
+        );
+
+
+    if (closeReviewButton) {
+
+        closeReviewButton.addEventListener(
+            "click",
+            closeReviewModal
+        );
+    }
+
+
+    if (cancelReviewButton) {
+
+        cancelReviewButton.addEventListener(
+            "click",
+            closeReviewModal
+        );
+    }
+
+
+
+    /* =====================================================
+       CLOSE OUTSIDE MODAL
+    ====================================================== */
+
+    if (reviewModal) {
+
+        reviewModal.addEventListener(
+            "click",
+            event => {
+
+                if (
+                    event.target ===
+                    reviewModal
+                ) {
+
+                    closeReviewModal();
+                }
+            }
+        );
+    }
+
+
+
+    /* =====================================================
+       SAVE REVIEW
+    ====================================================== */
+
+    if (reviewForm) {
+
+        reviewForm.addEventListener(
+            "submit",
+            async event => {
+
+                event.preventDefault();
+
+
+                const saveButton =
+                    reviewForm.querySelector(
+                        "button[type='submit']"
+                    );
+
+
+                const formMessage =
+                    document.getElementById(
+                        "reviewFormMessage"
+                    );
+
+
+                const reviewId =
+                    document.getElementById(
+                        "reviewId"
+                    ).value;
+
+
+                const clientName =
+                    document.getElementById(
+                        "clientName"
+                    ).value.trim();
+
+
+                const clientRole =
+                    document.getElementById(
+                        "clientRole"
+                    ).value.trim();
+
+
+                const reviewText =
+                    document.getElementById(
+                        "reviewText"
+                    ).value.trim();
+
+
+                const rating =
+                    Number(
+                        document.getElementById(
+                            "reviewRating"
+                        ).value
+                    );
+
+
+                const featured =
+                    document.getElementById(
+                        "reviewFeatured"
+                    ).checked;
+
+
+                const status =
+                    document.getElementById(
+                        "reviewStatus"
+                    ).value;
+
+
+                if (!clientName) {
+
+                    formMessage.textContent =
+                        "Client name is required.";
+
+                    formMessage.style.color =
+                        "#ff6b6b";
+
+                    return;
+                }
+
+
+                if (!reviewText) {
+
+                    formMessage.textContent =
+                        "Please enter the review.";
+
+                    formMessage.style.color =
+                        "#ff6b6b";
+
+                    return;
+                }
+
+
+                saveButton.disabled =
+                    true;
+
+                saveButton.textContent =
+                    "Saving...";
+
+
+                formMessage.textContent =
+                    "Saving review...";
+
+                formMessage.style.color =
+                    "#b46cff";
+
+
+                try {
+
+                    const session =
+                        await protectAdminPage();
+
+
+                    if (!session) {
+                        return;
+                    }
+
+
+                    const reviewData = {
+
+                        client_name:
+                            clientName,
+
+                        client_role:
+                            clientRole ||
+                            null,
+
+                        review:
+                            reviewText,
+
+                        rating:
+                            rating,
+
+                        featured:
+                            featured,
+
+                        status:
+                            status
+
+                    };
+
+
+                    let error;
+
+
+                    if (reviewId) {
+
+                        ({
+                            error
+                        } =
+                            await portfolioSupabase
+                                .from("reviews")
+                                .update(
+                                    reviewData
+                                )
+                                .eq(
+                                    "id",
+                                    reviewId
+                                ));
+
+                    } else {
+
+                        ({
+                            error
+                        } =
+                            await portfolioSupabase
+                                .from("reviews")
+                                .insert(
+                                    reviewData
+                                ));
+                    }
+
+
+                    if (error) {
+                        throw error;
+                    }
+
+
+                    formMessage.textContent =
+                        reviewId
+                            ? "Review updated successfully!"
+                            : "Review added successfully!";
+
+
+                    formMessage.style.color =
+                        "#7dff9b";
+
+
+                    saveButton.textContent =
+                        "Saved ✓";
+
+
+                    await loadReviews();
+
+
+                    setTimeout(() => {
+
+                        closeReviewModal();
+
+                        saveButton.disabled =
+                            false;
+
+                        saveButton.textContent =
+                            "Save Review";
+
+                    }, 700);
+
+
+                } catch (error) {
+
+                    console.error(
+                        "SAVE REVIEW ERROR:",
+                        error
+                    );
+
+
+                    formMessage.textContent =
+                        error.message ||
+                        "Could not save review.";
+
+                    formMessage.style.color =
+                        "#ff6b6b";
+
+
+                    saveButton.disabled =
+                        false;
+
+                    saveButton.textContent =
+                        "Save Review";
+                }
+
+            }
+        );
+    }
+
+
+
+    /* =====================================================
+       TOGGLE STATUS
+    ====================================================== */
+
+    async function toggleReviewStatus(
+        reviewId
+    ) {
+
+        const review =
+            allReviews.find(
+                item =>
+                    item.id ===
+                    reviewId
+            );
+
+
+        if (!review) {
+            return;
+        }
+
+
+        const newStatus =
+            review.status === "published"
+                ? "draft"
+                : "published";
+
+
+        const {
+            error
+        } =
+            await portfolioSupabase
+                .from("reviews")
+                .update({
+                    status:
+                        newStatus
+                })
+                .eq(
+                    "id",
+                    reviewId
+                );
+
+
+        if (error) {
+
+            console.error(
+                "REVIEW STATUS ERROR:",
+                error
+            );
+
+            alert(
+                "Could not update review status."
+            );
+
+            return;
+        }
+
+
+        await loadReviews();
+    }
+
+
+
+    /* =====================================================
+       TOGGLE FEATURED
+    ====================================================== */
+
+    async function toggleReviewFeatured(
+        reviewId
+    ) {
+
+        const review =
+            allReviews.find(
+                item =>
+                    item.id ===
+                    reviewId
+            );
+
+
+        if (!review) {
+            return;
+        }
+
+
+        const {
+            error
+        } =
+            await portfolioSupabase
+                .from("reviews")
+                .update({
+                    featured:
+                        !review.featured
+                })
+                .eq(
+                    "id",
+                    reviewId
+                );
+
+
+        if (error) {
+
+            console.error(
+                "REVIEW FEATURED ERROR:",
+                error
+            );
+
+            alert(
+                "Could not update featured status."
+            );
+
+            return;
+        }
+
+
+        await loadReviews();
+    }
+
+
+
+    /* =====================================================
+       DELETE REVIEW
+    ====================================================== */
+
+    async function deleteReview(
+        reviewId
+    ) {
+
+        const review =
+            allReviews.find(
+                item =>
+                    item.id ===
+                    reviewId
+            );
+
+
+        if (!review) {
+            return;
+        }
+
+
+        const confirmed =
+            confirm(
+                `Delete "${review.client_name}"'s review?\n\nThis cannot be undone.`
+            );
+
+
+        if (!confirmed) {
+            return;
+        }
+
+
+        reviewMessage.textContent =
+            "Deleting review...";
+
+
+        reviewMessage.style.color =
+            "#b46cff";
+
+
+        try {
+
+            const {
+                error
+            } =
+                await portfolioSupabase
+                    .from("reviews")
+                    .delete()
+                    .eq(
+                        "id",
+                        reviewId
+                    );
+
+
+            if (error) {
+                throw error;
+            }
+
+
+            reviewMessage.textContent =
+                "Review deleted.";
+
+            reviewMessage.style.color =
+                "#7dff9b";
+
+
+            await loadReviews();
+
+
+        } catch (error) {
+
+            console.error(
+                "DELETE REVIEW ERROR:",
+                error
+            );
+
+
+            reviewMessage.textContent =
+                error.message ||
+                "Could not delete review.";
+
+            reviewMessage.style.color =
+                "#ff6b6b";
+        }
+    }
+
+
+
+    /* =====================================================
+       SEARCH + FILTER
+    ====================================================== */
+
+    if (reviewSearch) {
+
+        reviewSearch.addEventListener(
+            "input",
+            renderReviews
+        );
+    }
+
+
+    if (reviewStatusFilter) {
+
+        reviewStatusFilter.addEventListener(
+            "change",
+            renderReviews
+        );
+    }
+
+
+
+    /* =====================================================
+       INITIAL LOAD
+    ====================================================== */
+
+    loadReviews();
+}
