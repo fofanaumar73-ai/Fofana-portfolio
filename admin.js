@@ -43,6 +43,9 @@ const isAddProjectPage =
 const isManageProjectsPage =
     currentPage === "manage-projects.html";
 
+const isManageReviewsPage =
+    currentPage === "manage-reviews.html";
+
 
 /* =========================================================
    3. GET CURRENT SESSION
