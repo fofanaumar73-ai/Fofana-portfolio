@@ -356,6 +356,35 @@ if (manageProjectsButton) {
 
 
 /* =========================================================
+   9B. MANAGE REVIEWS BUTTON
+========================================================= */
+
+const manageReviewsButton =
+    document.getElementById(
+        "manageReviewsButton"
+    );
+
+if (manageReviewsButton) {
+
+    manageReviewsButton.addEventListener(
+        "click",
+        async () => {
+
+            const session =
+                await protectAdminPage();
+
+            if (!session) {
+                return;
+            }
+
+            window.location.href =
+                "manage-reviews.html";
+        }
+    );
+}
+
+
+/* =========================================================
    10. CLEAN FILE NAME
 ========================================================= */
 
