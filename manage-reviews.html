@@ -1,1 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Manage Reviews | Fofana</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+</head>
+
+<body class="dashboard-page">
+
+    <header class="dashboard-header">
+
+        <div class="dashboard-container">
+
+            <a
+                href="dashboard.html"
+                class="brand"
+            >
+                FOFANA<span>.</span>
+            </a>
+
+            <div class="manage-header-actions">
+
+                <button
+                    id="addReviewButton"
+                    class="dashboard-logout"
+                >
+                    + Add Review
+                </button>
+
+                <a
+                    href="dashboard.html"
+                    class="dashboard-logout"
+                >
+                    ← Dashboard
+                </a>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <main class="dashboard-main">
+
+        <div class="dashboard-container">
+
+            <div class="dashboard-heading">
+
+                <p class="admin-label">
+                    PORTFOLIO MANAGEMENT
+                </p>
+
+                <h1>
+                    Manage Reviews
+                </h1>
+
+                <p>
+                    Add, edit, publish and manage client testimonials.
+                </p>
+
+            </div>
+
+
+            <section class="review-controls">
+
+                <input
+                    type="search"
+                    id="reviewSearch"
+                    placeholder="Search reviews..."
+                >
+
+                <select id="reviewStatusFilter">
+
+                    <option value="">
+                        All Status
+                    </option>
+
+                    <option value="published">
+                        Published
+                    </option>
+
+                    <option value="draft">
+                        Draft
+                    </option>
+
+                </select>
+
+            </section>
+
+
+            <p
+                id="reviewMessage"
+                class="login-message"
+            ></p>
+
+
+            <section
+                id="reviewsContainer"
+                class="reviews-management-grid"
+            >
+
+                <div class="project-loading">
+                    Loading reviews...
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         REVIEW MODAL
+    ====================================================== -->
+
+    <div
+        id="reviewModal"
+        class="edit-project-modal"
+    >
+
+        <div class="edit-project-modal-card">
+
+            <div class="edit-project-modal-header">
+
+                <div>
+
+                    <p class="admin-label">
+                        CLIENT TESTIMONIAL
+                    </p>
+
+                    <h2 id="reviewModalTitle">
+                        Add Review
+                    </h2>
+
+                </div>
+
+                <button
+                    type="button"
+                    id="closeReviewModal"
+                    class="close-edit-project"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <form id="reviewForm">
+
+                <input
+                    type="hidden"
+                    id="reviewId"
+                >
+
+
+                <div class="project-form-group">
+
+                    <label for="clientName">
+                        Client Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="clientName"
+                        placeholder="e.g. Sarah Johnson"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="project-form-group">
+
+                    <label for="clientRole">
+                        Client Role / Business
+                    </label>
+
+                    <input
+                        type="text"
+                        id="clientRole"
+                        placeholder="e.g. Founder, Luxe Homes"
+                    >
+
+                </div>
+
+
+                <div class="project-form-group">
+
+                    <label for="reviewText">
+                        Client Review
+                    </label>
+
+                    <textarea
+                        id="reviewText"
+                        rows="6"
+                        placeholder="What did the client say about your work?"
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <div class="project-form-group">
+
+                    <label for="reviewRating">
+                        Rating
+                    </label>
+
+                    <select id="reviewRating">
+
+                        <option value="5">
+                            5 Stars
+                        </option>
+
+                        <option value="4">
+                            4 Stars
+                        </option>
+
+                        <option value="3">
+                            3 Stars
+                        </option>
+
+                        <option value="2">
+                            2 Stars
+                        </option>
+
+                        <option value="1">
+                            1 Star
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="project-checkbox">
+
+                    <input
+                        type="checkbox"
+                        id="reviewFeatured"
+                    >
+
+                    <label for="reviewFeatured">
+                        Feature this review
+                    </label>
+
+                </div>
+
+
+                <div class="project-form-group">
+
+                    <label for="reviewStatus">
+                        Status
+                    </label>
+
+                    <select id="reviewStatus">
+
+                        <option value="published">
+                            Published
+                        </option>
+
+                        <option value="draft">
+                            Draft
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <p
+                    id="reviewFormMessage"
+                    class="login-message"
+                ></p>
+
+
+                <div class="edit-project-form-actions">
+
+                    <button
+                        type="button"
+                        id="cancelReview"
+                        class="dashboard-button"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="dashboard-button project-submit-button"
+                    >
+                        Save Review
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
+
+    <script src="admin.js"></script>
+
+</body>
+
+</html>
