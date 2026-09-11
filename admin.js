@@ -2782,8 +2782,5 @@ if (reviewsContainer) {
         );
 
 
-    document
-        .getElementById(
-            "cancelReview"
-        )
+  
         
