@@ -1195,6 +1195,7 @@ document.addEventListener(
         } else {
 
             loadPortfolioProjects();
+            loadClientReviews();
 
         }
 
