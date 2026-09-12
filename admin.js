@@ -2778,6 +2778,11 @@ if (
         ).value =
             review?.review || "";
 
+        document.getElementById(
+            "reviewCategory"
+        ).value =
+            review?.category || "";
+
 
         document.getElementById(
             "reviewRating"
@@ -2989,9 +2994,12 @@ if (
                         document.getElementById(
                             "reviewRating"
                         ).value
-                 const category =
-    document.getElementById("reviewCategory").value 
                     );
+
+                const category =
+                    document.getElementById(
+                        "reviewCategory"
+                    ).value;
 
 
                 const featured =
@@ -3074,10 +3082,11 @@ if (
                             featured,
 
                         status:
-                            status
+                            status,
 
-                       category: category,
-                       
+                        category:
+                            category ||
+                            null
                     };
 
 
