@@ -523,6 +523,153 @@ async function loadPortfolioProjects() {
 
 
 /* =========================================================
+   PUBLIC CLIENT REVIEWS
+   ========================================================= */
+
+async function loadClientReviews() {
+    const reviewsContainer =
+        document.getElementById("reviewsContainer");
+
+    if (!reviewsContainer) return;
+
+    try {
+        const { data: reviews, error } =
+            await portfolioSupabase
+                .from("reviews")
+                .select("*")
+                .eq("status", "published")
+                .order("created_at", {
+                    ascending: false
+                });
+
+        if (error) {
+            console.error(
+                "Error loading reviews:",
+                error
+            );
+
+            reviewsContainer.innerHTML = `
+                <p class="reviews-empty">
+                    Unable to load reviews right now.
+                </p>
+            `;
+
+            return;
+        }
+
+        if (!reviews || reviews.length === 0) {
+            reviewsContainer.innerHTML = `
+                <p class="reviews-empty">
+                    Client testimonials will appear here.
+                </p>
+            `;
+
+            return;
+        }
+
+        reviewsContainer.innerHTML = reviews
+            .map(review => {
+
+                const rating =
+                    Math.min(
+                        5,
+                        Math.max(
+                            1,
+                            Number(review.rating) || 5
+                        )
+                    );
+
+                const stars =
+                    "★".repeat(rating) +
+                    "☆".repeat(5 - rating);
+
+                const category =
+                    review.category
+                        ? `
+                            <span class="review-category">
+                                ${escapeHtml(review.category)}
+                            </span>
+                          `
+                        : "";
+
+                const featured =
+                    review.featured
+                        ? `
+                            <span class="review-featured">
+                                Featured
+                            </span>
+                          `
+                        : "";
+
+                return `
+                    <article class="public-review-card">
+
+                        <div class="public-review-top">
+                            <div class="review-stars">
+                                ${stars}
+                            </div>
+
+                            <div class="review-badges">
+                                ${category}
+                                ${featured}
+                            </div>
+                        </div>
+
+                        <p class="public-review-text">
+                            “${escapeHtml(review.review)}”
+                        </p>
+
+                        <div class="public-review-client">
+                            <div class="review-client-avatar">
+                                ${escapeHtml(
+                                    (review.client_name || "C")
+                                        .charAt(0)
+                                        .toUpperCase()
+                                )}
+                            </div>
+
+                            <div>
+                                <h4>
+                                    ${escapeHtml(
+                                        review.client_name
+                                    )}
+                                </h4>
+
+                                ${
+                                    review.client_role
+                                        ? `
+                                            <p>
+                                                ${escapeHtml(
+                                                    review.client_role
+                                                )}
+                                            </p>
+                                          `
+                                        : ""
+                                }
+                            </div>
+                        </div>
+
+                    </article>
+                `;
+            })
+            .join("");
+
+    } catch (error) {
+        console.error(
+            "Unexpected review loading error:",
+            error
+        );
+
+        reviewsContainer.innerHTML = `
+            <p class="reviews-empty">
+                Unable to load reviews right now.
+            </p>
+        `;
+    }
+}
+
+
+/* =========================================================
    9. INITIALIZE ALL PORTFOLIO SLIDERS
    ========================================================= */
 
