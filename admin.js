@@ -2989,6 +2989,8 @@ if (
                         document.getElementById(
                             "reviewRating"
                         ).value
+                 const category =
+    document.getElementById("reviewCategory").value 
                     );
 
 
