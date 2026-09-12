@@ -3076,6 +3076,8 @@ if (
                         status:
                             status
 
+                       category: category,
+                       
                     };
 
 
