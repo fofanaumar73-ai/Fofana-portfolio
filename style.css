@@ -4037,3 +4037,463 @@ body > * {
     }
 
 }
+
+/* =========================================================
+   FINAL PORTFOLIO VISUAL UPGRADE
+========================================================= */
+
+/* Deep purple at the top, gradually becoming black */
+html {
+    scroll-behavior: smooth;
+    background: #020004;
+}
+
+body {
+    background:
+        radial-gradient(circle at 50% 0%, rgba(82, 32, 110, 0.28) 0%, rgba(26, 8, 38, 0.18) 28%, rgba(5, 2, 8, 0.82) 62%, #000 100%),
+        linear-gradient(180deg, #13051d 0%, #09030d 34%, #030106 68%, #000 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+main {
+    position: relative;
+    background:
+        linear-gradient(
+            180deg,
+            rgba(18, 5, 28, 0.30) 0%,
+            rgba(8, 2, 12, 0.42) 35%,
+            rgba(2, 1, 4, 0.72) 70%,
+            rgba(0, 0, 0, 0.96) 100%
+        );
+}
+
+/* Remove the old water-wave feeling around the logo */
+.logo-showcase {
+    position: relative;
+    min-height: 430px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: transparent !important;
+}
+
+.logo-showcase::before,
+.logo-showcase::after {
+    display: none !important;
+}
+
+.logo-orbit {
+    border-color: rgba(255, 196, 80, 0.08) !important;
+    opacity: .45;
+}
+
+.floating-logo-frame {
+    position: relative;
+    width: 270px;
+    height: 270px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: premiumLogoFloat 4.8s ease-in-out infinite;
+    filter: drop-shadow(0 32px 32px rgba(255, 174, 54, 0.12));
+}
+
+.floating-logo-frame::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 38px;
+    padding: 2px;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, .34),
+        rgba(255, 202, 93, .62),
+        rgba(155, 72, 255, .48),
+        rgba(255, 255, 255, .12)
+    );
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+}
+
+.floating-logo-frame::after {
+    content: "";
+    position: absolute;
+    width: 150px;
+    height: 28px;
+    bottom: -34px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 181, 57, .62);
+    filter: blur(25px);
+    border-radius: 50%;
+    opacity: .8;
+}
+
+.logo-frame-glow {
+    position: absolute;
+    inset: 12px;
+    border-radius: 30px;
+    background:
+        linear-gradient(145deg, rgba(255,255,255,.10), rgba(255,255,255,.025)),
+        rgba(18, 10, 27, .48);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.15),
+        0 22px 55px rgba(0,0,0,.45),
+        0 0 35px rgba(255,184,65,.10);
+}
+
+.floating-logo {
+    position: relative;
+    z-index: 2;
+    width: 205px;
+    height: 205px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255,255,255,.035);
+    border: 1px solid rgba(255,255,255,.12);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.12),
+        0 18px 45px rgba(0,0,0,.45);
+}
+
+.portfolio-logo {
+    max-width: 78%;
+    max-height: 78%;
+    object-fit: contain;
+}
+
+@keyframes premiumLogoFloat {
+    0%, 100% {
+        transform: translate3d(0, -8px, 0) rotate(-1deg);
+    }
+    50% {
+        transform: translate3d(0, 10px, 0) rotate(1deg);
+    }
+}
+
+/* Creative project previews: two visual panels */
+.design-section .full-width-slider {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.design-section .design-preview {
+    flex: 1 1 0;
+    min-width: 0;
+    margin: 0 !important;
+}
+
+.design-preview-secondary {
+    flex: 1 1 0;
+    min-width: 0;
+    height: 100%;
+    min-height: 390px;
+    border-radius: 24px;
+    background:
+        linear-gradient(145deg, rgba(255,255,255,.07), rgba(255,255,255,.015));
+    background-size: cover;
+    background-position: center;
+    border: 1px solid rgba(255,255,255,.09);
+    box-shadow:
+        0 24px 55px rgba(0,0,0,.35),
+        inset 0 1px 0 rgba(255,255,255,.10);
+}
+
+/* No descriptions inside project cards/slides */
+.web-projects .slide-info > p:nth-of-type(2) {
+    display: none !important;
+}
+
+.web-projects .slide-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.web-projects .slide-link {
+    margin-top: 14px;
+}
+
+/* Creative project info: keep only category, title and project button */
+.design-section .creative-slide-info > p:last-of-type {
+    display: none !important;
+}
+
+/* Make dynamic creative project button clearly VIEW PROJECTS */
+.design-section .creative-slide-info .slide-link {
+    font-size: 12px;
+}
+
+/* Service information */
+.service-information {
+    margin: 36px auto 0;
+    max-width: 920px;
+    text-align: left;
+}
+
+.service-information h3 {
+    margin-bottom: 18px;
+}
+
+.service-information > p {
+    margin-bottom: 20px;
+}
+
+.service-information ul {
+    margin: 0;
+    padding-left: 22px;
+}
+
+.service-information li {
+    margin: 0 0 14px;
+    line-height: 1.75;
+}
+
+.service-information li span {
+    margin-left: 4px;
+}
+
+/* Animated client reviews button */
+.reviews-cta-wrap {
+    display: flex;
+    justify-content: center;
+    padding: 20px 20px 70px;
+}
+
+.reviews-cta-button {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+    min-width: 250px;
+    padding: 17px 22px;
+    border-radius: 999px;
+    color: #fff;
+    text-decoration: none;
+    overflow: hidden;
+    isolation: isolate;
+    background: rgba(255,255,255,.055);
+    border: 1px solid rgba(255,255,255,.16);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.12),
+        0 18px 45px rgba(0,0,0,.35);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    animation:
+        reviewButtonFloat 3.8s ease-in-out infinite,
+        reviewButtonHue 6s linear infinite;
+}
+
+.reviews-cta-button::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    z-index: -2;
+    border-radius: inherit;
+    background: conic-gradient(
+        from 0deg,
+        #ff0000,
+        #ff7a00,
+        #ffe600,
+        #22d34f,
+        #00cfff,
+        #3478ff,
+        #8b38ff,
+        #e600ff,
+        #ff0000
+    );
+    animation: rainbowSpin 4.5s linear infinite;
+}
+
+.reviews-cta-button::after {
+    content: "";
+    position: absolute;
+    inset: 2px;
+    z-index: -1;
+    border-radius: inherit;
+    background: rgba(11, 5, 17, .84);
+}
+
+.reviews-cta-button span,
+.reviews-cta-button strong {
+    position: relative;
+    z-index: 2;
+}
+
+.reviews-cta-button strong {
+    font-size: 18px;
+    transition: transform .3s ease;
+}
+
+.reviews-cta-button:hover strong {
+    transform: translateX(5px);
+}
+
+@keyframes reviewButtonFloat {
+    0%, 100% {
+        transform: translateX(-7px) translateY(0);
+    }
+    50% {
+        transform: translateX(7px) translateY(-4px);
+    }
+}
+
+@keyframes reviewButtonHue {
+    0%, 100% { filter: hue-rotate(0deg); }
+    50% { filter: hue-rotate(35deg); }
+}
+
+@keyframes rainbowSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Dedicated public reviews area */
+.public-reviews-section {
+    position: relative;
+    padding: 100px 5% 115px;
+    background:
+        linear-gradient(180deg, rgba(8,2,13,.25), rgba(0,0,0,.90));
+}
+
+.public-reviews-container {
+    width: 100%;
+    max-width: 1180px;
+    margin: 42px auto 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.public-review-card {
+    position: relative;
+    padding: 28px;
+    border-radius: 24px;
+    background: rgba(255,255,255,.045);
+    border: 1px solid rgba(255,255,255,.09);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.08),
+        0 20px 50px rgba(0,0,0,.28);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+.public-review-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.review-stars {
+    letter-spacing: 3px;
+}
+
+.public-review-text {
+    line-height: 1.8;
+    margin: 22px 0;
+    color: rgba(255,255,255,.78);
+}
+
+.public-review-client {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.review-client-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,184,65,.12);
+    border: 1px solid rgba(255,184,65,.28);
+}
+
+.public-review-client h4 {
+    margin: 0 0 3px;
+}
+
+.public-review-client p {
+    margin: 0;
+    opacity: .55;
+    font-size: 12px;
+}
+
+/* Golden light under quality circle */
+.quality-circle {
+    position: relative;
+}
+
+.quality-circle::after {
+    content: "";
+    position: absolute;
+    width: 62%;
+    height: 25px;
+    left: 19%;
+    bottom: -30px;
+    border-radius: 50%;
+    background: rgba(255, 184, 65, .58);
+    filter: blur(25px);
+    z-index: -1;
+}
+
+/* Darker lower sections */
+.quality-section,
+.why-section,
+.faq-section,
+.stats-section,
+.contact-section {
+    background: transparent !important;
+}
+
+/* Mobile */
+@media (max-width: 760px) {
+    .logo-showcase {
+        min-height: 350px;
+    }
+
+    .floating-logo-frame {
+        width: 220px;
+        height: 220px;
+    }
+
+    .floating-logo {
+        width: 168px;
+        height: 168px;
+    }
+
+    .design-section .full-width-slider {
+        flex-direction: column;
+    }
+
+    .design-section .design-preview,
+    .design-preview-secondary {
+        width: 100%;
+        flex: none;
+        min-height: 270px;
+    }
+
+    .public-reviews-container {
+        grid-template-columns: 1fr;
+    }
+
+    .reviews-cta-button {
+        min-width: 220px;
+        padding: 15px 18px;
+    }
+}
