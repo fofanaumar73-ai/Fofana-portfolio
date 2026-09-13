@@ -2,7 +2,6 @@
    FOFANA PORTFOLIO — MAIN JAVASCRIPT
    ========================================================= */
 
-
 /* =========================================================
    1. SUPABASE INITIALIZATION
    ========================================================= */
@@ -21,148 +20,164 @@ const portfolioSupabase =
 
 
 /* =========================================================
-   2. MOBILE NAVIGATION
-   ========================================================= */
-
-const menuToggle =
-    document.querySelector(".menu-toggle");
-
-const navMenu =
-    document.querySelector(".nav-menu");
-
-if (menuToggle && navMenu) {
-
-    menuToggle.addEventListener("click", () => {
-
-        navMenu.classList.toggle("mobile-active");
-
-    });
-
-    navMenu.querySelectorAll("a").forEach(link => {
-
-        link.addEventListener("click", () => {
-
-            navMenu.classList.remove("mobile-active");
-
-        });
-
-    });
-
-}
-
-
-/* =========================================================
-   3. FAQ ACCORDION
-   ========================================================= */
-
-const faqItems =
-    document.querySelectorAll(".faq-item");
-
-faqItems.forEach(item => {
-
-    const question =
-        item.querySelector(".faq-question");
-
-    if (!question) return;
-
-    question.addEventListener("click", () => {
-
-        const alreadyOpen =
-            item.classList.contains("active");
-
-        faqItems.forEach(otherItem => {
-
-            otherItem.classList.remove("active");
-
-        });
-
-        if (!alreadyOpen) {
-
-            item.classList.add("active");
-
-        }
-
-    });
-
-});
-
-
-/* =========================================================
-   4. CATEGORY HELPERS
+   2. HELPERS
    ========================================================= */
 
 function normalizeCategory(category) {
+    if (!category) return "";
 
-    if (!category) {
-        return "";
-    }
-
-    return category
+    return String(category)
         .toLowerCase()
         .trim()
         .replace(/_/g, "-")
         .replace(/\s+/g, "-");
-
 }
 
-
-/* =========================================================
-   5. HTML ESCAPE
-   ========================================================= */
-
 function escapeHtml(value) {
-
     return String(value ?? "")
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
+}
 
+function getProjectCover(project) {
+    if (project?.cover_image_url) {
+        return project.cover_image_url;
+    }
+
+    if (
+        Array.isArray(project?.project_images) &&
+        project.project_images.length
+    ) {
+        return project.project_images[0];
+    }
+
+    return "";
+}
+
+function getProjectImages(project) {
+    const images = [];
+
+    const cover = getProjectCover(project);
+
+    if (cover) {
+        images.push(cover);
+    }
+
+    if (Array.isArray(project?.project_images)) {
+        project.project_images.forEach(image => {
+            if (!image) return;
+
+            if (!images.includes(image)) {
+                images.push(image);
+            }
+        });
+    }
+
+    return images;
 }
 
 
 /* =========================================================
-   6. CREATE PROJECT SLIDE
+   3. MOBILE NAVIGATION
    ========================================================= */
 
-function createProjectSlide(project, category) {
+function initializeMobileNavigation() {
+    const menuToggle =
+        document.querySelector(".menu-toggle");
 
+    const navMenu =
+        document.querySelector(".nav-menu");
+
+    if (!menuToggle || !navMenu) return;
+
+    menuToggle.addEventListener("click", event => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const isOpen =
+            navMenu.classList.toggle("mobile-active");
+
+        menuToggle.setAttribute(
+            "aria-expanded",
+            String(isOpen)
+        );
+
+        menuToggle.setAttribute(
+            "aria-label",
+            isOpen
+                ? "Close navigation"
+                : "Open navigation"
+        );
+    });
+
+    navMenu.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", () => {
+            navMenu.classList.remove("mobile-active");
+
+            menuToggle.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+            menuToggle.setAttribute(
+                "aria-label",
+                "Open navigation"
+            );
+        });
+    });
+}
+
+
+/* =========================================================
+   4. FAQ ACCORDION
+   ========================================================= */
+
+function initializeFaq() {
+    const faqItems =
+        document.querySelectorAll(".faq-item");
+
+    faqItems.forEach(item => {
+        const question =
+            item.querySelector(".faq-question");
+
+        if (!question) return;
+
+        question.addEventListener("click", () => {
+            const alreadyOpen =
+                item.classList.contains("active");
+
+            faqItems.forEach(otherItem => {
+                otherItem.classList.remove("active");
+            });
+
+            if (!alreadyOpen) {
+                item.classList.add("active");
+            }
+        });
+    });
+}
+
+
+/* =========================================================
+   5. PROJECT SLIDE BUILDERS
+   ========================================================= */
+
+function createWebProjectSlide(project) {
     const slide =
         document.createElement("div");
 
     slide.className = "portfolio-slide";
 
-    const cover =
-        project.cover_image_url ||
-        (
-            Array.isArray(project.project_images) &&
-            project.project_images.length
-                ? project.project_images[0]
-                : ""
-        );
-
-    const title =
-        project.title || "Untitled Project";
-
-    const description =
-        project.description || "";
-
-    const normalized =
-        normalizeCategory(category);
-
-    const buttonText =
-        normalized === "web-development"
-            ? "VIEW PROJECT →"
-            : "LEARN MORE →";
+    const cover = getProjectCover(project);
+    const title = project.title || "Untitled Project";
 
     slide.innerHTML = `
-
         <div class="slide-preview">
-
             ${
                 cover
-
                     ? `
                         <img
                             src="${escapeHtml(cover)}"
@@ -170,59 +185,142 @@ function createProjectSlide(project, category) {
                             loading="lazy"
                         >
                     `
-
                     : `
                         <div class="slide-placeholder">
-                            <span>
-                                PROJECT PREVIEW
-                            </span>
+                            <span>PROJECT PREVIEW</span>
                         </div>
                     `
             }
-
         </div>
 
         <div class="slide-info">
+            <p>WEB DEVELOPMENT</p>
+
+            <h3>
+                ${escapeHtml(title)}
+            </h3>
+
+            <a
+                href="${escapeHtml(
+                    project.project_link ||
+                    `project.html?id=${encodeURIComponent(project.id)}`
+                )}"
+                class="slide-link"
+                ${
+                    project.project_link
+                        ? 'target="_blank" rel="noopener noreferrer"'
+                        : ""
+                }
+            >
+                VIEW PROJECTS →
+            </a>
+        </div>
+    `;
+
+    return slide;
+}
+
+
+function createCreativeSlide(project, category) {
+    const slide =
+        document.createElement("div");
+
+    slide.className = "creative-slide";
+
+    const title =
+        project.title || "Untitled Project";
+
+    const images =
+        getProjectImages(project).slice(0, 2);
+
+    const categoryName =
+        category
+            .replace(/-/g, " ")
+            .toUpperCase();
+
+    let imageMarkup = "";
+
+    if (images.length === 0) {
+        imageMarkup = `
+            <div class="slide-placeholder">
+                <span>
+                    ${escapeHtml(categoryName)} PREVIEW
+                </span>
+            </div>
+        `;
+    }
+
+    else if (images.length === 1) {
+        imageMarkup = `
+            <div class="design-preview-single">
+                <img
+                    src="${escapeHtml(images[0])}"
+                    alt="${escapeHtml(title)}"
+                    loading="lazy"
+                >
+            </div>
+        `;
+    }
+
+    else {
+        imageMarkup = `
+            <div class="design-preview-grid">
+
+                <div class="design-preview-image">
+                    <img
+                        src="${escapeHtml(images[0])}"
+                        alt="${escapeHtml(title)} - Page 1"
+                        loading="lazy"
+                    >
+                </div>
+
+                <div class="design-preview-image">
+                    <img
+                        src="${escapeHtml(images[1])}"
+                        alt="${escapeHtml(title)} - Page 2"
+                        loading="lazy"
+                    >
+                </div>
+
+            </div>
+        `;
+    }
+
+    slide.innerHTML = `
+        <div class="design-preview">
+            ${imageMarkup}
+        </div>
+
+        <div class="creative-slide-info">
 
             <p>
-                ${escapeHtml(
-                    category
-                        .replace(/-/g, " ")
-                        .toUpperCase()
-                )}
+                ${escapeHtml(categoryName)}
             </p>
 
             <h3>
                 ${escapeHtml(title)}
             </h3>
 
-            <p>
-                ${escapeHtml(description)}
-            </p>
-
             <a
                 href="project.html?id=${encodeURIComponent(project.id)}"
-                class="slide-link"
+                class="slide-link creative-page-link"
             >
-                ${buttonText}
+                VIEW PAGES →
             </a>
 
         </div>
-
     `;
 
     return slide;
-
 }
 
 
 /* =========================================================
-   7. INITIALIZE SLIDER
+   6. SLIDER ENGINE
    ========================================================= */
 
-function initializeSlider(slider, projects, category) {
-
-    if (!slider) return;
+function setupSlider(slider, slides) {
+    if (!slider || !slides.length) return;
 
     const previousButton =
         slider.querySelector(".slider-prev");
@@ -230,233 +328,218 @@ function initializeSlider(slider, projects, category) {
     const nextButton =
         slider.querySelector(".slider-next");
 
-    let slides = [];
     let currentIndex = 0;
     let autoSlideTimer = null;
 
-    /*
-       Find the existing slide container.
-    */
-
-    const existingSlide =
-        slider.querySelector(".portfolio-slide") ||
-        slider.querySelector(".design-preview");
-
-    /*
-       If no projects exist, leave the placeholder.
-    */
-
-    if (!projects || projects.length === 0) {
-
-        return;
-
-    }
-
-
-    /*
-       Create a dedicated track.
-    */
-
-    let track =
-        slider.querySelector(".portfolio-slider-track");
-
-    if (!track) {
-
-        track =
-            document.createElement("div");
-
-        track.className =
-            "portfolio-slider-track";
-
-        slider.insertBefore(
-            track,
-            nextButton
-        );
-
-    }
-
-    track.innerHTML = "";
-
-    /*
-       Create all project slides.
-    */
-
-    projects.forEach(project => {
-
-        const slide =
-            createProjectSlide(
-                project,
-                category
-            );
-
-        track.appendChild(slide);
-
-    });
-
-    slides =
-        Array.from(
-            track.children
-        );
-
-
-    /*
-       Hide all slides except first.
-    */
-
     function showSlide(index) {
-
-        if (!slides.length) return;
-
         currentIndex =
-            (index + slides.length) %
-            slides.length;
+            (index + slides.length) % slides.length;
 
         slides.forEach((slide, i) => {
-
             slide.classList.toggle(
                 "active",
                 i === currentIndex
             );
-
         });
-
     }
 
-
-    /*
-       NEXT
-    */
-
     function nextSlide() {
+        if (slides.length < 2) return;
 
         showSlide(
             currentIndex + 1
         );
-
     }
 
-
-    /*
-       PREVIOUS
-    */
-
     function previousSlide() {
+        if (slides.length < 2) return;
 
         showSlide(
             currentIndex - 1
         );
-
     }
 
-
-    /*
-       RESET AUTO SLIDE TIMER
-    */
-
-    function resetAutoSlide() {
+    function stopAutoSlide() {
+        if (!autoSlideTimer) return;
 
         clearInterval(
             autoSlideTimer
         );
 
-        if (slides.length > 1) {
+        autoSlideTimer = null;
+    }
 
+    function startAutoSlide() {
+        stopAutoSlide();
+
+        if (slides.length > 1) {
             autoSlideTimer =
                 setInterval(
                     nextSlide,
                     5000
                 );
-
         }
-
     }
 
-
-    /*
-       NEXT BUTTON
-    */
-
     if (nextButton) {
-
         nextButton.addEventListener(
             "click",
             () => {
-
                 nextSlide();
-
-                resetAutoSlide();
-
+                startAutoSlide();
             }
         );
-
     }
 
-
-    /*
-       PREVIOUS BUTTON
-    */
-
     if (previousButton) {
-
         previousButton.addEventListener(
             "click",
             () => {
-
                 previousSlide();
-
-                resetAutoSlide();
-
+                startAutoSlide();
             }
         );
-
     }
-
-
-    /*
-       START FIRST SLIDE
-    */
-
-    showSlide(0);
-
-    resetAutoSlide();
-
-
-    /*
-       Pause when mouse is over slider.
-       This prevents the slide changing while
-       someone is reading it.
-    */
 
     slider.addEventListener(
         "mouseenter",
-        () => {
-
-            clearInterval(
-                autoSlideTimer
-            );
-
-        }
+        stopAutoSlide
     );
-
 
     slider.addEventListener(
         "mouseleave",
-        () => {
-
-            resetAutoSlide();
-
-        }
+        startAutoSlide
     );
 
+    showSlide(0);
+
+    startAutoSlide();
 }
 
 
 /* =========================================================
-   8. LOAD PORTFOLIO PROJECTS
+   7. WEB SLIDER
+   ========================================================= */
+
+function initializeWebSlider(
+    slider,
+    projects
+) {
+    if (!slider) return;
+
+    const track =
+        slider.querySelector(
+            ".portfolio-slider-track"
+        );
+
+    if (!track) return;
+
+    if (!projects.length) {
+        return;
+    }
+
+    track.innerHTML = "";
+
+    projects.forEach(project => {
+        track.appendChild(
+            createWebProjectSlide(project)
+        );
+    });
+
+    const slides =
+        Array.from(
+            track.querySelectorAll(
+                ".portfolio-slide"
+            )
+        );
+
+    setupSlider(
+        slider,
+        slides
+    );
+}
+
+
+/* =========================================================
+   8. CREATIVE SLIDERS
+   ========================================================= */
+
+function initializeCreativeSlider(
+    slider,
+    projects,
+    category
+) {
+    if (!slider) return;
+
+    const track =
+        slider.querySelector(
+            ".portfolio-slider-track"
+        );
+
+    if (!track) return;
+
+    if (!projects.length) {
+        return;
+    }
+
+    track.innerHTML = "";
+
+    projects.forEach(project => {
+        track.appendChild(
+            createCreativeSlide(
+                project,
+                category
+            )
+        );
+    });
+
+    const slides =
+        Array.from(
+            track.querySelectorAll(
+                ".creative-slide"
+            )
+        );
+
+    setupSlider(
+        slider,
+        slides
+    );
+
+    updateCreativeProjectButtons(
+        slider.closest(
+            ".portfolio-section"
+        )
+    );
+}
+
+
+function updateCreativeProjectButtons(
+    section
+) {
+    if (!section) return;
+
+    /*
+       Remove any old static project buttons.
+
+       VIEW PAGES now exists directly
+       underneath each project slide.
+    */
+
+    section
+        .querySelectorAll(
+            ".creative-project-link"
+        )
+        .forEach(button => {
+            button.remove();
+        });
+}
+
+
+/* =========================================================
+   9. LOAD PROJECTS FROM SUPABASE
    ========================================================= */
 
 async function loadPortfolioProjects() {
-
     try {
 
         const {
@@ -464,23 +547,18 @@ async function loadPortfolioProjects() {
             error
         } =
             await portfolioSupabase
-
                 .from("projects")
-
                 .select("*")
-
                 .eq(
                     "status",
                     "published"
                 )
-
                 .order(
                     "created_at",
                     {
                         ascending: false
                     }
                 );
-
 
         if (error) {
 
@@ -490,25 +568,15 @@ async function loadPortfolioProjects() {
             );
 
             return;
-
         }
 
-
-        console.log(
-            "Portfolio projects loaded:",
-            projects
-        );
-
-
-        if (!projects) {
+        if (!Array.isArray(projects)) {
             return;
         }
-
 
         initializePortfolioSliders(
             projects
         );
-
 
     } catch (error) {
 
@@ -516,172 +584,17 @@ async function loadPortfolioProjects() {
             "Unexpected portfolio error:",
             error
         );
-
-    }
-
-}
-
-
-/* =========================================================
-   PUBLIC CLIENT REVIEWS
-   ========================================================= */
-
-async function loadClientReviews() {
-    const reviewsContainer =
-        document.getElementById("reviewsContainer");
-
-    if (!reviewsContainer) return;
-
-    try {
-        const { data: reviews, error } =
-            await portfolioSupabase
-                .from("reviews")
-                .select("*")
-                .eq("status", "published")
-                .order("created_at", {
-                    ascending: false
-                });
-
-        if (error) {
-            console.error(
-                "Error loading reviews:",
-                error
-            );
-
-            reviewsContainer.innerHTML = `
-                <p class="reviews-empty">
-                    Unable to load reviews right now.
-                </p>
-            `;
-
-            return;
-        }
-
-        if (!reviews || reviews.length === 0) {
-            reviewsContainer.innerHTML = `
-                <p class="reviews-empty">
-                    Client testimonials will appear here.
-                </p>
-            `;
-
-            return;
-        }
-
-        reviewsContainer.innerHTML = reviews
-            .map(review => {
-
-                const rating =
-                    Math.min(
-                        5,
-                        Math.max(
-                            1,
-                            Number(review.rating) || 5
-                        )
-                    );
-
-                const stars =
-                    "★".repeat(rating) +
-                    "☆".repeat(5 - rating);
-
-                const category =
-                    review.category
-                        ? `
-                            <span class="review-category">
-                                ${escapeHtml(review.category)}
-                            </span>
-                          `
-                        : "";
-
-                const featured =
-                    review.featured
-                        ? `
-                            <span class="review-featured">
-                                Featured
-                            </span>
-                          `
-                        : "";
-
-                return `
-                    <article class="public-review-card">
-
-                        <div class="public-review-top">
-                            <div class="review-stars">
-                                ${stars}
-                            </div>
-
-                            <div class="review-badges">
-                                ${category}
-                                ${featured}
-                            </div>
-                        </div>
-
-                        <p class="public-review-text">
-                            “${escapeHtml(review.review)}”
-                        </p>
-
-                        <div class="public-review-client">
-                            <div class="review-client-avatar">
-                                ${escapeHtml(
-                                    (review.client_name || "C")
-                                        .charAt(0)
-                                        .toUpperCase()
-                                )}
-                            </div>
-
-                            <div>
-                                <h4>
-                                    ${escapeHtml(
-                                        review.client_name
-                                    )}
-                                </h4>
-
-                                ${
-                                    review.client_role
-                                        ? `
-                                            <p>
-                                                ${escapeHtml(
-                                                    review.client_role
-                                                )}
-                                            </p>
-                                          `
-                                        : ""
-                                }
-                            </div>
-                        </div>
-
-                    </article>
-                `;
-            })
-            .join("");
-
-    } catch (error) {
-        console.error(
-            "Unexpected review loading error:",
-            error
-        );
-
-        reviewsContainer.innerHTML = `
-            <p class="reviews-empty">
-                Unable to load reviews right now.
-            </p>
-        `;
     }
 }
 
-
-/* =========================================================
-   9. INITIALIZE ALL PORTFOLIO SLIDERS
-   ========================================================= */
 
 function initializePortfolioSliders(
     projects
 ) {
-
     const sections =
         document.querySelectorAll(
-            "[data-category]"
+            "main section[data-category]"
         );
-
 
     sections.forEach(section => {
 
@@ -690,42 +603,434 @@ function initializePortfolioSliders(
                 section.dataset.category
             );
 
-
         if (!category) return;
 
-
         const categoryProjects =
-            projects.filter(project => {
-
-                return normalizeCategory(
-                    project.category
-                ) === category;
-
-            });
-
-
-        const slider =
-            section.querySelector(
-                ".portfolio-slider, .full-width-slider"
+            projects.filter(
+                project =>
+                    normalizeCategory(
+                        project.category
+                    ) === category
             );
 
+        const webSlider =
+            section.querySelector(
+                ".portfolio-slider"
+            );
 
-        if (!slider) return;
+        if (webSlider) {
 
+            initializeWebSlider(
+                webSlider,
+                categoryProjects
+            );
 
-        initializeSlider(
-            slider,
-            categoryProjects,
-            category
-        );
+            return;
+        }
 
+        const creativeSlider =
+            section.querySelector(
+                ".full-width-slider"
+            );
+
+        if (creativeSlider) {
+
+            initializeCreativeSlider(
+                creativeSlider,
+                categoryProjects,
+                category
+            );
+        }
     });
-
 }
 
 
 /* =========================================================
-   10. PROJECT DETAIL PAGE
+   10. LEARN MORE — SERVICE INFORMATION
+   ========================================================= */
+
+function initializeLearnMore() {
+
+    const buttons =
+        document.querySelectorAll(
+            ".learn-more"
+        );
+
+    buttons.forEach(button => {
+
+        const targetId =
+            button.dataset.learnTarget;
+
+        if (!targetId) return;
+
+        const target =
+            document.getElementById(
+                targetId
+            );
+
+        if (!target) return;
+
+        button.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+
+        target.hidden = true;
+
+        target.classList.remove(
+            "open",
+            "active"
+        );
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                const isOpen =
+                    button.getAttribute(
+                        "aria-expanded"
+                    ) === "true";
+
+                /*
+                   Close all other
+                   service explanations.
+                */
+
+                buttons.forEach(
+                    otherButton => {
+
+                        const otherId =
+                            otherButton.dataset
+                                .learnTarget;
+
+                        const otherTarget =
+                            document.getElementById(
+                                otherId
+                            );
+
+                        if (
+                            !otherTarget ||
+                            otherButton === button
+                        ) {
+                            return;
+                        }
+
+                        otherButton.setAttribute(
+                            "aria-expanded",
+                            "false"
+                        );
+
+                        otherTarget.hidden = true;
+
+                        otherTarget.classList.remove(
+                            "open",
+                            "active"
+                        );
+                    }
+                );
+
+                button.setAttribute(
+                    "aria-expanded",
+                    String(!isOpen)
+                );
+
+                target.hidden = isOpen;
+
+                target.classList.toggle(
+                    "open",
+                    !isOpen
+                );
+
+                target.classList.toggle(
+                    "active",
+                    !isOpen
+                );
+
+                if (!isOpen) {
+
+                    setTimeout(
+                        () => {
+
+                            target.scrollIntoView({
+                                behavior: "smooth",
+                                block: "center"
+                            });
+
+                        },
+                        80
+                    );
+                }
+            }
+        );
+    });
+}
+
+
+/* =========================================================
+   11. CLIENT REVIEWS
+   ========================================================= */
+
+function initializeClientReviews() {
+
+    const button =
+        document.getElementById(
+            "clientReviewsButton"
+        );
+
+    const panel =
+        document.getElementById(
+            "clientReviewsPanel"
+        );
+
+    if (!button || !panel) {
+        return;
+    }
+
+    button.addEventListener(
+        "click",
+        async () => {
+
+            const isOpen =
+                button.getAttribute(
+                    "aria-expanded"
+                ) === "true";
+
+            button.setAttribute(
+                "aria-expanded",
+                String(!isOpen)
+            );
+
+            panel.hidden = isOpen;
+
+            panel.classList.toggle(
+                "active",
+                !isOpen
+            );
+
+            if (!isOpen) {
+
+                await loadPublicReviews();
+
+                setTimeout(
+                    () => {
+
+                        panel.scrollIntoView({
+                            behavior: "smooth",
+                            block: "center"
+                        });
+
+                    },
+                    80
+                );
+            }
+        }
+    );
+}
+
+
+async function loadPublicReviews() {
+
+    const container =
+        document.getElementById(
+            "reviewsContainer"
+        );
+
+    if (!container) {
+        return;
+    }
+
+    container.innerHTML =
+        `
+            <p class="reviews-loading">
+                Loading client reviews...
+            </p>
+        `;
+
+    try {
+
+        const {
+            data: reviews,
+            error
+        } =
+            await portfolioSupabase
+                .from("reviews")
+                .select("*")
+                .eq(
+                    "status",
+                    "published"
+                )
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                );
+
+        if (error) {
+
+            console.error(
+                "PUBLIC REVIEW ERROR:",
+                error
+            );
+
+            container.innerHTML =
+                `
+                    <p class="reviews-empty">
+                        Unable to load reviews right now.
+                    </p>
+                `;
+
+            return;
+        }
+
+        if (
+            !Array.isArray(reviews) ||
+            !reviews.length
+        ) {
+
+            container.innerHTML =
+                `
+                    <p class="reviews-empty">
+                        No client reviews yet.
+                    </p>
+                `;
+
+            return;
+        }
+
+        container.innerHTML =
+            reviews
+                .map(
+                    review =>
+                        createReviewCard(
+                            review
+                        )
+                )
+                .join("");
+
+    } catch (error) {
+
+        console.error(
+            "Unexpected review error:",
+            error
+        );
+
+        container.innerHTML =
+            `
+                <p class="reviews-empty">
+                    Unable to load reviews right now.
+                </p>
+            `;
+    }
+}
+
+
+function createReviewCard(
+    review
+) {
+
+    const rating =
+        Math.min(
+            5,
+            Math.max(
+                1,
+                Number(review.rating) || 5
+            )
+        );
+
+    const stars =
+        "★".repeat(rating) +
+        "☆".repeat(
+            5 - rating
+        );
+
+    const name =
+        review.client_name ||
+        "Client";
+
+    const role =
+        review.client_role ||
+        "";
+
+    const category =
+        review.category ||
+        "";
+
+    const initial =
+        escapeHtml(
+            name
+                .trim()
+                .charAt(0)
+                .toUpperCase() ||
+                "C"
+        );
+
+    return `
+        <article class="public-review-card">
+
+            <div class="public-review-top">
+
+                <div class="public-review-client">
+
+                    <div class="review-client-avatar">
+                        ${initial}
+                    </div>
+
+                    <div>
+
+                        <h4>
+                            ${escapeHtml(name)}
+                        </h4>
+
+                        ${
+                            role
+                                ? `
+                                    <p>
+                                        ${escapeHtml(role)}
+                                    </p>
+                                `
+                                : ""
+                        }
+
+                    </div>
+
+                </div>
+
+
+                <div class="review-badges">
+
+                    ${
+                        category
+                            ? `
+                                <span
+                                    class="review-category-badge"
+                                >
+                                    ${escapeHtml(category)}
+                                </span>
+                            `
+                            : ""
+                    }
+
+                    <span class="review-rating">
+                        ${stars}
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <p class="public-review-text">
+                ${escapeHtml(review.review)}
+            </p>
+
+        </article>
+    `;
+}
+
+
+/* =========================================================
+   12. PROJECT DETAIL PAGE
    ========================================================= */
 
 async function loadProjectDetails() {
@@ -738,7 +1043,6 @@ async function loadProjectDetails() {
     const projectId =
         params.get("id");
 
-
     if (!projectId) {
 
         showProjectError(
@@ -746,9 +1050,7 @@ async function loadProjectDetails() {
         );
 
         return;
-
     }
-
 
     try {
 
@@ -757,25 +1059,22 @@ async function loadProjectDetails() {
             error
         } =
             await portfolioSupabase
-
                 .from("projects")
-
                 .select("*")
-
                 .eq(
                     "id",
                     projectId
                 )
-
                 .eq(
                     "status",
                     "published"
                 )
-
                 .single();
 
-
-        if (error || !project) {
+        if (
+            error ||
+            !project
+        ) {
 
             console.error(
                 "PROJECT DETAIL ERROR:",
@@ -787,14 +1086,11 @@ async function loadProjectDetails() {
             );
 
             return;
-
         }
-
 
         displayProjectDetails(
             project
         );
-
 
     } catch (error) {
 
@@ -806,17 +1102,13 @@ async function loadProjectDetails() {
         showProjectError(
             "Something went wrong while loading this project."
         );
-
     }
-
 }
 
 
-/* =========================================================
-   11. DISPLAY PROJECT DETAILS
-   ========================================================= */
-
-function displayProjectDetails(project) {
+function displayProjectDetails(
+    project
+) {
 
     const title =
         document.getElementById(
@@ -853,7 +1145,6 @@ function displayProjectDetails(project) {
 
         title.textContent =
             project.title || "";
-
     }
 
 
@@ -862,27 +1153,29 @@ function displayProjectDetails(project) {
         category.textContent =
             project.category
                 ? project.category
-                    .replace(/-/g, " ")
+                    .replace(
+                        /-/g,
+                        " "
+                    )
                     .toUpperCase()
                 : "";
-
     }
 
 
     if (description) {
 
         description.textContent =
-            project.description || "";
-
+            project.description ||
+            "";
     }
 
-
-    /* COVER */
 
     if (cover) {
 
         const coverUrl =
-            project.cover_image_url;
+            getProjectCover(
+                project
+            );
 
         if (coverUrl) {
 
@@ -890,7 +1183,8 @@ function displayProjectDetails(project) {
                 coverUrl;
 
             cover.alt =
-                project.title || "";
+                project.title ||
+                "";
 
             cover.style.display =
                 "block";
@@ -899,17 +1193,15 @@ function displayProjectDetails(project) {
 
             cover.style.display =
                 "none";
-
         }
-
     }
 
 
-    /* PROJECT LINK */
-
     if (externalLink) {
 
-        if (project.project_link) {
+        if (
+            project.project_link
+        ) {
 
             externalLink.href =
                 project.project_link;
@@ -927,17 +1219,14 @@ function displayProjectDetails(project) {
 
             externalLink.style.display =
                 "none";
-
         }
-
     }
 
 
-    /* GALLERY */
-
     if (gallery) {
 
-        gallery.innerHTML = "";
+        gallery.innerHTML =
+            "";
 
         const images =
             Array.isArray(
@@ -946,26 +1235,31 @@ function displayProjectDetails(project) {
                 ? project.project_images
                 : [];
 
-
         images.forEach(
-            (imageUrl, index) => {
+            (
+                imageUrl,
+                index
+            ) => {
 
                 if (!imageUrl) {
                     return;
                 }
-
 
                 const image =
                     document.createElement(
                         "img"
                     );
 
-
                 image.src =
                     imageUrl;
 
                 image.alt =
-                    `${project.title} - Page ${index + 1}`;
+                    `${
+                        project.title ||
+                        "Project"
+                    } - Page ${
+                        index + 1
+                    }`;
 
                 image.loading =
                     "lazy";
@@ -973,28 +1267,25 @@ function displayProjectDetails(project) {
                 image.className =
                     "project-gallery-image";
 
-
                 gallery.appendChild(
                     image
                 );
-
             }
         );
-
     }
 
 
     document.title =
-        `${project.title} | Fofana Umar`;
-
+        `${
+            project.title ||
+            "Project"
+        } | Fofana Umar`;
 }
 
 
-/* =========================================================
-   12. PROJECT ERROR
-   ========================================================= */
-
-function showProjectError(message) {
+function showProjectError(
+    message
+) {
 
     const loading =
         document.getElementById(
@@ -1011,7 +1302,6 @@ function showProjectError(message) {
 
         loading.style.display =
             "none";
-
     }
 
 
@@ -1022,9 +1312,7 @@ function showProjectError(message) {
 
         errorBox.style.display =
             "block";
-
     }
-
 }
 
 
@@ -1032,27 +1320,30 @@ function showProjectError(message) {
    13. SCROLL REVEAL
    ========================================================= */
 
-const revealElements =
-    document.querySelectorAll(
-        ".section-heading, .benefit-card, .stat, .service-information"
-    );
+function initializeScrollReveal() {
 
+    const revealElements =
+        document.querySelectorAll(
+            ".section-heading, .benefit-card, .stat, .service-information"
+        );
 
-if (
-    "IntersectionObserver"
-    in window
-) {
+    if (
+        "IntersectionObserver"
+        in window
+    ) {
 
-    const revealObserver =
-        new IntersectionObserver(
-            (entries) => {
+        const revealObserver =
+            new IntersectionObserver(
+                entries => {
 
-                entries.forEach(
-                    entry => {
+                    entries.forEach(
+                        entry => {
 
-                        if (
-                            entry.isIntersecting
-                        ) {
+                            if (
+                                !entry.isIntersecting
+                            ) {
+                                return;
+                            }
 
                             entry.target.classList.add(
                                 "revealed"
@@ -1061,33 +1352,40 @@ if (
                             revealObserver.unobserve(
                                 entry.target
                             );
-
                         }
+                    );
 
-                    }
+                },
+                {
+                    threshold: 0.12
+                }
+            );
+
+
+        revealElements.forEach(
+            element => {
+
+                element.classList.add(
+                    "reveal"
                 );
 
-            },
-            {
-                threshold: 0.12
+                revealObserver.observe(
+                    element
+                );
             }
         );
 
+    } else {
 
-    revealElements.forEach(
-        element => {
+        revealElements.forEach(
+            element => {
 
-            element.classList.add(
-                "reveal"
-            );
-
-            revealObserver.observe(
-                element
-            );
-
-        }
-    );
-
+                element.classList.add(
+                    "revealed"
+                );
+            }
+        );
+    }
 }
 
 
@@ -1095,25 +1393,26 @@ if (
    14. ACTIVE NAVIGATION
    ========================================================= */
 
-const sections =
-    document.querySelectorAll(
-        "main section[id]"
-    );
+function initializeActiveNavigation() {
 
-const navigationLinks =
-    document.querySelectorAll(
-        ".nav-menu a"
-    );
+    const pageSections =
+        document.querySelectorAll(
+            "main section[id]"
+        );
 
-
-window.addEventListener(
-    "scroll",
-    () => {
-
-        let currentSection = "";
+    const navigationLinks =
+        document.querySelectorAll(
+            ".nav-menu a[href^='#']"
+        );
 
 
-        sections.forEach(
+    function updateActiveNavigation() {
+
+        let currentSection =
+            "";
+
+
+        pageSections.forEach(
             section => {
 
                 const sectionTop =
@@ -1125,21 +1424,17 @@ window.addEventListener(
 
                 if (
                     window.scrollY >=
-                    sectionTop - 200 &&
+                        sectionTop - 200 &&
 
                     window.scrollY <
-                    sectionTop +
-                    sectionHeight -
-                    200
+                        sectionTop +
+                        sectionHeight -
+                        200
                 ) {
 
                     currentSection =
-                        section.getAttribute(
-                            "id"
-                        );
-
+                        section.id;
                 }
-
             }
         );
 
@@ -1162,28 +1457,70 @@ window.addEventListener(
                     link.classList.add(
                         "active"
                     );
-
                 }
-
             }
         );
-
     }
-);
+
+
+    window.addEventListener(
+        "scroll",
+        updateActiveNavigation,
+        {
+            passive: true
+        }
+    );
+
+
+    updateActiveNavigation();
+}
 
 
 /* =========================================================
-   15. INITIALIZE
+   15. REMOVE OLD CREATIVE STATIC BUTTONS
+   ========================================================= */
+
+function removeOldCreativeButtons() {
+
+    document
+        .querySelectorAll(
+            ".creative-project-link"
+        )
+        .forEach(
+            button => {
+                button.remove();
+            }
+        );
+}
+
+
+/* =========================================================
+   16. INITIALIZE
    ========================================================= */
 
 document.addEventListener(
     "DOMContentLoaded",
     () => {
 
+        initializeMobileNavigation();
+
+        initializeFaq();
+
+        initializeLearnMore();
+
+        initializeClientReviews();
+
+        initializeScrollReveal();
+
+        initializeActiveNavigation();
+
+        removeOldCreativeButtons();
+
+
         const isProjectPage =
             window.location.pathname
                 .toLowerCase()
-                .includes(
+                .endsWith(
                     "project.html"
                 );
 
@@ -1195,9 +1532,6 @@ document.addEventListener(
         } else {
 
             loadPortfolioProjects();
-            loadClientReviews();
-
         }
-
     }
 );
