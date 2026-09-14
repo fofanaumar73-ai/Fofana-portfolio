@@ -962,3 +962,889 @@ function initializeLearnMore() {
         }
     );
 }
+
+
+/* =========================================================
+   14. CLIENT REVIEWS
+   ========================================================= */
+
+function initializeClientReviews() {
+
+    const button =
+        document.getElementById(
+            "clientReviewsButton"
+        );
+
+
+    const panel =
+        document.getElementById(
+            "clientReviewsPanel"
+        );
+
+
+    if (
+        !button ||
+        !panel
+    ) {
+        return;
+    }
+
+
+    button.addEventListener(
+        "click",
+        async () => {
+
+            const isOpen =
+                button.getAttribute(
+                    "aria-expanded"
+                ) === "true";
+
+
+            button.setAttribute(
+                "aria-expanded",
+                String(!isOpen)
+            );
+
+
+            panel.hidden =
+                isOpen;
+
+
+            panel.classList.toggle(
+                "active",
+                !isOpen
+            );
+
+
+            if (!isOpen) {
+
+                await loadPublicReviews();
+
+
+                setTimeout(
+                    () => {
+
+                        panel.scrollIntoView({
+                            behavior:
+                                "smooth",
+
+                            block:
+                                "center"
+                        });
+
+                    },
+                    80
+                );
+            }
+
+        }
+    );
+}
+
+
+/* =========================================================
+   15. LOAD PUBLIC REVIEWS
+   ========================================================= */
+
+async function loadPublicReviews() {
+
+    const container =
+        document.getElementById(
+            "reviewsContainer"
+        );
+
+
+    if (!container) {
+        return;
+    }
+
+
+    container.innerHTML =
+        `
+            <p class="reviews-loading">
+                Loading client reviews...
+            </p>
+        `;
+
+
+    try {
+
+        const {
+            data: reviews,
+            error
+        } =
+            await portfolioSupabase
+                .from("reviews")
+                .select("*")
+                .eq(
+                    "status",
+                    "published"
+                )
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                );
+
+
+        if (error) {
+
+            console.error(
+                "PUBLIC REVIEW ERROR:",
+                error
+            );
+
+
+            container.innerHTML =
+                `
+                    <p class="reviews-empty">
+                        Unable to load reviews right now.
+                    </p>
+                `;
+
+
+            return;
+        }
+
+
+        if (
+            !Array.isArray(reviews) ||
+            !reviews.length
+        ) {
+
+            container.innerHTML =
+                `
+                    <p class="reviews-empty">
+                        No client reviews yet.
+                    </p>
+                `;
+
+
+            return;
+        }
+
+
+        container.innerHTML =
+            reviews
+                .map(
+                    review =>
+                        createReviewCard(
+                            review
+                        )
+                )
+                .join("");
+
+
+    } catch (error) {
+
+        console.error(
+            "Unexpected review error:",
+            error
+        );
+
+
+        container.innerHTML =
+            `
+                <p class="reviews-empty">
+                    Unable to load reviews right now.
+                </p>
+            `;
+    }
+}
+
+
+/* =========================================================
+   16. REVIEW CARD
+   ========================================================= */
+
+function createReviewCard(
+    review
+) {
+
+    const rating =
+        Math.min(
+            5,
+            Math.max(
+                1,
+                Number(
+                    review.rating
+                ) || 5
+            )
+        );
+
+
+    const stars =
+        "★".repeat(
+            rating
+        ) +
+        "☆".repeat(
+            5 - rating
+        );
+
+
+    const name =
+        review.client_name ||
+        "Client";
+
+
+    const role =
+        review.client_role ||
+        "";
+
+
+    const category =
+        review.category ||
+        "";
+
+
+    const initial =
+        escapeHtml(
+            name
+                .trim()
+                .charAt(0)
+                .toUpperCase() ||
+                "C"
+        );
+
+
+    return `
+        <article class="public-review-card">
+
+            <div class="public-review-top">
+
+                <div class="public-review-client">
+
+                    <div class="review-client-avatar">
+                        ${initial}
+                    </div>
+
+                    <div>
+
+                        <h4>
+                            ${escapeHtml(name)}
+                        </h4>
+
+                        ${
+                            role
+                                ? `
+                                    <p>
+                                        ${escapeHtml(role)}
+                                    </p>
+                                `
+                                : ""
+                        }
+
+                    </div>
+
+                </div>
+
+
+                <div class="review-badges">
+
+                    ${
+                        category
+                            ? `
+                                <span
+                                    class="review-category-badge"
+                                >
+                                    ${escapeHtml(category)}
+                                </span>
+                            `
+                            : ""
+                    }
+
+
+                    <span class="review-rating">
+                        ${stars}
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <p class="public-review-text">
+                ${escapeHtml(
+                    review.review
+                )}
+            </p>
+
+        </article>
+    `;
+}
+
+
+/* =========================================================
+   17. PROJECT DETAIL PAGE
+   ========================================================= */
+
+async function loadProjectDetails() {
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    const projectId =
+        params.get("id");
+
+
+    if (!projectId) {
+
+        showProjectError(
+            "No project was selected."
+        );
+
+        return;
+    }
+
+
+    try {
+
+        const {
+            data: project,
+            error
+        } =
+            await portfolioSupabase
+                .from("projects")
+                .select("*")
+                .eq(
+                    "id",
+                    projectId
+                )
+                .eq(
+                    "status",
+                    "published"
+                )
+                .single();
+
+
+        if (
+            error ||
+            !project
+        ) {
+
+            console.error(
+                "PROJECT DETAIL ERROR:",
+                error
+            );
+
+
+            showProjectError(
+                "Project could not be found."
+            );
+
+
+            return;
+        }
+
+
+        displayProjectDetails(
+            project
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Unexpected detail error:",
+            error
+        );
+
+
+        showProjectError(
+            "Something went wrong while loading this project."
+        );
+    }
+}
+
+
+/* =========================================================
+   18. DISPLAY PROJECT DETAILS
+   ========================================================= */
+
+function displayProjectDetails(
+    project
+) {
+
+    const title =
+        document.getElementById(
+            "projectTitle"
+        );
+
+
+    const category =
+        document.getElementById(
+            "projectCategory"
+        );
+
+
+    const description =
+        document.getElementById(
+            "projectDescription"
+        );
+
+
+    const cover =
+        document.getElementById(
+            "projectCover"
+        );
+
+
+    const gallery =
+        document.getElementById(
+            "projectGallery"
+        );
+
+
+    const externalLink =
+        document.getElementById(
+            "projectExternalLink"
+        );
+
+
+    if (title) {
+
+        title.textContent =
+            project.title ||
+            "";
+    }
+
+
+    if (category) {
+
+        category.textContent =
+            project.category
+                ? project.category
+                    .replace(
+                        /-/g,
+                        " "
+                    )
+                    .toUpperCase()
+                : "";
+    }
+
+
+    if (description) {
+
+        description.textContent =
+            project.description ||
+            "";
+    }
+
+
+    /*
+       COVER IMAGE
+    */
+
+    if (cover) {
+
+        const coverUrl =
+            getProjectCover(
+                project
+            );
+
+
+        if (coverUrl) {
+
+            cover.src =
+                coverUrl;
+
+
+            cover.alt =
+                project.title ||
+                "";
+
+
+            cover.style.display =
+                "block";
+
+        } else {
+
+            cover.style.display =
+                "none";
+        }
+    }
+
+
+    /*
+       LIVE PROJECT LINK
+    */
+
+    if (externalLink) {
+
+        if (
+            project.project_link
+        ) {
+
+            externalLink.href =
+                project.project_link;
+
+
+            externalLink.target =
+                "_blank";
+
+
+            externalLink.rel =
+                "noopener noreferrer";
+
+
+            externalLink.style.display =
+                "inline-flex";
+
+        } else {
+
+            externalLink.style.display =
+                "none";
+        }
+    }
+
+
+    /*
+       FULL PROJECT GALLERY
+
+       ALL uploaded project pages
+       are shown here.
+
+       Homepage = cover only.
+       Project page = all pages.
+    */
+
+    if (gallery) {
+
+        gallery.innerHTML =
+            "";
+
+
+        const images =
+            Array.isArray(
+                project.project_images
+            )
+                ? project.project_images
+                : [];
+
+
+        images.forEach(
+            (
+                imageUrl,
+                index
+            ) => {
+
+                if (!imageUrl) {
+                    return;
+                }
+
+
+                const image =
+                    document.createElement(
+                        "img"
+                    );
+
+
+                image.src =
+                    imageUrl;
+
+
+                image.alt =
+                    `${
+                        project.title ||
+                        "Project"
+                    } - Page ${
+                        index + 1
+                    }`;
+
+
+                image.loading =
+                    "lazy";
+
+
+                image.className =
+                    "project-gallery-image";
+
+
+                gallery.appendChild(
+                    image
+                );
+            }
+        );
+    }
+
+
+    document.title =
+        `${
+            project.title ||
+            "Project"
+        } | Fofana Umar`;
+}
+
+
+/* =========================================================
+   19. PROJECT ERROR
+   ========================================================= */
+
+function showProjectError(
+    message
+) {
+
+    const loading =
+        document.getElementById(
+            "projectLoading"
+        );
+
+
+    const errorBox =
+        document.getElementById(
+            "projectError"
+        );
+
+
+    if (loading) {
+
+        loading.style.display =
+            "none";
+    }
+
+
+    if (errorBox) {
+
+        errorBox.textContent =
+            message;
+
+
+        errorBox.style.display =
+            "block";
+    }
+}
+
+
+/* =========================================================
+   20. SCROLL REVEAL
+   ========================================================= */
+
+function initializeScrollReveal() {
+
+    const revealElements =
+        document.querySelectorAll(
+            ".section-heading, .benefit-card, .stat, .service-information"
+        );
+
+
+    if (
+        "IntersectionObserver"
+        in window
+    ) {
+
+        const revealObserver =
+            new IntersectionObserver(
+                entries => {
+
+                    entries.forEach(
+                        entry => {
+
+                            if (
+                                !entry.isIntersecting
+                            ) {
+                                return;
+                            }
+
+
+                            entry.target.classList.add(
+                                "revealed"
+                            );
+
+
+                            revealObserver.unobserve(
+                                entry.target
+                            );
+
+                        }
+                    );
+
+                },
+                {
+                    threshold:
+                        0.12
+                }
+            );
+
+
+        revealElements.forEach(
+            element => {
+
+                element.classList.add(
+                    "reveal"
+                );
+
+
+                revealObserver.observe(
+                    element
+                );
+            }
+        );
+
+
+    } else {
+
+        revealElements.forEach(
+            element => {
+
+                element.classList.add(
+                    "revealed"
+                );
+            }
+        );
+    }
+}
+
+
+/* =========================================================
+   21. ACTIVE NAVIGATION
+   ========================================================= */
+
+function initializeActiveNavigation() {
+
+    const pageSections =
+        document.querySelectorAll(
+            "main section[id]"
+        );
+
+
+    const navigationLinks =
+        document.querySelectorAll(
+            ".nav-menu a[href^='#']"
+        );
+
+
+    function updateActiveNavigation() {
+
+        let currentSection =
+            "";
+
+
+        pageSections.forEach(
+            section => {
+
+                const sectionTop =
+                    section.offsetTop;
+
+
+                const sectionHeight =
+                    section.offsetHeight;
+
+
+                if (
+                    window.scrollY >=
+                        sectionTop - 200 &&
+
+                    window.scrollY <
+                        sectionTop +
+                        sectionHeight -
+                        200
+                ) {
+
+                    currentSection =
+                        section.id;
+                }
+            }
+        );
+
+
+        navigationLinks.forEach(
+            link => {
+
+                link.classList.remove(
+                    "active"
+                );
+
+
+                if (
+                    link.getAttribute(
+                        "href"
+                    ) ===
+                    `#${currentSection}`
+                ) {
+
+                    link.classList.add(
+                        "active"
+                    );
+                }
+            }
+        );
+    }
+
+
+    window.addEventListener(
+        "scroll",
+        updateActiveNavigation,
+        {
+            passive: true
+        }
+    );
+
+
+    updateActiveNavigation();
+}
+
+
+/* =========================================================
+   22. REMOVE OLD CREATIVE STATIC BUTTONS
+   ========================================================= */
+
+function removeOldCreativeButtons() {
+
+    document
+        .querySelectorAll(
+            ".creative-project-link"
+        )
+        .forEach(
+            button => {
+                button.remove();
+            }
+        );
+}
+
+
+/* =========================================================
+   23. INITIALIZE
+   ========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        initializeMobileNavigation();
+
+        initializeFaq();
+
+        initializeLearnMore();
+
+        initializeClientReviews();
+
+        initializeScrollReveal();
+
+        initializeActiveNavigation();
+
+        removeOldCreativeButtons();
+
+
+        const isProjectPage =
+            window.location.pathname
+                .toLowerCase()
+                .endsWith(
+                    "project.html"
+                );
+
+
+        if (isProjectPage) {
+
+            loadProjectDetails();
+
+        } else {
+
+            loadPortfolioProjects();
+        }
+
+    }
+);
