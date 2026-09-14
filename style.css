@@ -5203,17 +5203,6 @@ button.cancel {
     }
 
 
-    .project-gallery-item img {
-        min-height: 0;
-
-        aspect-ratio: 16 / 10;
-
-        object-fit: cover;
-
-        border-radius: 12px;
-    }
-
-
     /* Manage Projects */
 
     .manage-projects-main {
