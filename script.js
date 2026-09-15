@@ -268,7 +268,7 @@ function createWebProjectSlide(project) {
                         : ""
                 }
             >
-                VIEW PROJECTS →
+                VISIT PROJECTS →
             </a>
 
         </div>
