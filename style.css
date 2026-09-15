@@ -2499,3 +2499,53 @@ a {
     }
 
 }
+
+
+/* =========================================================
+   ADMIN LOGIN LOGO — CIRCULAR GLASS FRAME
+   ========================================================= */
+
+.admin-login-logo {
+    width: 105px;
+    height: 105px;
+    margin: 0 auto 24px;
+    padding: 7px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+
+    box-shadow:
+        0 0 25px rgba(180, 108, 255, 0.25),
+        inset 0 0 20px rgba(255, 255, 255, 0.04);
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+
+    animation: adminLogoFloat 3s ease-in-out infinite;
+}
+
+.admin-login-logo img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    border-radius: 50%;
+    object-fit: contain;
+}
+
+@keyframes adminLogoFloat {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-7px);
+    }
+}
