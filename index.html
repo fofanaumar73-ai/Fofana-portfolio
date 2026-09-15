@@ -2,19 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>FOFANA. | Web Developer & Creative Designer</title>
-
     <meta
         name="description"
-        content="FOFANA. — Web development, brochure design, presentation design, ebook design, Instagram carousel design and pitch deck design."
+        content="Fofana Umar — Web Developer and Creative Designer."
     >
 
-    <link rel="stylesheet" href="style.css">
+    <title>FOFANA. | Web Developer & Creative Designer</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 </head>
 
 <body>
@@ -25,11 +29,34 @@
 
 <header class="site-header">
 
-    <div class="header-inner">
+    <div class="container nav-container">
 
-        <a href="#home" class="brand">
+        <a
+            href="index.html"
+            class="brand"
+        >
             FOFANA<span>.</span>
         </a>
+
+
+        <!-- DESKTOP NAVIGATION -->
+
+        <nav class="desktop-nav">
+
+            <a href="#home">Home</a>
+
+            <a href="#work">Work</a>
+
+            <a href="#why-us">Why Choose Us</a>
+
+            <a href="#faq">FAQ</a>
+
+            <a href="#contact">Contact</a>
+
+        </nav>
+
+
+        <!-- HAMBURGER -->
 
         <button
             class="menu-toggle"
@@ -42,70 +69,69 @@
             <span></span>
         </button>
 
-        <nav class="nav-menu">
-
-            <a href="#home">Home</a>
-
-            <a href="#web-development">
-                Web Development
-            </a>
-
-            <a href="#brochure-design">
-                Brochure
-            </a>
-
-            <a href="#presentation-design">
-                Presentation
-            </a>
-
-            <a href="#ebook-design">
-                Ebook
-            </a>
-
-            <a href="#instagram-carousel">
-                Instagram
-            </a>
-
-            <a href="#pitch-deck">
-                Pitch Deck
-            </a>
-
-            <a href="#faq">
-                FAQ
-            </a>
-
-        </nav>
-
     </div>
 
+
+    <!-- MOBILE MENU -->
+
+    <nav class="nav-menu">
+
+        <a href="#home">Home</a>
+
+        <a href="#work">Work</a>
+
+        <a href="#why-us">Why Choose Us</a>
+
+        <a href="#faq">FAQ</a>
+
+        <a href="#contact">Contact</a>
+
+        <!-- ADMIN ONLY INSIDE HAMBURGER -->
+
+        <a
+            href="admin.html"
+            class="admin-menu-link"
+        >
+            Admin Login
+        </a>
+
+    </nav>
+
 </header>
+
 
 
 <!-- =========================================================
      MAIN
 ========================================================= -->
 
-<main>
+<main id="home">
 
-    <!-- =====================================================
-         HERO
-    ====================================================== -->
 
-    <section
-        id="home"
-        class="hero-section"
-    >
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="hero-section">
+
+    <div class="container hero-container">
 
         <div class="hero-content">
 
-            <p class="eyebrow">
+            <p class="hero-label">
                 WEB DEVELOPER & CREATIVE DESIGNER
             </p>
 
-            <h1>
-                I BUILD DIGITAL EXPERIENCES
-                <span>THAT STAND OUT.</span>
+
+            <h1 class="hero-title">
+                I BUILD DIGITAL
+                <br>
+                EXPERIENCES
+                <br>
+                THAT
+                <span>STAND OUT.</span>
             </h1>
+
 
             <p class="hero-description">
                 Websites, presentations and visual experiences
@@ -113,17 +139,19 @@
                 memorable and ready for business.
             </p>
 
-            <div class="hero-actions">
+
+            <div class="hero-buttons">
 
                 <a
-                    href="#web-development"
+                    href="#work"
                     class="primary-button"
                 >
                     VIEW MY WORK
                 </a>
 
+
                 <a
-                    href="mailto:umarfofana90@gmail.com"
+                    href="#contact"
                     class="secondary-button"
                 >
                     LET'S WORK TOGETHER
@@ -134,31 +162,35 @@
         </div>
 
 
-        <!-- FLOATING LOGO -->
+        <!-- =================================================
+             FLOATING LOGO
+        ================================================= -->
 
-        <div class="floating-logo-wrap">
+        <div class="floating-logo">
 
-            <div class="floating-logo-glow"></div>
+            <div class="logo-glass">
 
-            <div class="floating-logo">
+                <div class="logo-circle">
 
-                <div class="glass-ring"></div>
+                    <img
+                        src="images/fofana-tech-logo.png"
+                        alt="Fofana Tech Logo"
+                    >
 
-                <img
-                    src="images/fofana-tech-logo.png"
-                    alt="FOFANA logo"
-                >
+                </div>
 
             </div>
 
         </div>
 
 
-        <!-- QUALITY BADGE -->
+        <!-- =================================================
+             QUALITY CIRCLE
+        ================================================= -->
 
-        <div class="quality-badge">
+        <div class="quality-circle">
 
-            <div class="quality-badge-inner">
+            <div class="quality-circle-inner">
 
                 <strong>100%</strong>
 
@@ -170,18 +202,22 @@
 
         </div>
 
-    </section>
+    </div>
+
+</section>
 
 
-    <!-- =====================================================
-         WEB DEVELOPMENT
-    ====================================================== -->
 
-    <section
-        id="web-development"
-        class="portfolio-section web-section"
-        data-category="web-development"
-    >
+<!-- =========================================================
+     WORK
+========================================================= -->
+
+<section
+    id="work"
+    class="work-section"
+>
+
+    <div class="container">
 
         <div class="section-heading">
 
@@ -190,926 +226,886 @@
             </p>
 
             <h2>
-                Web Development
+                DIGITAL WORK
+                <span>WITH PURPOSE.</span>
             </h2>
 
             <p>
-                Modern websites built to give businesses
-                a strong digital presence.
+                From websites to professional visual designs,
+                every project is created to make your brand
+                look better and communicate clearly.
             </p>
 
         </div>
 
 
-        <div class="portfolio-slider">
 
-            <button
-                class="slider-arrow slider-prev"
-                type="button"
-                aria-label="Previous website"
-            >
-                &#8592;
-            </button>
+<!-- =========================================================
+     WEB DEVELOPMENT
+========================================================= -->
+
+<section
+    class="portfolio-section"
+    data-category="web-development"
+    id="web-development"
+>
+
+    <div class="service-heading">
+
+        <p class="service-number">
+            01
+        </p>
+
+        <h2>
+            WEB DEVELOPMENT
+        </h2>
+
+        <p>
+            Modern websites built to give businesses
+            a professional digital presence.
+        </p>
+
+    </div>
 
 
-            <div class="portfolio-slider-track">
-                <!-- Projects loaded by script.js -->
-            </div>
+    <div class="portfolio-slider">
+
+        <button
+            class="slider-prev"
+            type="button"
+            aria-label="Previous project"
+        >
+            ←
+        </button>
 
 
-            <button
-                class="slider-arrow slider-next"
-                type="button"
-                aria-label="Next website"
-            >
-                &#8594;
-            </button>
-
-        </div>
-
-    </section>
+        <div class="portfolio-slider-track"></div>
 
 
-    <!-- =====================================================
-         BROCHURE DESIGN
-    ====================================================== -->
+        <button
+            class="slider-next"
+            type="button"
+            aria-label="Next project"
+        >
+            →
+        </button>
 
-    <section
-        id="brochure-design"
-        class="portfolio-section design-section"
-        data-category="brochure-design"
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     BROCHURE DESIGN
+========================================================= -->
+
+<section
+    class="portfolio-section design-section"
+    data-category="brochure-design"
+    id="brochure-design"
+>
+
+    <div class="service-heading">
+
+        <p class="service-number">
+            02
+        </p>
+
+        <h2>
+            BROCHURE DESIGN
+        </h2>
+
+        <p>
+            Professional brochures designed to present
+            your business clearly and attractively.
+        </p>
+
+    </div>
+
+
+    <div class="full-width-slider">
+
+        <button
+            class="slider-prev"
+            type="button"
+            aria-label="Previous brochure"
+        >
+            ←
+        </button>
+
+
+        <div class="portfolio-slider-track"></div>
+
+
+        <button
+            class="slider-next"
+            type="button"
+            aria-label="Next brochure"
+        >
+            →
+        </button>
+
+    </div>
+
+
+    <div class="service-action">
+
+        <button
+            class="learn-more"
+            type="button"
+            data-learn-target="brochure-info"
+        >
+            LEARN MORE
+        </button>
+
+    </div>
+
+
+    <div
+        class="service-information"
+        id="brochure-info"
+        hidden
     >
 
-        <div class="section-heading">
+        <h3>
+            WHY PROFESSIONAL BROCHURE DESIGN MATTERS
+        </h3>
 
-            <p class="section-label">
-                CREATIVE DESIGN
-            </p>
+        <p>
+            A professional brochure gives your business
+            a clear and credible way to present what you do.
+            Good design makes your information easier to
+            understand, strengthens your brand image and
+            helps potential clients remember your business.
+        </p>
 
-            <h2>
-                Brochure Design
-            </h2>
+    </div>
 
-            <p>
-                Professional brochures that present your
-                business clearly and beautifully.
-            </p>
-
-        </div>
-
-
-        <div class="full-width-slider">
-
-            <button
-                class="slider-arrow slider-prev"
-                type="button"
-                aria-label="Previous brochure"
-            >
-                &#8592;
-            </button>
+</section>
 
 
-            <div class="portfolio-slider-track">
-                <!-- Projects loaded by script.js -->
-            </div>
+
+<!-- =========================================================
+     PRESENTATION DESIGN
+========================================================= -->
+
+<section
+    class="portfolio-section design-section"
+    data-category="presentation-design"
+    id="presentation-design"
+>
+
+    <div class="service-heading">
+
+        <p class="service-number">
+            03
+        </p>
+
+        <h2>
+            PRESENTATION DESIGN
+        </h2>
+
+        <p>
+            Presentations designed to make your ideas
+            clear, convincing and memorable.
+        </p>
+
+    </div>
 
 
-            <button
-                class="slider-arrow slider-next"
-                type="button"
-                aria-label="Next brochure"
-            >
-                &#8594;
-            </button>
+    <div class="full-width-slider">
 
-        </div>
-
-
-        <div class="learn-more-wrap">
-
-            <button
-                class="learn-more glass-button"
-                type="button"
-                data-learn-target="brochureInfo"
-            >
-                LEARN MORE
-            </button>
-
-        </div>
-
-
-        <div
-            id="brochureInfo"
-            class="service-information"
-            hidden
+        <button
+            class="slider-prev"
+            type="button"
+            aria-label="Previous presentation"
         >
+            ←
+        </button>
 
-            <p class="service-information-label">
-                BROCHURE DESIGN
-            </p>
+
+        <div class="portfolio-slider-track"></div>
+
+
+        <button
+            class="slider-next"
+            type="button"
+            aria-label="Next presentation"
+        >
+            →
+        </button>
+
+    </div>
+
+
+    <div class="service-action">
+
+        <button
+            class="learn-more"
+            type="button"
+            data-learn-target="presentation-info"
+        >
+            LEARN MORE
+        </button>
+
+    </div>
+
+
+    <div
+        class="service-information"
+        id="presentation-info"
+        hidden
+    >
+
+        <h3>
+            WHY PROFESSIONAL PRESENTATION DESIGN MATTERS
+        </h3>
+
+        <p>
+            A strong presentation helps your audience
+            understand your message quickly while making
+            your business look prepared, professional and
+            trustworthy.
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     EBOOK DESIGN
+========================================================= -->
+
+<section
+    class="portfolio-section design-section"
+    data-category="ebook-design"
+    id="ebook-design"
+>
+
+    <div class="service-heading">
+
+        <p class="service-number">
+            04
+        </p>
+
+        <h2>
+            EBOOK DESIGN
+        </h2>
+
+        <p>
+            Clean and engaging ebook designs that make
+            your content easier to read and remember.
+        </p>
+
+    </div>
+
+
+    <div class="full-width-slider">
+
+        <button
+            class="slider-prev"
+            type="button"
+            aria-label="Previous ebook"
+        >
+            ←
+        </button>
+
+
+        <div class="portfolio-slider-track"></div>
+
+
+        <button
+            class="slider-next"
+            type="button"
+            aria-label="Next ebook"
+        >
+            →
+        </button>
+
+    </div>
+
+
+    <div class="service-action">
+
+        <button
+            class="learn-more"
+            type="button"
+            data-learn-target="ebook-info"
+        >
+            LEARN MORE
+        </button>
+
+    </div>
+
+
+    <div
+        class="service-information"
+        id="ebook-info"
+        hidden
+    >
+
+        <h3>
+            WHY PROFESSIONAL EBOOK DESIGN MATTERS
+        </h3>
+
+        <p>
+            Professional ebook design turns your content
+            into a polished digital product that is easier
+            to read, share and trust.
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     INSTAGRAM CAROUSEL
+========================================================= -->
+
+<section
+    class="portfolio-section design-section"
+    data-category="instagram-carousel"
+    id="instagram-carousel"
+>
+
+    <div class="service-heading">
+
+        <p class="service-number">
+            05
+        </p>
+
+        <h2>
+            INSTAGRAM CAROUSEL
+        </h2>
+
+        <p>
+            Scroll-stopping carousel designs created
+            to communicate your message visually.
+        </p>
+
+    </div>
+
+
+    <div class="full-width-slider">
+
+        <button
+            class="slider-prev"
+            type="button"
+            aria-label="Previous carousel"
+        >
+            ←
+        </button>
+
+
+        <div class="portfolio-slider-track"></div>
+
+
+        <button
+            class="slider-next"
+            type="button"
+            aria-label="Next carousel"
+        >
+            →
+        </button>
+
+    </div>
+
+
+    <div class="service-action">
+
+        <button
+            class="learn-more"
+            type="button"
+            data-learn-target="instagram-info"
+        >
+            LEARN MORE
+        </button>
+
+    </div>
+
+
+    <div
+        class="service-information"
+        id="instagram-info"
+        hidden
+    >
+
+        <h3>
+            WHY PROFESSIONAL INSTAGRAM CAROUSEL DESIGN MATTERS
+        </h3>
+
+        <p>
+            Well-designed Instagram carousels help your
+            audience understand your message while giving
+            your brand a consistent and professional appearance.
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     PITCH DECK
+========================================================= -->
+
+<section
+    class="portfolio-section design-section"
+    data-category="pitch-deck"
+    id="pitch-deck"
+>
+
+    <div class="service-heading">
+
+        <p class="service-number">
+            06
+        </p>
+
+        <h2>
+            PITCH DECK DESIGN
+        </h2>
+
+        <p>
+            Powerful pitch decks designed to communicate
+            ideas, opportunities and business potential.
+        </p>
+
+    </div>
+
+
+    <div class="full-width-slider">
+
+        <button
+            class="slider-prev"
+            type="button"
+            aria-label="Previous pitch deck"
+        >
+            ←
+        </button>
+
+
+        <div class="portfolio-slider-track"></div>
+
+
+        <button
+            class="slider-next"
+            type="button"
+            aria-label="Next pitch deck"
+        >
+            →
+        </button>
+
+    </div>
+
+
+    <div class="service-action">
+
+        <button
+            class="learn-more"
+            type="button"
+            data-learn-target="pitch-info"
+        >
+            LEARN MORE
+        </button>
+
+    </div>
+
+
+    <div
+        class="service-information"
+        id="pitch-info"
+        hidden
+    >
+
+        <h3>
+            WHY PROFESSIONAL PITCH DECK DESIGN MATTERS
+        </h3>
+
+        <p>
+            A professional pitch deck gives your idea a
+            structured visual story that can help investors,
+            clients and partners understand the opportunity
+            behind your business.
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     QUALITY DELIVERY
+     IMMEDIATELY AFTER PITCH DECK
+========================================================= -->
+
+<div class="quality-section">
+
+    <div class="quality-circle quality-circle-large">
+
+        <div class="quality-circle-inner">
+
+            <strong>100%</strong>
+
+            <span>QUALITY</span>
+
+            <span>DELIVERY</span>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     WHY CHOOSE US
+========================================================= -->
+
+<section
+    id="why-us"
+    class="why-section"
+>
+
+    <div class="section-heading">
+
+        <p class="section-label">
+            WHY CHOOSE US
+        </p>
+
+        <h2>
+            DESIGN THAT
+            <span>DELIVERS.</span>
+        </h2>
+
+    </div>
+
+
+    <div class="benefits-grid">
+
+        <article class="benefit-card">
+
+            <span class="benefit-number">
+                01
+            </span>
 
             <h3>
-                WHY PROFESSIONAL BROCHURE DESIGN MATTERS
+                PROFESSIONAL
             </h3>
 
             <p>
-                A professional brochure gives your business
-                a clear and attractive way to communicate
-                its products, services and value.
+                Every project is designed with a polished
+                and professional appearance.
             </p>
 
-            <p>
-                Good design helps people understand your
-                message quickly while making your brand
-                look trustworthy and professional.
-            </p>
-
-        </div>
-
-    </section>
+        </article>
 
 
-    <!-- =====================================================
-         PRESENTATION DESIGN
-    ====================================================== -->
+        <article class="benefit-card">
 
-    <section
-        id="presentation-design"
-        class="portfolio-section design-section"
-        data-category="presentation-design"
-    >
-
-        <div class="section-heading">
-
-            <p class="section-label">
-                CREATIVE DESIGN
-            </p>
-
-            <h2>
-                Presentation Design
-            </h2>
-
-            <p>
-                Presentations designed to communicate ideas
-                with clarity and impact.
-            </p>
-
-        </div>
-
-
-        <div class="full-width-slider">
-
-            <button
-                class="slider-arrow slider-prev"
-                type="button"
-                aria-label="Previous presentation"
-            >
-                &#8592;
-            </button>
-
-
-            <div class="portfolio-slider-track">
-                <!-- Projects loaded by script.js -->
-            </div>
-
-
-            <button
-                class="slider-arrow slider-next"
-                type="button"
-                aria-label="Next presentation"
-            >
-                &#8594;
-            </button>
-
-        </div>
-
-
-        <div class="learn-more-wrap">
-
-            <button
-                class="learn-more glass-button"
-                type="button"
-                data-learn-target="presentationInfo"
-            >
-                LEARN MORE
-            </button>
-
-        </div>
-
-
-        <div
-            id="presentationInfo"
-            class="service-information"
-            hidden
-        >
-
-            <p class="service-information-label">
-                PRESENTATION DESIGN
-            </p>
+            <span class="benefit-number">
+                02
+            </span>
 
             <h3>
-                WHY PROFESSIONAL PRESENTATION DESIGN MATTERS
+                CREATIVE
             </h3>
 
             <p>
-                A strong presentation turns information
-                into a visual story that people can easily
-                follow and remember.
+                Designs are created to help your brand
+                stand apart from ordinary work.
             </p>
 
-            <p>
-                Professional layouts, typography and visual
-                structure help your ideas make a stronger
-                impression.
-            </p>
-
-        </div>
-
-    </section>
+        </article>
 
 
-    <!-- =====================================================
-         EBOOK DESIGN
-    ====================================================== -->
+        <article class="benefit-card">
 
-    <section
-        id="ebook-design"
-        class="portfolio-section design-section"
-        data-category="ebook-design"
-    >
-
-        <div class="section-heading">
-
-            <p class="section-label">
-                CREATIVE DESIGN
-            </p>
-
-            <h2>
-                Ebook Design
-            </h2>
-
-            <p>
-                Clean and engaging ebook layouts designed
-                for a professional reading experience.
-            </p>
-
-        </div>
-
-
-        <div class="full-width-slider">
-
-            <button
-                class="slider-arrow slider-prev"
-                type="button"
-                aria-label="Previous ebook"
-            >
-                &#8592;
-            </button>
-
-
-            <div class="portfolio-slider-track">
-                <!-- Projects loaded by script.js -->
-            </div>
-
-
-            <button
-                class="slider-arrow slider-next"
-                type="button"
-                aria-label="Next ebook"
-            >
-                &#8594;
-            </button>
-
-        </div>
-
-
-        <div class="learn-more-wrap">
-
-            <button
-                class="learn-more glass-button"
-                type="button"
-                data-learn-target="ebookInfo"
-            >
-                LEARN MORE
-            </button>
-
-        </div>
-
-
-        <div
-            id="ebookInfo"
-            class="service-information"
-            hidden
-        >
-
-            <p class="service-information-label">
-                EBOOK DESIGN
-            </p>
+            <span class="benefit-number">
+                03
+            </span>
 
             <h3>
-                WHY PROFESSIONAL EBOOK DESIGN MATTERS
+                QUALITY
             </h3>
 
             <p>
-                A well-designed ebook makes your content
-                easier to read, understand and remember.
+                Attention is given to structure, detail
+                and the final presentation.
             </p>
 
-            <p>
-                Professional visual structure also helps
-                your publication feel credible and valuable.
-            </p>
+        </article>
 
-        </div>
+    </div>
 
-    </section>
+</section>
 
 
-    <!-- =====================================================
-         INSTAGRAM CAROUSEL
-    ====================================================== -->
 
-    <section
-        id="instagram-carousel"
-        class="portfolio-section design-section"
-        data-category="instagram-carousel"
+<!-- =========================================================
+     CLIENT REVIEWS
+     BEFORE FAQ
+========================================================= -->
+
+<section class="client-reviews-section">
+
+    <div class="client-reviews-wrapper">
+
+        <button
+            id="clientReviewsButton"
+            class="client-reviews-button"
+            type="button"
+            aria-expanded="false"
+        >
+            CLIENT REVIEWS
+        </button>
+
+    </div>
+
+
+    <div
+        id="clientReviewsPanel"
+        class="client-reviews-panel"
+        hidden
     >
-
-        <div class="section-heading">
-
-            <p class="section-label">
-                SOCIAL MEDIA DESIGN
-            </p>
-
-            <h2>
-                Instagram Carousel
-            </h2>
-
-            <p>
-                Scroll-stopping carousel designs created
-                to communicate ideas visually.
-            </p>
-
-        </div>
-
-
-        <div class="full-width-slider">
-
-            <button
-                class="slider-arrow slider-prev"
-                type="button"
-                aria-label="Previous Instagram carousel"
-            >
-                &#8592;
-            </button>
-
-
-            <div class="portfolio-slider-track">
-                <!-- Projects loaded by script.js -->
-            </div>
-
-
-            <button
-                class="slider-arrow slider-next"
-                type="button"
-                aria-label="Next Instagram carousel"
-            >
-                &#8594;
-            </button>
-
-        </div>
-
-
-        <div class="learn-more-wrap">
-
-            <button
-                class="learn-more glass-button"
-                type="button"
-                data-learn-target="instagramInfo"
-            >
-                LEARN MORE
-            </button>
-
-        </div>
-
 
         <div
-            id="instagramInfo"
-            class="service-information"
-            hidden
-        >
+            id="reviewsContainer"
+            class="reviews-container"
+        ></div>
 
-            <p class="service-information-label">
-                INSTAGRAM CAROUSEL
-            </p>
+    </div>
 
-            <h3>
-                WHY PROFESSIONAL INSTAGRAM CAROUSEL DESIGN MATTERS
-            </h3>
-
-            <p>
-                Carousel posts give your audience more
-                reasons to stop, swipe and engage with your
-                content.
-            </p>
-
-            <p>
-                Consistent professional design also helps
-                your social media presence look recognizable
-                and trustworthy.
-            </p>
-
-        </div>
-
-    </section>
+</section>
 
 
-    <!-- =====================================================
-         PITCH DECK
-    ====================================================== -->
 
-    <section
-        id="pitch-deck"
-        class="portfolio-section design-section"
-        data-category="pitch-deck"
-    >
+<!-- =========================================================
+     FAQ
+========================================================= -->
 
-        <div class="section-heading">
+<section
+    id="faq"
+    class="faq-section"
+>
 
-            <p class="section-label">
-                BUSINESS DESIGN
-            </p>
+    <div class="section-heading">
 
-            <h2>
-                Pitch Deck
-            </h2>
+        <p class="section-label">
+            FAQ
+        </p>
 
-            <p>
-                Professional pitch decks designed to make
-                business ideas easier to understand and sell.
-            </p>
+        <h2>
+            QUESTIONS?
+            <span>ANSWERS.</span>
+        </h2>
 
-        </div>
+    </div>
 
 
-        <div class="full-width-slider">
+    <div class="faq-list">
+
+        <div class="faq-item">
 
             <button
-                class="slider-arrow slider-prev"
+                class="faq-question"
                 type="button"
-                aria-label="Previous pitch deck"
             >
-                &#8592;
-            </button>
-
-
-            <div class="portfolio-slider-track">
-                <!-- Projects loaded by script.js -->
-            </div>
-
-
-            <button
-                class="slider-arrow slider-next"
-                type="button"
-                aria-label="Next pitch deck"
-            >
-                &#8594;
-            </button>
-
-        </div>
-
-
-        <div class="learn-more-wrap">
-
-            <button
-                class="learn-more glass-button"
-                type="button"
-                data-learn-target="pitchDeckInfo"
-            >
-                LEARN MORE
-            </button>
-
-        </div>
-
-
-        <div
-            id="pitchDeckInfo"
-            class="service-information"
-            hidden
-        >
-
-            <p class="service-information-label">
-                PITCH DECK
-            </p>
-
-            <h3>
-                WHY PROFESSIONAL PITCH DECK DESIGN MATTERS
-            </h3>
-
-            <p>
-                A pitch deck needs to communicate an idea
-                quickly while keeping attention from the
-                first slide to the last.
-            </p>
-
-            <p>
-                Professional visual hierarchy helps investors,
-                clients and partners understand the opportunity
-                behind your idea.
-            </p>
-
-        </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         WHY CHOOSE FOFANA
-    ====================================================== -->
-
-    <section
-        id="why-fofana"
-        class="content-section"
-    >
-
-        <div class="section-heading">
-
-            <p class="section-label">
-                WHY FOFANA
-            </p>
-
-            <h2>
-                Design With Purpose.
-            </h2>
-
-            <p>
-                Every project is built around clarity,
-                quality and a strong visual experience.
-            </p>
-
-        </div>
-
-
-        <div class="benefits-grid">
-
-            <article class="benefit-card">
-
-                <span class="benefit-number">
-                    01
+                <span>
+                    What services do you offer?
                 </span>
 
-                <h3>
-                    Professional Quality
-                </h3>
+                <span>
+                    +
+                </span>
+
+            </button>
+
+            <div class="faq-answer">
 
                 <p>
-                    Designs created to make your brand
-                    look polished and trustworthy.
+                    I offer web development, brochure design,
+                    presentation design, ebook design,
+                    Instagram carousel design and pitch deck design.
                 </p>
-
-            </article>
-
-
-            <article class="benefit-card">
-
-                <span class="benefit-number">
-                    02
-                </span>
-
-                <h3>
-                    Purposeful Design
-                </h3>
-
-                <p>
-                    Every layout is created with your
-                    message and audience in mind.
-                </p>
-
-            </article>
-
-
-            <article class="benefit-card">
-
-                <span class="benefit-number">
-                    03
-                </span>
-
-                <h3>
-                    Modern Experience
-                </h3>
-
-                <p>
-                    Clean, modern visual experiences
-                    designed for today's audience.
-                </p>
-
-            </article>
-
-        </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         STATS
-    ====================================================== -->
-
-    <section
-        id="stats"
-        class="stats-section"
-    >
-
-        <div class="stats-grid">
-
-            <div class="stat">
-
-                <strong>
-                    100%
-                </strong>
-
-                <span>
-                    QUALITY DELIVERY
-                </span>
-
-            </div>
-
-
-            <div class="stat">
-
-                <strong>
-                    24/7
-                </strong>
-
-                <span>
-                    COMMUNICATION
-                </span>
-
-            </div>
-
-
-            <div class="stat">
-
-                <strong>
-                    100%
-                </strong>
-
-                <span>
-                    DEDICATION
-                </span>
 
             </div>
 
         </div>
 
-    </section>
 
-
-    <!-- =====================================================
-         CLIENT REVIEWS
-         BEFORE FAQ
-    ====================================================== -->
-
-    <section
-        id="client-reviews"
-        class="client-reviews-section"
-    >
-
-        <div class="floating-review-wrap">
+        <div class="faq-item">
 
             <button
-                id="clientReviewsButton"
-                class="client-reviews-button glass-button"
+                class="faq-question"
                 type="button"
-                aria-expanded="false"
             >
-                <span class="review-icon">
-                    ★
+                <span>
+                    Can you design for my business?
                 </span>
 
                 <span>
-                    CLIENT REVIEWS
+                    +
                 </span>
+
             </button>
 
-        </div>
+            <div class="faq-answer">
 
-
-        <div
-            id="clientReviewsPanel"
-            class="client-reviews-panel"
-            hidden
-        >
-
-            <div class="section-heading">
-
-                <p class="section-label">
-                    CLIENT FEEDBACK
-                </p>
-
-                <h2>
-                    What Clients Say
-                </h2>
-
-            </div>
-
-
-            <div id="reviewsContainer">
-
-                <p class="reviews-loading">
-                    Reviews will appear here.
+                <p>
+                    Yes. Projects can be designed around
+                    your brand, audience and business goals.
                 </p>
 
             </div>
 
         </div>
 
-    </section>
 
+        <div class="faq-item">
 
-    <!-- =====================================================
-         FAQ
-    ====================================================== -->
+            <button
+                class="faq-question"
+                type="button"
+            >
+                <span>
+                    How can I contact you?
+                </span>
 
-    <section
-        id="faq"
-        class="content-section faq-section"
-    >
+                <span>
+                    +
+                </span>
 
-        <div class="section-heading">
+            </button>
 
-            <p class="section-label">
-                FAQ
-            </p>
+            <div class="faq-answer">
 
-            <h2>
-                Frequently Asked Questions
-            </h2>
+                <p>
+                    You can contact me through email or WhatsApp
+                    using the floating contact buttons.
+                </p>
 
-        </div>
-
-
-        <div class="faq-list">
-
-            <article class="faq-item">
-
-                <button
-                    class="faq-question"
-                    type="button"
-                >
-                    <span>
-                        What services do you offer?
-                    </span>
-
-                    <span class="faq-plus">
-                        +
-                    </span>
-
-                </button>
-
-                <div class="faq-answer">
-
-                    <p>
-                        I offer web development, brochure
-                        design, presentation design, ebook
-                        design, Instagram carousel design
-                        and pitch deck design.
-                    </p>
-
-                </div>
-
-            </article>
-
-
-            <article class="faq-item">
-
-                <button
-                    class="faq-question"
-                    type="button"
-                >
-                    <span>
-                        Can I see your previous work?
-                    </span>
-
-                    <span class="faq-plus">
-                        +
-                    </span>
-
-                </button>
-
-                <div class="faq-answer">
-
-                    <p>
-                        Yes. Browse the project sections
-                        above and select VIEW PAGES to see
-                        the full creative project.
-                    </p>
-
-                </div>
-
-            </article>
-
-
-            <article class="faq-item">
-
-                <button
-                    class="faq-question"
-                    type="button"
-                >
-                    <span>
-                        How can I contact you?
-                    </span>
-
-                    <span class="faq-plus">
-                        +
-                    </span>
-
-                </button>
-
-                <div class="faq-answer">
-
-                    <p>
-                        You can reach me through email or
-                        WhatsApp using the contact buttons
-                        on this website.
-                    </p>
-
-                </div>
-
-            </article>
-
-
-            <article class="faq-item">
-
-                <button
-                    class="faq-question"
-                    type="button"
-                >
-                    <span>
-                        Do you work with businesses remotely?
-                    </span>
-
-                    <span class="faq-plus">
-                        +
-                    </span>
-
-                </button>
-
-                <div class="faq-answer">
-
-                    <p>
-                        Yes. Projects can be handled remotely
-                        from start to finish.
-                    </p>
-
-                </div>
-
-            </article>
+            </div>
 
         </div>
 
-    </section>
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     CONTACT
+========================================================= -->
+
+<section
+    id="contact"
+    class="contact-section"
+>
+
+    <div class="contact-content">
+
+        <p class="section-label">
+            LET'S WORK TOGETHER
+        </p>
+
+        <h2>
+            HAVE A PROJECT
+            <span>IN MIND?</span>
+        </h2>
+
+        <p>
+            Let's turn your idea into something
+            professional, memorable and ready for business.
+        </p>
+
+
+        <div class="contact-buttons">
+
+            <a
+                href="mailto:umarfofana90@gmail.com"
+                class="contact-email"
+            >
+                umarfofana90@gmail.com
+            </a>
+
+
+            <a
+                href="https://wa.me/2347018412302"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="contact-whatsapp"
+            >
+                WhatsApp
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+</div>
 
 </main>
 
 
-<!-- =========================================================
-     FLOATING EMAIL
-========================================================= -->
-
-<a
-    href="mailto:umarfofana90@gmail.com"
-    class="floating-email"
-    aria-label="Email Fofana"
->
-
-    <span class="floating-contact-icon">
-        @
-    </span>
-
-    <span class="floating-email-text">
-        umarfofana90@gmail.com
-    </span>
-
-</a>
-
 
 <!-- =========================================================
-     FLOATING WHATSAPP
+     FLOATING CONTACT BUTTONS
 ========================================================= -->
 
-<a
-    href="https://wa.me/2347018412302"
-    class="floating-whatsapp"
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="Contact Fofana on WhatsApp"
->
+<div class="floating-contact">
 
-    <span>
-        WhatsApp
-    </span>
+    <!-- EMAIL ABOVE WHATSAPP -->
 
-</a>
+    <a
+        href="mailto:umarfofana90@gmail.com"
+        class="floating-contact-button floating-email"
+        aria-label="Email Fofana"
+    >
+
+        <span class="contact-icon">
+            @
+        </span>
+
+        <span>
+            umarfofana90@gmail.com
+        </span>
+
+    </a>
+
+
+    <!-- WHATSAPP -->
+
+    <a
+        href="https://wa.me/2347018412302"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="floating-contact-button floating-whatsapp"
+        aria-label="Contact Fofana on WhatsApp"
+    >
+
+        <span class="contact-icon">
+            W
+        </span>
+
+        <span>
+            WhatsApp
+        </span>
+
+    </a>
+
+</div>
+
 
 
 <!-- =========================================================
@@ -1118,7 +1114,7 @@
 
 <footer class="site-footer">
 
-    <div class="footer-inner">
+    <div class="footer-container">
 
         <div class="footer-brand">
 
@@ -1130,21 +1126,17 @@
             </a>
 
             <p>
-                Web Developer & Creative Designer
-            </p>
-
-            <p>
-                Building digital experiences that stand out.
+                Web Developer & Creative Designer.
             </p>
 
         </div>
 
 
-        <div class="footer-column">
+        <div class="footer-links">
 
-            <h3>
-                SERVICES
-            </h3>
+            <a href="#home">
+                Home
+            </a>
 
             <a href="#web-development">
                 Web Development
@@ -1173,15 +1165,9 @@
         </div>
 
 
-        <div class="footer-column">
+        <div class="footer-contact">
 
-            <h3>
-                CONTACT
-            </h3>
-
-            <a
-                href="mailto:umarfofana90@gmail.com"
-            >
+            <a href="mailto:umarfofana90@gmail.com">
                 umarfofana90@gmail.com
             </a>
 
@@ -1204,22 +1190,22 @@
             © 2026 FOFANA. All rights reserved.
         </p>
 
-        <p>
-            Designed & developed by FOFANA.
-        </p>
-
     </div>
 
 </footer>
 
 
+
 <!-- =========================================================
-     SCRIPTS
+     SUPABASE
 ========================================================= -->
 
-<script
-    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
-></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<!-- =========================================================
+     MAIN JAVASCRIPT
+========================================================= -->
 
 <script src="script.js"></script>
 
