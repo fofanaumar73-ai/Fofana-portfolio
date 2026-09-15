@@ -2135,3 +2135,88 @@ a {
     }
 
 }
+
+
+/* =========================================================
+   100% QUALITY DELIVERY
+   Appears ONLY after Pitch Deck Design
+========================================================= */
+
+.quality-delivery-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding: 30px 8% 40px;
+    pointer-events: none;
+}
+
+.quality-delivery-badge {
+    width: 145px;
+    height: 145px;
+    border-radius: 50%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.12),
+        0 15px 40px rgba(0, 0, 0, 0.35);
+
+    animation: qualityFloat 1s ease-in-out infinite alternate;
+}
+
+.quality-delivery-badge strong {
+    font-size: 28px;
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1;
+}
+
+.quality-delivery-badge span {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: rgba(255, 255, 255, 0.75);
+    line-height: 1.5;
+}
+
+@keyframes qualityFloat {
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(-14px);
+    }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+
+    .quality-delivery-wrapper {
+        justify-content: flex-end;
+        padding: 25px 25px 35px;
+    }
+
+    .quality-delivery-badge {
+        width: 120px;
+        height: 120px;
+    }
+
+    .quality-delivery-badge strong {
+        font-size: 24px;
+    }
+
+    .quality-delivery-badge span {
+        font-size: 8px;
+        letter-spacing: 1.5px;
+    }
+}
