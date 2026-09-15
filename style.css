@@ -2218,3 +2218,284 @@ a {
         letter-spacing: 1.5px;
     }
 }
+
+
+/* =========================================================
+   ADMIN LOGIN PAGE
+========================================================= */
+
+.admin-page {
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 40px 20px;
+
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            #35104d 0%,
+            #1b0827 28%,
+            #0d0512 55%,
+            #030204 80%,
+            #000 100%
+        );
+}
+
+
+/* =========================================================
+   ADMIN LOGIN CARD
+========================================================= */
+
+.admin-login-card {
+    width: 100%;
+    max-width: 460px;
+
+    padding: 50px 42px;
+
+    border-radius: 30px;
+
+    border:
+        1px solid rgba(255,255,255,0.12);
+
+    background:
+        rgba(255,255,255,0.055);
+
+    box-shadow:
+        0 30px 80px rgba(0,0,0,0.45),
+        inset 0 1px 1px rgba(255,255,255,0.08);
+
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+}
+
+
+/* =========================================================
+   ADMIN BRAND
+========================================================= */
+
+.admin-login-card .brand {
+    display: block;
+
+    margin-bottom: 35px;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   ADMIN HEADING
+========================================================= */
+
+.admin-login-card h1 {
+    margin-bottom: 10px;
+
+    color: #fff;
+
+    font-size: 34px;
+
+    line-height: 1.1;
+
+    text-align: center;
+}
+
+
+.admin-login-card > p {
+    margin-bottom: 35px;
+
+    color:
+        rgba(255,255,255,0.55);
+
+    font-size: 14px;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   ADMIN FORM
+========================================================= */
+
+#adminLoginForm {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 18px;
+}
+
+
+#adminLoginForm label {
+    color:
+        rgba(255,255,255,0.72);
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+}
+
+
+#adminLoginForm input {
+    width: 100%;
+
+    min-height: 58px;
+
+    margin-top: 8px;
+
+    padding: 0 18px;
+
+    border-radius: 15px;
+
+    border:
+        1px solid rgba(255,255,255,0.12);
+
+    outline: none;
+
+    background:
+        rgba(0,0,0,0.25);
+
+    color: #fff;
+
+    font-size: 15px;
+
+    transition:
+        border-color 0.3s ease,
+        background 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+
+#adminLoginForm input::placeholder {
+    color:
+        rgba(255,255,255,0.30);
+}
+
+
+#adminLoginForm input:focus {
+    border-color:
+        rgba(180,108,255,0.65);
+
+    background:
+        rgba(0,0,0,0.35);
+
+    box-shadow:
+        0 0 0 4px rgba(180,108,255,0.08);
+}
+
+
+/* =========================================================
+   LOGIN BUTTON
+========================================================= */
+
+#adminLoginForm button {
+    width: 100%;
+
+    min-height: 58px;
+
+    margin-top: 8px;
+
+    border: 0;
+
+    border-radius: 50px;
+
+    background: #fff;
+
+    color: #09070f;
+
+    font-size: 13px;
+
+    font-weight: 900;
+
+    letter-spacing: 1.5px;
+
+    text-transform: uppercase;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+
+#adminLoginForm button:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 12px 35px rgba(255,255,255,0.12);
+}
+
+
+/* =========================================================
+   LOGIN MESSAGE
+========================================================= */
+
+#loginMessage {
+    margin-top: 18px;
+
+    color:
+        rgba(255,255,255,0.65);
+
+    font-size: 13px;
+
+    line-height: 1.6;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   BACK TO PORTFOLIO
+========================================================= */
+
+.admin-back-link {
+    display: block;
+
+    margin-top: 28px;
+
+    color:
+        rgba(255,255,255,0.55);
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    text-align: center;
+
+    transition:
+        color 0.3s ease;
+}
+
+
+.admin-back-link:hover {
+    color: #b46cff;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .admin-page {
+        padding: 25px 16px;
+    }
+
+    .admin-login-card {
+        padding: 40px 25px;
+
+        border-radius: 25px;
+    }
+
+    .admin-login-card h1 {
+        font-size: 29px;
+    }
+
+}
