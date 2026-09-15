@@ -2198,9 +2198,7 @@ a {
     }
 }
 
-/* Mobile */
 @media (max-width: 600px) {
-
     .quality-delivery-wrapper {
         justify-content: flex-end;
         padding: 25px 25px 35px;
