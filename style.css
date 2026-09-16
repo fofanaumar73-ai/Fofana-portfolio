@@ -3903,3 +3903,560 @@ body.dashboard-page {
     }
 
 }
+
+
+/* =========================================================
+   CREATIVE SLIDER
+   BROCHURE • PRESENTATION • EBOOK • CAROUSEL • PITCH DECK
+========================================================= */
+
+.full-width-slider {
+    position: relative;
+
+    width: 100%;
+    height: 620px;
+
+    overflow: hidden;
+
+    border-radius: 32px;
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+
+    background: #050306;
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.45),
+        0 0 45px rgba(180, 108, 255, 0.06);
+}
+
+
+/* =========================================================
+   SLIDER TRACK
+========================================================= */
+
+.full-width-slider .portfolio-slider-track {
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+}
+
+
+/* =========================================================
+   CREATIVE SLIDE
+========================================================= */
+
+.full-width-slider .creative-slide {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    opacity: 0;
+    visibility: hidden;
+
+    overflow: hidden;
+
+    border-radius: 32px;
+
+    transition: opacity 0.7s ease;
+}
+
+
+.full-width-slider .creative-slide.active {
+    opacity: 1;
+    visibility: visible;
+
+    z-index: 2;
+}
+
+
+/* =========================================================
+   IMAGE CONTAINER
+========================================================= */
+
+.full-width-slider .design-preview {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+
+    border-radius: 32px;
+
+    background: #050306;
+}
+
+
+/* =========================================================
+   IMAGE
+========================================================= */
+
+.full-width-slider .creative-cover-image {
+    display: block;
+
+    width: 100% !important;
+    height: 100% !important;
+
+    max-width: none !important;
+    max-height: none !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    /*
+       THIS IS THE IMPORTANT CHANGE
+    */
+    object-fit: cover !important;
+
+    object-position: center;
+
+    border: none !important;
+
+    border-radius: 32px;
+
+    transition: transform 0.6s ease;
+}
+
+
+/* =========================================================
+   IMAGE HOVER
+========================================================= */
+
+.full-width-slider .creative-slide:hover
+.creative-cover-image {
+    transform: scale(1.025);
+}
+
+
+/* =========================================================
+   DARK IMAGE OVERLAY
+========================================================= */
+
+.full-width-slider .design-preview::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 2;
+
+    pointer-events: none;
+
+    background:
+        linear-gradient(
+            to top,
+            rgba(0, 0, 0, 0.90) 0%,
+            rgba(0, 0, 0, 0.62) 25%,
+            rgba(0, 0, 0, 0.18) 58%,
+            rgba(0, 0, 0, 0.02) 100%
+        );
+}
+
+
+/* =========================================================
+   SLIDE INFORMATION
+========================================================= */
+
+.full-width-slider .creative-slide-info {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    z-index: 5;
+
+    width: 100%;
+
+    padding: 55px 45px 40px;
+
+    box-sizing: border-box;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   HIDE TITLE/DESCRIPTION
+   Your current design intentionally uses only VIEW PAGES.
+========================================================= */
+
+.full-width-slider .creative-slide-info h3,
+.full-width-slider .creative-slide-info > p {
+    display: none !important;
+}
+
+
+/* =========================================================
+   VIEW PAGES BUTTON
+   GLASS / TRANSPARENT
+========================================================= */
+
+.full-width-slider .creative-page-link {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-width: 190px;
+    min-height: 52px;
+
+    padding: 0 28px;
+
+    box-sizing: border-box;
+
+    border-radius: 50px;
+
+    border: 1px solid rgba(255, 255, 255, 0.30);
+
+    /*
+       Transparent glass
+    */
+    background: rgba(255, 255, 255, 0.08);
+
+    color: #ffffff;
+
+    text-decoration: none;
+
+    font-size: 12px;
+
+    font-weight: 900;
+
+    letter-spacing: 2px;
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.18),
+        0 8px 30px rgba(0, 0, 0, 0.30);
+
+    transition:
+        background 0.3s ease,
+        border-color 0.3s ease,
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+
+/* =========================================================
+   VIEW PAGES HOVER
+========================================================= */
+
+.full-width-slider .creative-page-link:hover {
+
+    background: rgba(180, 108, 255, 0.18);
+
+    border-color: rgba(180, 108, 255, 0.65);
+
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 12px 35px rgba(180, 108, 255, 0.20),
+        inset 0 1px 0 rgba(255, 255, 255, 0.20);
+}
+
+
+/* =========================================================
+   SLIDER ARROWS
+========================================================= */
+
+.full-width-slider .slider-prev,
+.full-width-slider .slider-next {
+
+    position: absolute;
+
+    top: 50%;
+
+    z-index: 10;
+
+    width: 58px;
+    height: 58px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    transform: translateY(-50%);
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(255, 255, 255, 0.18);
+
+    background: rgba(0, 0, 0, 0.42);
+
+    color: #ffffff;
+
+    font-size: 20px;
+
+    cursor: pointer;
+
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+
+    transition:
+        background 0.3s ease,
+        border-color 0.3s ease,
+        transform 0.3s ease;
+}
+
+
+.full-width-slider .slider-prev {
+    left: 22px;
+}
+
+
+.full-width-slider .slider-next {
+    right: 22px;
+}
+
+
+.full-width-slider .slider-prev:hover,
+.full-width-slider .slider-next:hover {
+
+    background: rgba(180, 108, 255, 0.25);
+
+    border-color: rgba(180, 108, 255, 0.50);
+
+    transform: translateY(-50%) scale(1.08);
+}
+
+
+/* =========================================================
+   PLACEHOLDER
+========================================================= */
+
+.full-width-slider .slide-placeholder {
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    color: rgba(255, 255, 255, 0.35);
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    letter-spacing: 3px;
+}
+
+
+/* =========================================================
+   LEARN MORE BUTTON
+========================================================= */
+
+.service-action {
+
+    display: flex;
+
+    justify-content: center;
+
+    margin-top: 30px;
+}
+
+
+.learn-more {
+
+    min-height: 52px;
+
+    padding: 0 28px;
+
+    border-radius: 50px;
+
+    border: 1px solid rgba(255, 255, 255, 0.15);
+
+    background: rgba(255, 255, 255, 0.05);
+
+    color: #ffffff;
+
+    font-size: 12px;
+
+    font-weight: 900;
+
+    letter-spacing: 2px;
+
+    cursor: pointer;
+
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+
+    transition:
+        transform 0.3s ease,
+        background 0.3s ease,
+        border-color 0.3s ease;
+}
+
+
+.learn-more:hover {
+
+    transform: translateY(-3px);
+
+    background: rgba(180, 108, 255, 0.18);
+
+    border-color: rgba(180, 108, 255, 0.35);
+}
+
+
+/* =========================================================
+   SERVICE INFORMATION
+========================================================= */
+
+.service-information {
+
+    max-width: 850px;
+
+    margin: 30px auto 0;
+
+    padding: 35px;
+
+    border: 1px solid rgba(255, 255, 255, 0.10);
+
+    border-radius: 24px;
+
+    background: rgba(255, 255, 255, 0.04);
+
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+
+.service-information h3 {
+
+    margin-bottom: 15px;
+
+    color: #b46cff;
+
+    font-size: 20px;
+}
+
+
+.service-information p {
+
+    color: rgba(255, 255, 255, 0.62);
+
+    line-height: 1.8;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .full-width-slider {
+
+        height: 520px;
+
+        border-radius: 28px;
+    }
+
+
+    .full-width-slider .creative-slide,
+    .full-width-slider .design-preview,
+    .full-width-slider .creative-cover-image {
+
+        border-radius: 28px;
+    }
+
+
+    .full-width-slider .creative-slide-info {
+
+        padding: 40px 20px 28px;
+    }
+
+
+    .full-width-slider .creative-page-link {
+
+        min-width: 170px;
+
+        min-height: 50px;
+
+        padding: 0 23px;
+
+        font-size: 11px;
+    }
+
+
+    .full-width-slider .slider-prev,
+    .full-width-slider .slider-next {
+
+        width: 50px;
+        height: 50px;
+    }
+
+
+    .full-width-slider .slider-prev {
+        left: 12px;
+    }
+
+
+    .full-width-slider .slider-next {
+        right: 12px;
+    }
+}
+
+
+/* =========================================================
+   SMALL PHONES
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .full-width-slider {
+
+        height: 470px;
+
+        border-radius: 24px;
+    }
+
+
+    .full-width-slider .creative-slide,
+    .full-width-slider .design-preview,
+    .full-width-slider .creative-cover-image {
+
+        border-radius: 24px;
+    }
+
+
+    .full-width-slider .creative-slide-info {
+
+        padding: 35px 15px 22px;
+    }
+
+
+    .full-width-slider .creative-page-link {
+
+        min-width: 155px;
+
+        min-height: 48px;
+
+        padding: 0 20px;
+    }
+
+
+    .full-width-slider .slider-prev,
+    .full-width-slider .slider-next {
+
+        width: 44px;
+        height: 44px;
+
+        font-size: 16px;
+    }
+
+}
