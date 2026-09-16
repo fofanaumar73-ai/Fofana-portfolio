@@ -1505,11 +1505,11 @@ function displayProjectDetails(
     /*
        FULL PROJECT GALLERY
 
-       ALL uploaded project pages
-       are shown here.
-
        Homepage = cover only.
-       Project page = all pages.
+       Project page = all uploaded pages.
+
+       Two images are placed
+       on each row.
     */
 
     if (gallery) {
@@ -1536,6 +1536,25 @@ function displayProjectDetails(
                     return;
                 }
 
+
+                /*
+                   Create a wrapper
+                   around each image.
+                */
+
+                const galleryItem =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                galleryItem.className =
+                    "project-gallery-item";
+
+
+                /*
+                   Create the image.
+                */
 
                 const image =
                     document.createElement(
@@ -1564,8 +1583,23 @@ function displayProjectDetails(
                     "project-gallery-image";
 
 
-                gallery.appendChild(
+                /*
+                   Put the image
+                   inside its wrapper.
+                */
+
+                galleryItem.appendChild(
                     image
+                );
+
+
+                /*
+                   Put the wrapper
+                   inside the gallery.
+                */
+
+                gallery.appendChild(
+                    galleryItem
                 );
             }
         );
