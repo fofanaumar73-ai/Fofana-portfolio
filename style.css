@@ -4503,3 +4503,36 @@ body.dashboard-page {
 
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25) !important;
 }
+
+
+/* =========================================================
+   PROJECT GALLERY — TWO IMAGES PER ROW
+========================================================= */
+
+.project-gallery {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 24px !important;
+    width: 100% !important;
+    margin-top: 35px !important;
+}
+
+.project-gallery-item {
+    width: 100% !important;
+    aspect-ratio: 4 / 3 !important;
+    overflow: hidden !important;
+    border-radius: 24px !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+}
+
+.project-gallery-image {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border-radius: 24px !important;
+}
