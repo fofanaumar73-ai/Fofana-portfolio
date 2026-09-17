@@ -4536,3 +4536,41 @@ body.dashboard-page {
     margin: 0 !important;
     border-radius: 24px !important;
 }
+
+
+ /* =========================================================
+    PROJECT PAGE FOOTER — FULL WIDTH WHITE
+ ========================================================= */
+
+.project-detail-page {
+    min-height: calc(100vh - 80px);
+}
+
+body > .footer {
+    width: 100% !important;
+    background: #ffffff !important;
+    color: #09070f !important;
+    margin-top: 80px !important;
+    padding: 70px 30px 40px !important;
+    border-top: none !important;
+}
+
+body > .footer *,
+body > .footer p,
+body > .footer h2,
+body > .footer h3,
+body > .footer a,
+body > .footer span {
+    color: #09070f !important;
+}
+
+body > .footer a:hover {
+    color: #7b2cbf !important;
+}
+
+@media (max-width: 700px) {
+    body > .footer {
+        padding: 50px 20px 30px !important;
+        margin-top: 60px !important;
+    }
+}
