@@ -4701,3 +4701,37 @@ body > .footer a:hover {
 
     white-space: nowrap !important;
 }
+
+
+/* =========================================================
+   PROJECT FOOTER — HORIZONTAL LINKS + SEPARATORS
+========================================================= */
+
+body > .footer .footer-links,
+body > .footer .footer-nav,
+body > .footer .footer-services {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    gap: 0 !important;
+}
+
+/* Links */
+body > .footer .footer-links a,
+body > .footer .footer-nav a,
+body > .footer .footer-services a {
+    display: inline-flex !important;
+    align-items: center !important;
+    color: #09070f !important;
+    text-decoration: none !important;
+}
+
+/* Separator */
+body > .footer .footer-links a:not(:last-child)::after,
+body > .footer .footer-nav a:not(:last-child)::after,
+body > .footer .footer-services a:not(:last-child)::after {
+    content: "|" !important;
+    margin: 0 10px !important;
+    color: #09070f !important;
+    font-weight: 600 !important;
+}
