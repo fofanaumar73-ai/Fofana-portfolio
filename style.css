@@ -4704,34 +4704,58 @@ body > .footer a:hover {
 
 
 /* =========================================================
-   PROJECT FOOTER — HORIZONTAL LINKS + SEPARATORS
+   PROJECT FOOTER — NAVIGATION & SERVICES SEPARATORS
 ========================================================= */
 
-body > .footer .footer-links,
-body > .footer .footer-nav,
-body > .footer .footer-services {
+/* NAVIGATION */
+.footer-column:nth-child(2) {
     display: flex !important;
     flex-wrap: wrap !important;
     align-items: center !important;
     gap: 0 !important;
 }
 
-/* Links */
-body > .footer .footer-links a,
-body > .footer .footer-nav a,
-body > .footer .footer-services a {
+.footer-column:nth-child(2) h4 {
+    width: 100% !important;
+    margin-bottom: 15px !important;
+}
+
+.footer-column:nth-child(2) a {
     display: inline-flex !important;
     align-items: center !important;
     color: #09070f !important;
-    text-decoration: none !important;
 }
 
-/* Separator */
-body > .footer .footer-links a:not(:last-child)::after,
-body > .footer .footer-nav a:not(:last-child)::after,
-body > .footer .footer-services a:not(:last-child)::after {
+.footer-column:nth-child(2) a:not(:last-child)::after {
     content: "|" !important;
+    display: inline-block !important;
     margin: 0 10px !important;
     color: #09070f !important;
-    font-weight: 600 !important;
+}
+
+
+/* SERVICES */
+.footer-column:nth-child(3) {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    gap: 0 !important;
+}
+
+.footer-column:nth-child(3) h4 {
+    width: 100% !important;
+    margin-bottom: 15px !important;
+}
+
+.footer-column:nth-child(3) a {
+    display: inline-flex !important;
+    align-items: center !important;
+    color: #09070f !important;
+}
+
+.footer-column:nth-child(3) a:not(:last-child)::after {
+    content: "|" !important;
+    display: inline-block !important;
+    margin: 0 10px !important;
+    color: #09070f !important;
 }
