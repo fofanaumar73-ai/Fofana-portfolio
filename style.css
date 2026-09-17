@@ -4759,3 +4759,30 @@ body > .footer a:hover {
     margin: 0 10px !important;
     color: #09070f !important;
 }
+
+
+/* =========================================================
+   QUALITY DELIVERY — CENTER
+========================================================= */
+
+.quality-delivery-wrapper {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+
+    margin: 50px auto !important;
+}
+
+.quality-delivery-badge {
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    margin: 0 auto !important;
+
+    animation: qualityFloat 1s ease-in-out infinite alternate !important;
+}
