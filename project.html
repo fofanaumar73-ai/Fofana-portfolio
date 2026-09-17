@@ -90,143 +90,101 @@
     </header>
 
 
+<!-- =========================
+     PROJECT PAGE
+========================== -->
 
-    <!-- =========================
-         PROJECT PAGE
-    ========================== -->
+<main class="project-detail-page">
 
-    <main class="project-detail-page">
+```
+<!-- LOADING -->
+<div
+    id="projectLoading"
+    class="project-loading"
+>
+    Loading project...
+</div>
 
 
-        <!-- LOADING -->
+<!-- ERROR -->
+<div
+    id="projectError"
+    class="project-error"
+    style="display: none;"
+></div>
 
-        <div
-            id="projectLoading"
-            class="project-loading"
-        >
 
-            Loading project...
+<!-- PROJECT CONTENT -->
+<article class="project-detail">
+
+    <!-- CATEGORY -->
+    <p
+        id="projectCategory"
+        class="section-label"
+    ></p>
+
+
+    <!-- TITLE -->
+    <h1
+        id="projectTitle"
+        class="project-detail-title"
+    ></h1>
+
+
+    <!-- DESCRIPTION -->
+    <p
+        id="projectDescription"
+        class="project-detail-description"
+    ></p>
+
+
+    <!-- PROJECT PAGES -->
+    <section class="project-pages">
+
+        <div class="section-heading">
+
+            <p class="section-label">
+                PROJECT
+            </p>
+
+            <h2>
+                Project Preview
+            </h2>
 
         </div>
 
 
+        <!--
+            All uploaded project images
+            appear here.
 
-        <!-- ERROR -->
-
+            CSS already handles:
+            2 images per row.
+        -->
         <div
-            id="projectError"
-            class="project-error"
-            style="display: none;"
+            id="projectGallery"
+            class="project-gallery"
         ></div>
 
+    </section>
 
 
-        <!-- PROJECT CONTENT -->
+    <!-- BACK TO WORK -->
+    <div class="project-back">
 
-        <article class="project-detail">
+        <a
+            href="index.html#work"
+            class="secondary-button"
+        >
+            ← Back to My Work
+        </a>
 
+    </div>
 
-            <!-- CATEGORY -->
+</article>
+```
 
-            <p
-                id="projectCategory"
-                class="section-label"
-            ></p>
-
-
-
-            <!-- TITLE -->
-
-            <h1
-                id="projectTitle"
-                class="project-detail-title"
-            ></h1>
-
-
-
-            <!-- DESCRIPTION -->
-
-            <p
-                id="projectDescription"
-                class="project-detail-description"
-            ></p>
-
-
-
-            <!-- COVER IMAGE -->
-
-            <div class="project-detail-cover">
-
-                <img
-                    id="projectCover"
-                    src=""
-                    alt=""
-                >
-
-            </div>
-
-
-
-            <!-- PROJECT PAGES -->
-
-            <section class="project-pages">
-
-                <div class="section-heading">
-
-                    <p class="section-label">
-                        PROJECT
-                    </p>
-
-
-                    <h2>
-                        Project Preview
-                    </h2>
-
-                </div>
-
-
-                <div
-                    id="projectGallery"
-                    class="project-gallery"
-                ></div>
-
-            </section>
-
-
-
-            <!-- EXTERNAL WEBSITE -->
-
-            <a
-                id="projectExternalLink"
-                href="#"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="primary-button"
-                style="display: none;"
-            >
-                Visit Live Project →
-            </a>
-
-
-
-            <!-- BACK -->
-
-            <div class="project-back">
-
-                <a
-                    href="index.html#work"
-                    class="secondary-button"
-                >
-                    ← Back to My Work
-                </a>
-
-            </div>
-
-
-        </article>
-
-    </main>
-
+</main>
 
 
     <!-- =========================
