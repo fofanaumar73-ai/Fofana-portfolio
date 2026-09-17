@@ -4574,3 +4574,130 @@ body > .footer a:hover {
         margin-top: 60px !important;
     }
 }
+
+
+/* =========================================================
+   PROJECT PAGE NAVIGATION
+========================================================= */
+
+.project-navbar {
+    position: relative;
+    z-index: 100;
+}
+
+.project-navbar .menu-toggle {
+    width: 58px !important;
+    height: 58px !important;
+    padding: 14px !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 6px !important;
+
+    border: 1px solid rgba(255,255,255,0.22) !important;
+    border-radius: 18px !important;
+
+    background: rgba(255,255,255,0.06) !important;
+    backdrop-filter: blur(15px) !important;
+    -webkit-backdrop-filter: blur(15px) !important;
+
+    cursor: pointer !important;
+}
+
+.project-navbar .menu-toggle span {
+    display: block !important;
+    width: 30px !important;
+    height: 4px !important;
+    border-radius: 10px !important;
+    background: #ffffff !important;
+}
+
+
+/* Hide project loading message */
+#projectLoading {
+    display: none !important;
+}
+
+
+/* =========================================================
+   PROJECT PAGE — CLEAN TOP SECTION
+========================================================= */
+
+.project-detail {
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    padding: 90px 40px 70px !important;
+}
+
+.project-detail > .section-label {
+    margin-bottom: 18px !important;
+    font-size: 13px !important;
+    font-weight: 900 !important;
+    letter-spacing: 5px !important;
+    color: #b46cff !important;
+}
+
+.project-detail-title {
+    max-width: 900px !important;
+    margin: 0 0 22px !important;
+
+    font-size: clamp(42px, 6vw, 76px) !important;
+    line-height: 1.05 !important;
+    letter-spacing: -2px !important;
+}
+
+.project-detail-description {
+    max-width: 760px !important;
+    margin: 0 0 70px !important;
+
+    font-size: 18px !important;
+    line-height: 1.8 !important;
+    color: rgba(255,255,255,0.65) !important;
+}
+
+.project-pages {
+    width: 100% !important;
+}
+
+.project-pages .section-heading {
+    margin-bottom: 30px !important;
+}
+
+.project-pages .section-label {
+    margin-bottom: 8px !important;
+}
+
+.project-pages .section-heading h2 {
+    margin: 0 !important;
+    font-size: clamp(32px, 5vw, 52px) !important;
+    line-height: 1.1 !important;
+}
+
+
+/* =========================================================
+   BACK TO MY WORK — SMALL BUTTON
+========================================================= */
+
+.project-back {
+    display: flex !important;
+    justify-content: center !important;
+    margin-top: 45px !important;
+}
+
+.project-back .secondary-button {
+    display: inline-flex !important;
+    width: auto !important;
+    min-width: 0 !important;
+    min-height: 48px !important;
+    padding: 0 24px !important;
+
+    border-radius: 30px !important;
+
+    font-size: 12px !important;
+    font-weight: 800 !important;
+    letter-spacing: 1px !important;
+
+    white-space: nowrap !important;
+}
