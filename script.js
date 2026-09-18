@@ -151,32 +151,44 @@ function initializeMobileNavigation() {
 
 
 /* =========================================================
-   PROJECT PAGE MOBILE MENU
+   PROJECT PAGE — MOBILE NAVIGATION
 ========================================================= */
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    const menuToggle = document.querySelector(".project-navbar .menu-toggle");
-    const navMenu = document.querySelector(".project-navbar .nav-menu");
+    const menuToggle =
+        document.querySelector(".project-navbar .menu-toggle");
 
-    if (!menuToggle || !navMenu) return;
+    const navMenu =
+        document.querySelector(".project-navbar .nav-menu");
+
+
+    if (!menuToggle || !navMenu) {
+        return;
+    }
+
 
     menuToggle.addEventListener("click", function () {
 
-        navMenu.classList.toggle("mobile-menu-open");
-
         const isOpen =
-            navMenu.classList.contains("mobile-menu-open");
+            navMenu.classList.toggle("mobile-menu-open");
+
 
         menuToggle.setAttribute(
             "aria-expanded",
             isOpen ? "true" : "false"
         );
 
+
+        menuToggle.setAttribute(
+            "aria-label",
+            isOpen ? "Close navigation" : "Open navigation"
+        );
+
     });
 
 
-    /* Close menu after clicking a link */
+    /* Close menu when a navigation link is clicked */
 
     navMenu.querySelectorAll("a").forEach(function (link) {
 
@@ -187,6 +199,11 @@ document.addEventListener("DOMContentLoaded", function () {
             menuToggle.setAttribute(
                 "aria-expanded",
                 "false"
+            );
+
+            menuToggle.setAttribute(
+                "aria-label",
+                "Open navigation"
             );
 
         });
