@@ -4786,3 +4786,20 @@ body > .footer a:hover {
 
     animation: qualityFloat 1s ease-in-out infinite alternate !important;
 }
+
+
+/* =========================================================
+   DESKTOP FLOATING LOGO POSITION
+   Keep mobile position unchanged
+========================================================= */
+
+@media (min-width: 769px) {
+    .floating-logo {
+        right: auto !important;
+        left: 50% !important;
+        bottom: auto !important;
+        top: 100% !important;
+        transform: translateX(-50%) !important;
+        margin-top: 35px !important;
+    }
+}
