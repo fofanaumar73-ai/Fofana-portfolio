@@ -4840,3 +4840,150 @@ body > .footer a:hover {
     }
 
 }
+
+
+/* =========================================================
+   100% QUALITY DELIVERY — RAINBOW GLASS BADGE
+========================================================= */
+
+.quality-delivery-wrapper {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    position: relative !important;
+    margin: 60px auto !important;
+}
+
+
+/* MAIN BADGE */
+
+.quality-delivery-badge {
+    position: relative !important;
+
+    width: 300px !important;
+    height: 300px !important;
+
+    border-radius: 50% !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    background:
+        rgba(255,255,255,0.055) !important;
+
+    backdrop-filter:
+        blur(20px) !important;
+
+    -webkit-backdrop-filter:
+        blur(20px) !important;
+
+    box-shadow:
+        0 25px 80px rgba(0,0,0,0.45),
+        inset 0 1px 2px rgba(255,255,255,0.15) !important;
+
+    animation:
+        qualityBadgeFloat 2.5s ease-in-out infinite alternate !important;
+
+    isolation: isolate !important;
+}
+
+
+/* RAINBOW OUTER EDGE */
+
+.quality-delivery-badge::before {
+    content: "" !important;
+
+    position: absolute !important;
+
+    inset: -4px !important;
+
+    border-radius: 50% !important;
+
+    background:
+        conic-gradient(
+            from 0deg,
+            #ff004c,
+            #ff7a00,
+            #ffe600,
+            #39ff14,
+            #00e5ff,
+            #0066ff,
+            #7a00ff,
+            #ff00d4,
+            #ff004c
+        ) !important;
+
+    z-index: -2 !important;
+
+    animation:
+        rainbowEdge 4s linear infinite !important;
+
+    filter:
+        drop-shadow(0 0 12px rgba(255,0,200,0.45))
+        drop-shadow(0 0 25px rgba(0,200,255,0.25)) !important;
+}
+
+
+/* INNER DARK GLASS */
+
+.quality-delivery-badge::after {
+    content: "" !important;
+
+    position: absolute !important;
+
+    inset: 5px !important;
+
+    border-radius: 50% !important;
+
+    background:
+        rgba(8,5,13,0.92) !important;
+
+    border:
+        1px solid rgba(255,255,255,0.10) !important;
+
+    z-index: -1 !important;
+}
+
+
+/* MAKE THE EXISTING TEXT SIT ABOVE THE EFFECT */
+
+.quality-delivery-badge > * {
+    position: relative !important;
+    z-index: 5 !important;
+}
+
+
+/* =========================================================
+   RAINBOW EDGE ROTATION
+========================================================= */
+
+@keyframes rainbowEdge {
+
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+
+}
+
+
+/* =========================================================
+   GENTLE UP / DOWN FLOAT
+========================================================= */
+
+@keyframes qualityBadgeFloat {
+
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(-14px);
+    }
+
+}
