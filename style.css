@@ -4990,33 +4990,63 @@ body > .footer a:hover {
 
 
 /* =========================================================
-   100% QUALITY DELIVERY — LARGE TEXT
+   QUALITY DELIVERY — LARGE TEXT
 ========================================================= */
 
 .quality-delivery-badge {
+    flex-direction: column !important;
     text-align: center !important;
 }
 
+
 /* 100% */
-.quality-delivery-badge .quality-number {
-    font-size: 58px !important;
+
+.quality-delivery-badge strong {
+    display: block !important;
+
+    font-size: 64px !important;
     font-weight: 950 !important;
     line-height: 0.95 !important;
     letter-spacing: -2px !important;
+
+    margin-bottom: 8px !important;
+
+    color: #ffffff !important;
+
+    text-shadow:
+        0 0 12px rgba(180,108,255,0.8),
+        0 0 30px rgba(0,220,255,0.35) !important;
 }
+
 
 /* QUALITY */
-.quality-delivery-badge .quality-text {
-    font-size: 25px !important;
+
+.quality-delivery-badge span:nth-of-type(1) {
+    display: block !important;
+
+    font-size: 28px !important;
     font-weight: 950 !important;
     line-height: 1 !important;
-    letter-spacing: 2px !important;
+    letter-spacing: 3px !important;
+
+    color: #ffffff !important;
+
+    text-shadow:
+        0 0 12px rgba(180,108,255,0.7) !important;
 }
 
+
 /* DELIVERY */
-.quality-delivery-badge .delivery-text {
-    font-size: 16px !important;
+
+.quality-delivery-badge span:nth-of-type(2) {
+    display: block !important;
+
+    margin-top: 10px !important;
+
+    font-size: 18px !important;
     font-weight: 900 !important;
     line-height: 1 !important;
-    letter-spacing: 5px !important;
+    letter-spacing: 6px !important;
+
+    color: rgba(255,255,255,0.9) !important;
 }
