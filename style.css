@@ -5362,3 +5362,17 @@ body > .footer a:hover {
     }
 
 }
+
+
+/* =========================================================
+   PROJECT HEADER — STAY VISIBLE WHILE SCROLLING
+========================================================= */
+
+.project-navbar {
+    position: sticky !important;
+    top: 0 !important;
+
+    width: 100% !important;
+
+    z-index: 1000 !important;
+}
