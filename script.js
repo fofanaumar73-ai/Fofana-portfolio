@@ -151,6 +151,52 @@ function initializeMobileNavigation() {
 
 
 /* =========================================================
+   PROJECT PAGE MOBILE MENU
+========================================================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const menuToggle = document.querySelector(".project-navbar .menu-toggle");
+    const navMenu = document.querySelector(".project-navbar .nav-menu");
+
+    if (!menuToggle || !navMenu) return;
+
+    menuToggle.addEventListener("click", function () {
+
+        navMenu.classList.toggle("mobile-menu-open");
+
+        const isOpen =
+            navMenu.classList.contains("mobile-menu-open");
+
+        menuToggle.setAttribute(
+            "aria-expanded",
+            isOpen ? "true" : "false"
+        );
+
+    });
+
+
+    /* Close menu after clicking a link */
+
+    navMenu.querySelectorAll("a").forEach(function (link) {
+
+        link.addEventListener("click", function () {
+
+            navMenu.classList.remove("mobile-menu-open");
+
+            menuToggle.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+        });
+
+    });
+
+});
+
+
+/* =========================================================
    4. FAQ ACCORDION
    ========================================================= */
 
