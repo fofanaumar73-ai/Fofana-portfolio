@@ -4789,8 +4789,8 @@ body > .footer a:hover {
 
 
 /* =========================================================
-   DESKTOP — FLOATING LOGO AFTER HERO BUTTONS
-   ========================================================= */
+   DESKTOP FLOATING LOGO
+========================================================= */
 
 @media (min-width: 769px) {
 
@@ -4812,28 +4812,31 @@ body > .footer a:hover {
         bottom: auto !important;
         left: auto !important;
 
-        transform: none !important;
-
         margin-top: 35px !important;
+
+        animation-name: desktopFloatingLogo !important;
+        animation-duration: 2.5s !important;
+        animation-timing-function: ease-in-out !important;
+        animation-iteration-count: infinite !important;
+        animation-direction: alternate !important;
+        animation-fill-mode: both !important;
     }
 
 }
 
 
 /* =========================================================
-   FLOATING LOGO — UP & DOWN MOTION
+   DESKTOP LOGO MOVEMENT
 ========================================================= */
 
-@keyframes floatingLogo {
-    0% {
+@keyframes desktopFloatingLogo {
+
+    from {
         transform: translateY(0);
     }
 
-    50% {
-        transform: translateY(-18px);
+    to {
+        transform: translateY(-25px);
     }
 
-    100% {
-        transform: translateY(0);
-    }
 }
