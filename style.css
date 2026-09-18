@@ -4789,23 +4789,6 @@ body > .footer a:hover {
 
 
 /* =========================================================
-   DESKTOP FLOATING LOGO — BELOW HERO BUTTONS
-   Mobile position remains unchanged
-========================================================= */
-
-@media (min-width: 769px) {
-    .floating-logo {
-        right: auto !important;
-        left: 50% !important;
-        top: 100% !important;
-        bottom: auto !important;
-        transform: translateX(-50%) !important;
-        margin-top: 35px !important;
-    }
-}
-
-
-/* =========================================================
    DESKTOP — FLOATING LOGO AFTER HERO BUTTONS
    ========================================================= */
 
