@@ -5365,14 +5365,57 @@ body > .footer a:hover {
 
 
 /* =========================================================
-   PROJECT HEADER — STAY VISIBLE WHILE SCROLLING
+   PROJECT HEADER — FIXED WHILE SCROLLING
 ========================================================= */
 
 .project-navbar {
-    position: sticky !important;
+    position: fixed !important;
+
     top: 0 !important;
+    left: 0 !important;
 
     width: 100% !important;
+    height: auto !important;
 
-    z-index: 1000 !important;
+    z-index: 9999 !important;
+
+    background: rgba(8, 5, 13, 0.88) !important;
+
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+
+    border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+}
+
+
+/* Keep page content from going underneath header */
+
+.project-detail-page {
+    padding-top: 100px !important;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .project-navbar .nav-container {
+        min-height: 76px !important;
+    }
+
+}
+
+
+/* =========================================================
+   DESKTOP — NO HAMBURGER
+========================================================= */
+
+@media (min-width: 769px) {
+
+    .project-navbar .menu-toggle {
+        display: none !important;
+    }
+
 }
