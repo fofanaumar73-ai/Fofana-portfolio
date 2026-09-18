@@ -81,7 +81,7 @@ function getProjectImages(project) {
 
 /* =========================================================
    3. MOBILE NAVIGATION
-   ========================================================= */
+========================================================= */
 
 function initializeMobileNavigation() {
 
@@ -95,80 +95,11 @@ function initializeMobileNavigation() {
         return;
     }
 
-    menuToggle.addEventListener(
-        "click",
-        event => {
 
-            event.preventDefault();
-            event.stopPropagation();
+    menuToggle.addEventListener("click", function (event) {
 
-            const isOpen =
-                navMenu.classList.toggle(
-                    "mobile-active"
-                );
-
-            menuToggle.setAttribute(
-                "aria-expanded",
-                String(isOpen)
-            );
-
-            menuToggle.setAttribute(
-                "aria-label",
-                isOpen
-                    ? "Close navigation"
-                    : "Open navigation"
-            );
-        }
-    );
-
-
-    navMenu
-        .querySelectorAll("a")
-        .forEach(link => {
-
-            link.addEventListener(
-                "click",
-                () => {
-
-                    navMenu.classList.remove(
-                        "mobile-active"
-                    );
-
-                    menuToggle.setAttribute(
-                        "aria-expanded",
-                        "false"
-                    );
-
-                    menuToggle.setAttribute(
-                        "aria-label",
-                        "Open navigation"
-                    );
-                }
-            );
-
-        });
-}
-
-
-/* =========================================================
-   PROJECT PAGE — MOBILE NAVIGATION
-========================================================= */
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    const menuToggle =
-        document.querySelector(".project-navbar .menu-toggle");
-
-    const navMenu =
-        document.querySelector(".project-navbar .nav-menu");
-
-
-    if (!menuToggle || !navMenu) {
-        return;
-    }
-
-
-    menuToggle.addEventListener("click", function () {
+        event.preventDefault();
+        event.stopPropagation();
 
         const isOpen =
             navMenu.classList.toggle("mobile-menu-open");
@@ -182,19 +113,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
         menuToggle.setAttribute(
             "aria-label",
-            isOpen ? "Close navigation" : "Open navigation"
+            isOpen
+                ? "Close navigation"
+                : "Open navigation"
         );
 
     });
 
 
-    /* Close menu when a navigation link is clicked */
+    /* Close menu when a link is clicked */
 
     navMenu.querySelectorAll("a").forEach(function (link) {
 
         link.addEventListener("click", function () {
 
-            navMenu.classList.remove("mobile-menu-open");
+            navMenu.classList.remove(
+                "mobile-menu-open"
+            );
 
             menuToggle.setAttribute(
                 "aria-expanded",
@@ -210,7 +145,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     });
 
-});
+}
+
 
 
 /* =========================================================
