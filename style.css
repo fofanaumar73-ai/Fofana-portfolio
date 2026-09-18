@@ -4803,3 +4803,35 @@ body > .footer a:hover {
         margin-top: 35px !important;
     }
 }
+
+
+/* =========================================================
+   DESKTOP — FLOATING LOGO AFTER HERO BUTTONS
+   ========================================================= */
+
+@media (min-width: 769px) {
+
+    .hero-container {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+    }
+
+    .hero-content {
+        width: 100% !important;
+    }
+
+    .floating-logo {
+        position: relative !important;
+
+        top: auto !important;
+        right: auto !important;
+        bottom: auto !important;
+        left: auto !important;
+
+        transform: none !important;
+
+        margin-top: 35px !important;
+    }
+
+}
