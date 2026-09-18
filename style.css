@@ -5050,3 +5050,117 @@ body > .footer a:hover {
 
     color: rgba(255,255,255,0.9) !important;
 }
+
+
+/* =========================================================
+   PROJECT PAGE — MOBILE MENU FIX
+========================================================= */
+
+@media (max-width: 768px) {
+
+    /* Keep everything inside the screen */
+    html,
+    body {
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: hidden !important;
+    }
+
+    /* Header stays inside viewport */
+    .project-navbar {
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow: visible !important;
+    }
+
+    .project-navbar .nav-container {
+        width: 100% !important;
+        max-width: 100% !important;
+
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+    }
+
+    /* FOFANA stays safely inside the left side */
+    .project-navbar .brand {
+        position: relative !important;
+
+        left: auto !important;
+        right: auto !important;
+
+        margin: 0 !important;
+
+        white-space: nowrap !important;
+
+        flex-shrink: 1 !important;
+
+        font-size: 26px !important;
+    }
+
+    /* Hamburger stays on the right */
+    .project-navbar .menu-toggle {
+        position: relative !important;
+
+        right: auto !important;
+        left: auto !important;
+
+        flex-shrink: 0 !important;
+
+        width: 58px !important;
+        height: 58px !important;
+    }
+
+    /* Mobile menu */
+    .project-navbar .nav-menu {
+        position: absolute !important;
+
+        top: 100% !important;
+
+        left: 20px !important;
+        right: 20px !important;
+
+        width: auto !important;
+        max-width: none !important;
+
+        margin: 0 !important;
+        padding: 18px 22px !important;
+
+        display: flex !important;
+        flex-direction: column !important;
+
+        background: rgba(8, 5, 13, 0.97) !important;
+
+        border: 1px solid rgba(255,255,255,0.12) !important;
+        border-radius: 22px !important;
+
+        backdrop-filter: blur(25px) !important;
+        -webkit-backdrop-filter: blur(25px) !important;
+
+        box-shadow:
+            0 25px 70px rgba(0,0,0,0.5) !important;
+
+        z-index: 999 !important;
+    }
+
+    .project-navbar .nav-menu a {
+        width: 100% !important;
+
+        padding: 17px 8px !important;
+
+        margin: 0 !important;
+
+        border-bottom:
+            1px solid rgba(255,255,255,0.08) !important;
+
+        text-align: left !important;
+    }
+
+    .project-navbar .nav-menu a:last-child {
+        border-bottom: none !important;
+    }
+
+}
