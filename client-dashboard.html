@@ -1,1 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Client Dashboard | FOFANA.</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+<body class="client-dashboard-page">
+
+
+    <!-- =========================================================
+         CLIENT DASHBOARD HEADER
+    ========================================================= -->
+
+    <header class="client-dashboard-header">
+
+        <a
+            href="index.html"
+            class="client-dashboard-brand"
+        >
+            FOFANA<span>.</span>
+        </a>
+
+
+        <div class="client-dashboard-user">
+
+            <span
+                id="clientHeaderName"
+                class="client-header-name"
+            >
+                Client
+            </span>
+
+            <button
+                id="clientLogoutButton"
+                type="button"
+                class="client-logout-button"
+            >
+                LOG OUT
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================================================
+         DASHBOARD
+    ========================================================= -->
+
+    <main class="client-dashboard-container">
+
+
+        <!-- WELCOME -->
+
+        <section class="client-welcome-card">
+
+            <p class="section-label">
+                CLIENT PORTAL
+            </p>
+
+            <h1>
+                Welcome,
+                <span id="clientWelcomeName">
+                    Client
+                </span>.
+            </h1>
+
+            <p>
+                Manage your projects, messages and
+                delivered work from your private dashboard.
+            </p>
+
+        </section>
+
+
+        <!-- =====================================================
+             DASHBOARD CARDS
+        ====================================================== -->
+
+        <section class="client-dashboard-grid">
+
+
+            <!-- PROJECTS -->
+
+            <article class="client-dashboard-card">
+
+                <div class="client-card-icon">
+                    PROJECTS
+                </div>
+
+                <h2>
+                    My Projects
+                </h2>
+
+                <p>
+                    View your active and completed projects.
+                </p>
+
+                <button
+                    type="button"
+                    class="secondary-button client-card-button"
+                >
+                    VIEW PROJECTS
+                </button>
+
+            </article>
+
+
+            <!-- MESSAGES -->
+
+            <article class="client-dashboard-card">
+
+                <div class="client-card-icon">
+                    CHAT
+                </div>
+
+                <h2>
+                    Messages
+                </h2>
+
+                <p>
+                    Chat privately with Fofana about your project.
+                </p>
+
+                <button
+                    type="button"
+                    class="secondary-button client-card-button"
+                >
+                    OPEN CHAT
+                </button>
+
+            </article>
+
+
+            <!-- PROFILE -->
+
+            <article class="client-dashboard-card">
+
+                <div class="client-card-icon">
+                    PROFILE
+                </div>
+
+                <h2>
+                    My Profile
+                </h2>
+
+                <p>
+                    Manage your name and profile information.
+                </p>
+
+                <button
+                    type="button"
+                    class="secondary-button client-card-button"
+                >
+                    PROFILE SETTINGS
+                </button>
+
+            </article>
+
+
+            <!-- NOTIFICATIONS -->
+
+            <article class="client-dashboard-card">
+
+                <div class="client-card-icon">
+                    ALERTS
+                </div>
+
+                <h2>
+                    Notifications
+                </h2>
+
+                <p>
+                    Stay updated about your projects and messages.
+                </p>
+
+                <button
+                    type="button"
+                    class="secondary-button client-card-button"
+                >
+                    VIEW NOTIFICATIONS
+                </button>
+
+            </article>
+
+        </section>
+
+
+        <!-- =====================================================
+             ACCOUNT INFORMATION
+        ====================================================== -->
+
+        <section class="client-account-card">
+
+            <div>
+
+                <p class="section-label">
+                    ACCOUNT
+                </p>
+
+                <h2>
+                    Account Information
+                </h2>
+
+            </div>
+
+
+            <div class="client-account-details">
+
+                <div>
+
+                    <span>
+                        Name
+                    </span>
+
+                    <strong id="clientAccountName">
+                        Loading...
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Email
+                    </span>
+
+                    <strong id="clientAccountEmail">
+                        Loading...
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Account Type
+                    </span>
+
+                    <strong id="clientAccountRole">
+                        Loading...
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             ERROR / STATUS
+        ====================================================== -->
+
+        <p
+            id="clientDashboardMessage"
+            class="client-dashboard-message"
+        ></p>
+
+    </main>
+
+
+    <!-- =========================================================
+         SUPABASE
+    ========================================================== -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+    <!-- =========================================================
+         CLIENT DASHBOARD JAVASCRIPT
+    ========================================================== -->
+
+    <script>
+
+        const SUPABASE_URL =
+            "https://uryfgatzyesolwwmugin.supabase.co";
+
+        const SUPABASE_PUBLISHABLE_KEY =
+            "sb_publishable_QL4lxGKETA1_xMFFJ7RV5g_Wuyi_x-d";
+
+
+        const supabaseClient =
+            window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_PUBLISHABLE_KEY
+            );
+
+
+        const dashboardMessage =
+            document.getElementById(
+                "clientDashboardMessage"
+            );
+
+
+        async function loadClientDashboard() {
+
+            /*
+             * GET CURRENT AUTHENTICATED USER
+             */
+
+            const {
+                data: {
+                    user
+                },
+                error: userError
+            } =
+                await supabaseClient.auth.getUser();
+
+
+            /*
+             * NOT LOGGED IN
+             */
+
+            if (
+                userError ||
+                !user
+            ) {
+
+                window.location.href =
+                    "client-login.html";
+
+                return;
+            }
+
+
+            /*
+             * GET CLIENT PROFILE
+             */
+
+            const {
+                data: profile,
+                error: profileError
+            } =
+                await supabaseClient
+                    .from("client_profiles")
+                    .select(
+                        "id, full_name, role"
+                    )
+                    .eq(
+                        "id",
+                        user.id
+                    )
+                    .single();
+
+
+            /*
+             * PROFILE ERROR
+             */
+
+            if (profileError) {
+
+                console.error(
+                    "Profile error:",
+                    profileError
+                );
+
+                dashboardMessage.textContent =
+                    "We could not load your client profile.";
+
+                return;
+            }
+
+
+            /*
+             * SECURITY CHECK
+             *
+             * This dashboard is for clients.
+             */
+
+            if (
+                profile.role !== "client"
+            ) {
+
+                dashboardMessage.textContent =
+                    "This dashboard is for client accounts.";
+
+                return;
+            }
+
+
+            /*
+             * DISPLAY INFORMATION
+             */
+
+            const clientName =
+                profile.full_name ||
+                "Client";
+
+
+            document.getElementById(
+                "clientHeaderName"
+            ).textContent =
+                clientName;
+
+
+            document.getElementById(
+                "clientWelcomeName"
+            ).textContent =
+                clientName;
+
+
+            document.getElementById(
+                "clientAccountName"
+            ).textContent =
+                clientName;
+
+
+            document.getElementById(
+                "clientAccountEmail"
+            ).textContent =
+                user.email || "";
+
+
+            document.getElementById(
+                "clientAccountRole"
+            ).textContent =
+                profile.role.toUpperCase();
+
+        }
+
+
+        /*
+         * LOGOUT
+         */
+
+        document
+            .getElementById(
+                "clientLogoutButton"
+            )
+            .addEventListener(
+                "click",
+                async function () {
+
+                    const {
+                        error
+                    } =
+                        await supabaseClient.auth.signOut();
+
+
+                    if (error) {
+
+                        dashboardMessage.textContent =
+                            error.message;
+
+                        return;
+                    }
+
+
+                    window.location.href =
+                        "client-login.html";
+
+                }
+            );
+
+
+        /*
+         * START DASHBOARD
+         */
+
+        loadClientDashboard();
+
+    </script>
+
+</body>
+
+</html>
