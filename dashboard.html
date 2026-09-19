@@ -65,101 +65,141 @@
             </div>
 
 
-            <!-- DASHBOARD CARDS -->
+          <!-- DASHBOARD CARDS -->
 
-            <section class="dashboard-grid">
-
-
-                <div class="dashboard-card">
-
-                    <span class="dashboard-card-icon">
-                        +
-                    </span>
-
-                    <h2>
-                        Add Project
-                    </h2>
-
-                    <p>
-                        Add a new portfolio project.
-                    </p>
-
-<button
-    class="dashboard-button"
-    id="addProjectButton"
->
-    Add Project
-</button>
-
-                </div>
+<section class="dashboard-grid">
 
 
-                <div class="dashboard-card">
+    <!-- ADD PROJECT -->
 
-                    <span class="dashboard-card-icon">
-                        ◈
-                    </span>
+    <div class="dashboard-card">
 
-                    <h2>
-                        Manage Projects
-                    </h2>
+        <span class="dashboard-card-icon">
+            +
+        </span>
 
-                    <p>
-                        Edit or remove existing projects.
-                    </p>
+        <h2>
+            Add Project
+        </h2>
 
-<button class="dashboard-button" id="manageProjectsButton">
-    Manage Projects
-</button>
+        <p>
+            Add a new portfolio project.
+        </p>
 
-                </div>
+        <button
+            class="dashboard-button"
+            id="addProjectButton"
+        >
+            Add Project
+        </button>
 
-
-                <div class="dashboard-card">
-
-                    <span class="dashboard-card-icon">
-                        ★
-                    </span>
-
-                    <h2>
-                        Client Reviews
-                    </h2>
-
-                    <p>
-                        Manage testimonials from clients.
-                    </p>
-
-                    <button class="dashboard-button" id="manageReviewsButton">
-    Manage Reviews
-</button>
-
-                </div>
+    </div>
 
 
-                <div class="dashboard-card">
+    <!-- MANAGE PROJECTS -->
 
-                    <span class="dashboard-card-icon">
-                        ⚙
-                    </span>
+    <div class="dashboard-card">
 
-                    <h2>
-                        Portfolio Settings
-                    </h2>
+        <span class="dashboard-card-icon">
+            ◈
+        </span>
 
-                    <p>
-                        Manage your portfolio content.
-                    </p>
+        <h2>
+            Manage Projects
+        </h2>
 
-                    <button class="dashboard-button">
-                        Settings
-                    </button>
+        <p>
+            Edit or remove existing projects.
+        </p>
 
-                </div>
+        <button
+            class="dashboard-button"
+            id="manageProjectsButton"
+        >
+            Manage Projects
+        </button>
+
+    </div>
 
 
-            </section>
+    <!-- CLIENT PROJECTS -->
+
+    <div class="dashboard-card client-projects-dashboard-card">
+
+        <span class="dashboard-card-icon">
+            👥
+        </span>
+
+        <h2>
+            Client Projects
+        </h2>
+
+        <p>
+            Assign projects to clients and track delivery status.
+        </p>
+
+        <button
+            type="button"
+            id="clientProjectsButton"
+            class="dashboard-button"
+        >
+            Manage Client Projects
+        </button>
+
+    </div>
 
 
+    <!-- CLIENT REVIEWS -->
+
+    <div class="dashboard-card">
+
+        <span class="dashboard-card-icon">
+            ★
+        </span>
+
+        <h2>
+            Client Reviews
+        </h2>
+
+        <p>
+            Manage testimonials from clients.
+        </p>
+
+        <button
+            class="dashboard-button"
+            id="manageReviewsButton"
+        >
+            Manage Reviews
+        </button>
+
+    </div>
+
+
+    <!-- PORTFOLIO SETTINGS -->
+
+    <div class="dashboard-card">
+
+        <span class="dashboard-card-icon">
+            ⚙
+        </span>
+
+        <h2>
+            Portfolio Settings
+        </h2>
+
+        <p>
+            Manage your portfolio content.
+        </p>
+
+        <button class="dashboard-button">
+            Settings
+        </button>
+
+    </div>
+
+
+</section>
+            
         </div>
 
     </main>
@@ -169,6 +209,28 @@
 
     <script src="admin.js"></script>
 
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const clientProjectsButton =
+        document.getElementById("clientProjectsButton");
+
+    if (!clientProjectsButton) {
+        return;
+    }
+
+    clientProjectsButton.addEventListener(
+        "click",
+        function () {
+
+            window.location.href =
+                "client-projects.html";
+
+        }
+    );
+
+});
+</script>
 
 </body>
 
