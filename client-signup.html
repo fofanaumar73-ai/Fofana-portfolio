@@ -325,15 +325,41 @@
                  * ACCOUNT CREATED
                  */
 
-                if (data.user) {
+if (data.user) {
 
-                    signupMessage.textContent =
-                        "Account created successfully. Please check your email to verify your account.";
+    const { error: profileError } =
+        await supabaseClient
+            .from("client_profiles")
+            .insert({
+                id: data.user.id,
+                full_name: name
+            });
 
-                    signupMessage.className =
-                        "client-auth-message success";
 
-                }
+    if (profileError) {
+
+        console.error(
+            "Profile creation error:",
+            profileError
+        );
+
+        signupMessage.textContent =
+            "Account was created, but your profile could not be created. Please contact support.";
+
+        signupMessage.className =
+            "client-auth-message error";
+
+        return;
+    }
+
+
+    signupMessage.textContent =
+        "Account created successfully. Please check your email to verify your account.";
+
+    signupMessage.className =
+        "client-auth-message success";
+
+}
 
             }
         );
