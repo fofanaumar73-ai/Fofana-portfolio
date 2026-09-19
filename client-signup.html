@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Create Client Account | FOFANA.</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+<body class="client-auth-page">
+
+
+    <!-- =========================================================
+         CLIENT SIGN UP
+    ========================================================= -->
+
+    <main class="client-auth-container">
+
+        <div class="client-auth-card">
+
+
+            <!-- BRAND -->
+
+            <a
+                href="index.html"
+                class="client-auth-brand"
+            >
+                FOFANA<span>.</span>
+            </a>
+
+
+            <!-- HEADER -->
+
+            <div class="client-auth-heading">
+
+                <p class="section-label">
+                    CLIENT PORTAL
+                </p>
+
+                <h1>
+                    Create Your Account.
+                </h1>
+
+                <p>
+                    Create your client account to manage
+                    projects, messages and delivered work.
+                </p>
+
+            </div>
+
+
+            <!-- =================================================
+                 SIGN UP FORM
+            ================================================== -->
+
+            <form
+                id="clientSignupForm"
+                class="client-auth-form"
+            >
+
+                <div class="client-form-group">
+
+                    <label for="clientName">
+                        Full Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="clientName"
+                        name="name"
+                        placeholder="Enter your full name"
+                        autocomplete="name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="client-form-group">
+
+                    <label for="clientSignupEmail">
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="clientSignupEmail"
+                        name="email"
+                        placeholder="Enter your email"
+                        autocomplete="email"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="client-form-group">
+
+                    <label for="clientSignupPassword">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="clientSignupPassword"
+                        name="password"
+                        placeholder="Create a password"
+                        autocomplete="new-password"
+                        minlength="6"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="client-form-group">
+
+                    <label for="clientConfirmPassword">
+                        Confirm Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="clientConfirmPassword"
+                        name="confirmPassword"
+                        placeholder="Confirm your password"
+                        autocomplete="new-password"
+                        minlength="6"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="primary-button client-auth-submit"
+                >
+                    CREATE ACCOUNT
+                </button>
+
+
+                <p
+                    id="clientSignupMessage"
+                    class="client-auth-message"
+                ></p>
+
+            </form>
+
+
+            <!-- LOGIN -->
+
+            <div class="client-auth-footer">
+
+                <p>
+                    Already have a client account?
+                </p>
+
+                <a
+                    href="client-login.html"
+                    class="client-signup-link"
+                >
+                    SIGN IN
+                </a>
+
+            </div>
+
+
+            <!-- BACK -->
+
+            <a
+                href="index.html"
+                class="client-back-link"
+            >
+                ← Back to website
+            </a>
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================================================
+         SUPABASE
+    ========================================================== -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+    <!-- =========================================================
+         CLIENT SIGN UP JAVASCRIPT
+    ========================================================== -->
+
+    <script>
+
+        const SUPABASE_URL =
+            "https://uryfgatzyesolwwmugin.supabase.co";
+
+        const SUPABASE_PUBLISHABLE_KEY =
+            "sb_publishable_QL4lxGKETA1_xMFFJ7RV5g_Wuyi_x-d";
+
+
+        const supabaseClient =
+            window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_PUBLISHABLE_KEY
+            );
+
+
+        const signupForm =
+            document.getElementById(
+                "clientSignupForm"
+            );
+
+        const signupMessage =
+            document.getElementById(
+                "clientSignupMessage"
+            );
+
+
+        signupForm.addEventListener(
+            "submit",
+            async function (event) {
+
+                event.preventDefault();
+
+
+                const name =
+                    document.getElementById(
+                        "clientName"
+                    ).value.trim();
+
+
+                const email =
+                    document.getElementById(
+                        "clientSignupEmail"
+                    ).value.trim();
+
+
+                const password =
+                    document.getElementById(
+                        "clientSignupPassword"
+                    ).value;
+
+
+                const confirmPassword =
+                    document.getElementById(
+                        "clientConfirmPassword"
+                    ).value;
+
+
+                /*
+                 * CHECK PASSWORDS
+                 */
+
+                if (password !== confirmPassword) {
+
+                    signupMessage.textContent =
+                        "Passwords do not match.";
+
+                    signupMessage.className =
+                        "client-auth-message error";
+
+                    return;
+                }
+
+
+                signupMessage.textContent =
+                    "Creating your account...";
+
+                signupMessage.className =
+                    "client-auth-message";
+
+
+                /*
+                 * CREATE SUPABASE ACCOUNT
+                 */
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabaseClient.auth.signUp({
+
+                        email: email,
+
+                        password: password,
+
+                        options: {
+
+                            data: {
+                                full_name: name
+                            }
+
+                        }
+
+                    });
+
+
+                if (error) {
+
+                    signupMessage.textContent =
+                        error.message;
+
+                    signupMessage.className =
+                        "client-auth-message error";
+
+                    return;
+                }
+
+
+                /*
+                 * ACCOUNT CREATED
+                 */
+
+                if (data.user) {
+
+                    signupMessage.textContent =
+                        "Account created successfully. Please check your email to verify your account.";
+
+                    signupMessage.className =
+                        "client-auth-message success";
+
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>
