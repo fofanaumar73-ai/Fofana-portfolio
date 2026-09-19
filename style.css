@@ -195,7 +195,7 @@ a {
     display: none;
 }
 
-.nav-menu.mobile-active {
+.nav-menu.mobile-menu-open {
     display: flex;
 
     flex-direction: column;
@@ -208,6 +208,9 @@ a {
 
     border-top:
         1px solid rgba(255,255,255,0.07);
+
+    position: relative;
+    z-index: 1001;
 }
 
 .nav-menu a {
@@ -225,6 +228,60 @@ a {
 
 .nav-menu .admin-menu-link {
     color: #b46cff;
+}
+
+
+/* =========================================================
+   DESKTOP NAVIGATION
+========================================================= */
+
+.desktop-nav {
+    display: flex;
+
+    align-items: center;
+
+    gap: 32px;
+}
+
+@media (min-width: 769px) {
+
+    .nav-menu {
+        display: none !important;
+    }
+
+    .menu-toggle {
+        display: none !important;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE NAVIGATION
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .desktop-nav {
+        display: none !important;
+    }
+
+    .menu-toggle {
+        display: flex !important;
+        position: relative;
+        z-index: 1002;
+    }
+
+    .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 9999;
+    }
+
+    .nav-menu {
+        width: 100%;
+    }
+
 }
 
 
