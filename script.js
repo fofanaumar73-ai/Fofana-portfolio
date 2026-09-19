@@ -85,63 +85,90 @@ function getProjectImages(project) {
 
 function initializeMobileNavigation() {
 
-    const menuToggle =
-        document.querySelector(".menu-toggle");
+    const menuToggles =
+        document.querySelectorAll(".menu-toggle");
 
-    const navMenu =
-        document.querySelector(".nav-menu");
-
-    if (!menuToggle || !navMenu) {
+    if (!menuToggles.length) {
         return;
     }
 
 
-    menuToggle.addEventListener("click", function (event) {
+    menuToggles.forEach(function (menuToggle) {
 
-        event.preventDefault();
-        event.stopPropagation();
+        const navbar =
+            menuToggle.closest(".navbar");
 
-        const isOpen =
-            navMenu.classList.toggle("mobile-menu-open");
-
-
-        menuToggle.setAttribute(
-            "aria-expanded",
-            isOpen ? "true" : "false"
-        );
+        if (!navbar) {
+            return;
+        }
 
 
-        menuToggle.setAttribute(
-            "aria-label",
-            isOpen
-                ? "Close navigation"
-                : "Open navigation"
-        );
+        const navMenu =
+            navbar.querySelector(".nav-menu");
 
-    });
+        if (!navMenu) {
+            return;
+        }
 
 
-    /* Close menu when a link is clicked */
+        menuToggle.addEventListener("click", function (event) {
 
-    navMenu.querySelectorAll("a").forEach(function (link) {
+            event.preventDefault();
+            event.stopPropagation();
 
-        link.addEventListener("click", function () {
 
-            navMenu.classList.remove(
-                "mobile-menu-open"
-            );
+            const isOpen =
+                navMenu.classList.toggle(
+                    "mobile-menu-open"
+                );
+
 
             menuToggle.setAttribute(
                 "aria-expanded",
-                "false"
+                isOpen ? "true" : "false"
             );
+
 
             menuToggle.setAttribute(
                 "aria-label",
-                "Open navigation"
+                isOpen
+                    ? "Close navigation"
+                    : "Open navigation"
             );
 
         });
+
+
+        /* Close menu when a link is clicked */
+
+        navMenu.querySelectorAll("a").forEach(
+            function (link) {
+
+                link.addEventListener(
+                    "click",
+                    function () {
+
+                        navMenu.classList.remove(
+                            "mobile-menu-open"
+                        );
+
+
+                        menuToggle.setAttribute(
+                            "aria-expanded",
+                            "false"
+                        );
+
+
+                        menuToggle.setAttribute(
+                            "aria-label",
+                            "Open navigation"
+                        );
+
+                    }
+                );
+
+            }
+        );
 
     });
 
