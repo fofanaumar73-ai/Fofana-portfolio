@@ -1,1 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Client Login | FOFANA.</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+<body class="client-auth-page">
+
+
+    <!-- =========================================================
+         CLIENT AUTHENTICATION
+    ========================================================= -->
+
+    <main class="client-auth-container">
+
+        <div class="client-auth-card">
+
+
+            <!-- BRAND -->
+
+            <a
+                href="index.html"
+                class="client-auth-brand"
+            >
+                FOFANA<span>.</span>
+            </a>
+
+
+            <!-- HEADER -->
+
+            <div class="client-auth-heading">
+
+                <p class="section-label">
+                    CLIENT PORTAL
+                </p>
+
+                <h1>
+                    Welcome Back.
+                </h1>
+
+                <p>
+                    Sign in to access your projects,
+                    messages and client dashboard.
+                </p>
+
+            </div>
+
+
+            <!-- =================================================
+                 LOGIN FORM
+            ================================================== -->
+
+            <form
+                id="clientLoginForm"
+                class="client-auth-form"
+            >
+
+                <div class="client-form-group">
+
+                    <label for="clientEmail">
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="clientEmail"
+                        name="email"
+                        placeholder="Enter your email"
+                        autocomplete="email"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="client-form-group">
+
+                    <label for="clientPassword">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="clientPassword"
+                        name="password"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="primary-button client-auth-submit"
+                >
+                    SIGN IN
+                </button>
+
+
+                <p
+                    id="clientLoginMessage"
+                    class="client-auth-message"
+                ></p>
+
+            </form>
+
+
+            <!-- SIGN UP -->
+
+            <div class="client-auth-footer">
+
+                <p>
+                    Don't have a client account?
+                </p>
+
+                <a
+                    href="client-signup.html"
+                    class="client-signup-link"
+                >
+                    CREATE ACCOUNT
+                </a>
+
+            </div>
+
+
+            <!-- BACK TO WEBSITE -->
+
+            <a
+                href="index.html"
+                class="client-back-link"
+            >
+                ← Back to website
+            </a>
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================================================
+         SUPABASE
+    ========================================================== -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+    <!-- =========================================================
+         CLIENT AUTHENTICATION JAVASCRIPT
+    ========================================================== -->
+
+    <script>
+
+        const SUPABASE_URL =
+            "https://uryfgatzyesolwwmugin.supabase.co";
+
+        const SUPABASE_PUBLISHABLE_KEY =
+            "sb_publishable_QL4lxGKETA1_xMFFJ7RV5g_Wuyi_x-d";
+
+
+        const supabaseClient =
+            window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_PUBLISHABLE_KEY
+            );
+
+
+        const loginForm =
+            document.getElementById(
+                "clientLoginForm"
+            );
+
+        const loginMessage =
+            document.getElementById(
+                "clientLoginMessage"
+            );
+
+
+        loginForm.addEventListener(
+            "submit",
+            async function (event) {
+
+                event.preventDefault();
+
+
+                const email =
+                    document.getElementById(
+                        "clientEmail"
+                    ).value.trim();
+
+
+                const password =
+                    document.getElementById(
+                        "clientPassword"
+                    ).value;
+
+
+                loginMessage.textContent =
+                    "Signing in...";
+
+
+                loginMessage.className =
+                    "client-auth-message";
+
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabaseClient.auth.signInWithPassword({
+                        email: email,
+                        password: password
+                    });
+
+
+                if (error) {
+
+                    loginMessage.textContent =
+                        error.message;
+
+                    loginMessage.classList.add(
+                        "error"
+                    );
+
+                    return;
+                }
+
+
+                if (data.user) {
+
+                    window.location.href =
+                        "client-dashboard.html";
+
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>
