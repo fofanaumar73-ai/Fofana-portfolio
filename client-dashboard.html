@@ -379,22 +379,26 @@
             }
 
 
-            /*
-             * SECURITY CHECK
-             *
-             * This dashboard is for clients.
-             */
+/*
+ * ROLE CHECK
+ */
 
-            if (
-                profile.role !== "client"
-            ) {
+if (profile.role === "admin") {
 
-                dashboardMessage.textContent =
-                    "This dashboard is for client accounts.";
+    window.location.href =
+        "admin.html";
 
-                return;
-            }
+    return;
+}
 
+
+if (profile.role !== "client") {
+
+    dashboardMessage.textContent =
+        "Your account does not have a valid client role.";
+
+    return;
+}
 
             /*
              * DISPLAY INFORMATION
