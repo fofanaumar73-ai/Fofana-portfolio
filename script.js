@@ -92,57 +92,80 @@ function initializeMobileNavigation() {
         return;
     }
 
-
     menuToggles.forEach(function (menuToggle) {
 
-        const navbar =
-            menuToggle.closest(".navbar");
+        /*
+         * Find the header that contains this hamburger.
+         * Works for both:
+         * .site-header
+         * .navbar
+         */
 
-        if (!navbar) {
+        const header =
+            menuToggle.closest(
+                ".site-header, .navbar"
+            );
+
+        if (!header) {
             return;
         }
 
 
+        /*
+         * Find the mobile menu belonging
+         * to this specific header.
+         */
+
         const navMenu =
-            navbar.querySelector(".nav-menu");
+            header.querySelector(".nav-menu");
 
         if (!navMenu) {
             return;
         }
 
 
-        menuToggle.addEventListener("click", function (event) {
+        /*
+         * HAMBURGER CLICK
+         */
 
-            event.preventDefault();
-            event.stopPropagation();
+        menuToggle.addEventListener(
+            "click",
+            function (event) {
+
+                event.preventDefault();
+                event.stopPropagation();
 
 
-            const isOpen =
-                navMenu.classList.toggle(
-                    "mobile-menu-open"
+                const isOpen =
+                    navMenu.classList.toggle(
+                        "mobile-menu-open"
+                    );
+
+
+                menuToggle.setAttribute(
+                    "aria-expanded",
+                    isOpen ? "true" : "false"
                 );
 
 
-            menuToggle.setAttribute(
-                "aria-expanded",
-                isOpen ? "true" : "false"
-            );
+                menuToggle.setAttribute(
+                    "aria-label",
+                    isOpen
+                        ? "Close navigation"
+                        : "Open navigation"
+                );
+
+            }
+        );
 
 
-            menuToggle.setAttribute(
-                "aria-label",
-                isOpen
-                    ? "Close navigation"
-                    : "Open navigation"
-            );
+        /*
+         * CLOSE MENU WHEN A LINK IS CLICKED
+         */
 
-        });
-
-
-        /* Close menu when a link is clicked */
-
-        navMenu.querySelectorAll("a").forEach(
-            function (link) {
+        navMenu
+            .querySelectorAll("a")
+            .forEach(function (link) {
 
                 link.addEventListener(
                     "click",
@@ -167,8 +190,7 @@ function initializeMobileNavigation() {
                     }
                 );
 
-            }
-        );
+            });
 
     });
 
