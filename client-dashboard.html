@@ -1594,6 +1594,38 @@ async function initializeClientChat(
 }
 
 
+        /* =========================================================
+   AUTO-GROW CHAT INPUT
+========================================================= */
+
+const clientChatInput =
+    document.getElementById(
+        "clientChatInput"
+    );
+
+
+if (clientChatInput) {
+
+    clientChatInput.addEventListener(
+        "input",
+        function () {
+
+            this.style.height =
+                "auto";
+
+
+            this.style.height =
+                Math.min(
+                    this.scrollHeight,
+                    140
+                ) + "px";
+
+        }
+    );
+
+}
+        
+
 /* =========================================================
    LOGOUT
 ========================================================= */
