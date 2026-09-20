@@ -1669,6 +1669,94 @@ data.forEach(
         }
 
 
+        /* =====================================================
+   DELETE MESSAGE
+====================================================== */
+
+async function deleteMessage(messageId) {
+
+    if (!messageId) {
+        return;
+    }
+
+
+    const confirmed =
+        window.confirm(
+            "Delete this message?"
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    clearChatError();
+
+
+    const {
+        error
+    } =
+        await supabaseClient
+            .from("client_messages")
+            .delete()
+            .eq("id", messageId)
+            .eq(
+                "sender_id",
+                currentUser.id
+            );
+
+
+    if (error) {
+
+        console.error(
+            "Message delete error:",
+            error
+        );
+
+
+        showChatError(
+            "Could not delete this message."
+        );
+
+
+        return;
+    }
+
+
+    await loadMessages();
+
+}
+
+
+        /* =====================================================
+   MESSAGE MENU
+====================================================== */
+
+chatMessages.addEventListener(
+    "click",
+    function (event) {
+
+        const menuButton =
+            event.target.closest(
+                ".chat-message-menu"
+            );
+
+
+        if (!menuButton) {
+            return;
+        }
+
+
+        const messageId =
+            menuButton.dataset.messageId;
+
+
+        deleteMessage(messageId);
+
+    }
+);
+        
 
         /* =====================================================
            SCROLL TO LATEST
