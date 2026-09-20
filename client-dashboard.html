@@ -983,246 +983,702 @@
            LOAD CLIENT DASHBOARD
         ========================================================= */
 
-        async function loadClientDashboard() {
+async function loadClientDashboard() {
 
-            /*
-             * GET CURRENT AUTHENTICATED USER
-             */
+    /*
+     * GET CURRENT AUTHENTICATED USER
+     */
 
-            const {
-                data: {
-                    user
-                },
-                error: userError
-            } =
-                await supabaseClient.auth.getUser();
-
-
-            /*
-             * NOT LOGGED IN
-             */
-
-            if (
-                userError ||
-                !user
-            ) {
-
-                window.location.href =
-                    "client-login.html";
-
-                return;
-
-            }
+    const {
+        data: {
+            user
+        },
+        error: userError
+    } =
+        await supabaseClient.auth.getUser();
 
 
-            /*
-             * GET CLIENT PROFILE
-             */
+    /*
+     * NOT LOGGED IN
+     */
 
-            const {
-                data: profile,
-                error: profileError
-            } =
-                await supabaseClient
-                    .from("client_profiles")
-                    .select(
-                        "id, full_name, role"
-                    )
-                    .eq(
-                        "id",
-                        user.id
-                    )
-                    .single();
+    if (
+        userError ||
+        !user
+    ) {
+
+        window.location.href =
+            "client-login.html";
+
+        return;
+
+    }
 
 
-            /*
-             * PROFILE ERROR
-             */
+    /*
+     * GET CLIENT PROFILE
+     */
 
-            if (profileError) {
+    const {
+        data: profile,
+        error: profileError
+    } =
+        await supabaseClient
+            .from("client_profiles")
+            .select(
+                "id, full_name, role"
+            )
+            .eq(
+                "id",
+                user.id
+            )
+            .single();
 
-                console.error(
-                    "Profile error:",
-                    profileError
+
+    /*
+     * PROFILE ERROR
+     */
+
+    if (profileError) {
+
+        console.error(
+            "Profile error:",
+            profileError
+        );
+
+
+        dashboardMessage.textContent =
+            "We could not load your client profile.";
+
+        return;
+
+    }
+
+
+    /*
+     * ROLE CHECK
+     */
+
+    if (
+        profile.role ===
+        "admin"
+    ) {
+
+        window.location.href =
+            "admin.html";
+
+        return;
+
+    }
+
+
+    if (
+        profile.role !==
+        "client"
+    ) {
+
+        dashboardMessage.textContent =
+            "Your account does not have a valid client role.";
+
+        return;
+
+    }
+
+
+    /*
+     * DISPLAY INFORMATION
+     */
+
+    const clientName =
+        profile.full_name ||
+        "Client";
+
+
+    document.getElementById(
+        "clientHeaderName"
+    ).textContent =
+        clientName;
+
+
+    document.getElementById(
+        "clientWelcomeName"
+    ).textContent =
+        clientName;
+
+
+    document.getElementById(
+        "clientAccountName"
+    ).textContent =
+        clientName;
+
+
+    document.getElementById(
+        "clientAccountEmail"
+    ).textContent =
+        user.email || "";
+
+
+    document.getElementById(
+        "clientAccountRole"
+    ).textContent =
+        profile.role.toUpperCase();
+
+
+    /*
+     * LOAD CLIENT PROJECTS
+     */
+
+    await loadClientProjects(
+        user.id
+    );
+
+
+    /*
+     * INITIALIZE CLIENT CHAT
+     */
+
+    await initializeClientChat(
+        user.id
+    );
+
+}
+
+
+/* =========================================================
+   CLIENT CHAT
+========================================================= */
+
+let currentClientId = null;
+
+
+/* =========================================================
+   FORMAT CHAT TIME
+========================================================= */
+
+function formatChatTime(dateValue) {
+
+    if (!dateValue) {
+        return "";
+    }
+
+
+    const date =
+        new Date(dateValue);
+
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+
+        return "";
+
+    }
+
+
+    return date.toLocaleString(
+        undefined,
+        {
+            month: "short",
+            day: "numeric",
+            hour: "numeric",
+            minute: "2-digit"
+        }
+    );
+
+}
+
+
+/* =========================================================
+   LOAD CHAT MESSAGES
+========================================================= */
+
+async function loadClientChat() {
+
+    if (!currentClientId) {
+        return;
+    }
+
+
+    const messagesContainer =
+        document.getElementById(
+            "clientChatMessages"
+        );
+
+
+    if (!messagesContainer) {
+        return;
+    }
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("client_messages")
+            .select(
+                `
+                    id,
+                    client_id,
+                    sender_id,
+                    sender_role,
+                    message,
+                    is_read,
+                    created_at
+                `
+            )
+            .eq(
+                "client_id",
+                currentClientId
+            )
+            .order(
+                "created_at",
+                {
+                    ascending: true
+                }
+            );
+
+
+    /*
+     * CHAT ERROR
+     */
+
+    if (error) {
+
+        console.error(
+            "Chat loading error:",
+            error
+        );
+
+
+        messagesContainer.innerHTML =
+            `
+                <div class="chat-empty-state">
+
+                    <p>
+                        Could not load your messages.
+                    </p>
+
+                </div>
+            `;
+
+        return;
+
+    }
+
+
+    /*
+     * NO MESSAGES
+     */
+
+    if (
+        !data ||
+        data.length === 0
+    ) {
+
+        messagesContainer.innerHTML =
+            `
+                <div class="chat-empty-state">
+
+                    <p>
+                        No messages yet.
+                    </p>
+
+                    <p>
+                        Send a message to start the conversation.
+                    </p>
+
+                </div>
+            `;
+
+        return;
+
+    }
+
+
+    /*
+     * CLEAR CHAT
+     */
+
+    messagesContainer.innerHTML = "";
+
+
+    /*
+     * DISPLAY MESSAGES
+     */
+
+    data.forEach(
+        function (item) {
+
+            const message =
+                document.createElement(
+                    "div"
                 );
 
 
-                dashboardMessage.textContent =
-                    "We could not load your client profile.";
-
-                return;
-
-            }
+            message.className =
+                `chat-message ${item.sender_role}`;
 
 
-            /*
-             * ROLE CHECK
-             */
+            message.innerHTML =
+                `
 
-            if (
-                profile.role ===
-                "admin"
-            ) {
+                    <p class="chat-message-text">
+                        ${escapeHtml(
+                            item.message
+                        )}
+                    </p>
 
-                window.location.href =
-                    "admin.html";
+                    <span class="chat-message-time">
+                        ${escapeHtml(
+                            formatChatTime(
+                                item.created_at
+                            )
+                        )}
+                    </span>
 
-                return;
-
-            }
-
-
-            if (
-                profile.role !==
-                "client"
-            ) {
-
-                dashboardMessage.textContent =
-                    "Your account does not have a valid client role.";
-
-                return;
-
-            }
+                `;
 
 
-            /*
-             * DISPLAY INFORMATION
-             */
-
-            const clientName =
-                profile.full_name ||
-                "Client";
-
-
-            document.getElementById(
-                "clientHeaderName"
-            ).textContent =
-                clientName;
-
-
-            document.getElementById(
-                "clientWelcomeName"
-            ).textContent =
-                clientName;
-
-
-            document.getElementById(
-                "clientAccountName"
-            ).textContent =
-                clientName;
-
-
-            document.getElementById(
-                "clientAccountEmail"
-            ).textContent =
-                user.email || "";
-
-
-            document.getElementById(
-                "clientAccountRole"
-            ).textContent =
-                profile.role.toUpperCase();
-
-
-            /*
-             * LOAD CLIENT PROJECTS
-             */
-
-            await loadClientProjects(
-                user.id
+            messagesContainer.appendChild(
+                message
             );
 
         }
+    );
 
 
+    /*
+     * SCROLL TO LATEST MESSAGE
+     */
 
-        /* =========================================================
-           LOGOUT
-        ========================================================= */
+    messagesContainer.scrollTop =
+        messagesContainer.scrollHeight;
 
-        document
-            .getElementById(
-                "clientLogoutButton"
-            )
-            .addEventListener(
+}
+
+
+/* =========================================================
+   SEND CHAT MESSAGE
+========================================================= */
+
+async function sendClientChatMessage() {
+
+    if (!currentClientId) {
+        return;
+    }
+
+
+    const input =
+        document.getElementById(
+            "clientChatInput"
+        );
+
+
+    const sendButton =
+        document.getElementById(
+            "clientChatSendButton"
+        );
+
+
+    if (
+        !input ||
+        !sendButton
+    ) {
+
+        return;
+
+    }
+
+
+    const message =
+        input.value.trim();
+
+
+    if (!message) {
+        return;
+    }
+
+
+    /*
+     * DISABLE SEND BUTTON
+     */
+
+    input.disabled = true;
+
+    sendButton.disabled = true;
+
+    sendButton.textContent =
+        "SENDING...";
+
+
+    /*
+     * GET CURRENT USER
+     */
+
+    const {
+        data: {
+            user
+        },
+        error: userError
+    } =
+        await supabaseClient
+            .auth
+            .getUser();
+
+
+    if (
+        userError ||
+        !user
+    ) {
+
+        window.location.href =
+            "client-login.html";
+
+        return;
+
+    }
+
+
+    /*
+     * SEND MESSAGE
+     */
+
+    const {
+        error
+    } =
+        await supabaseClient
+            .from("client_messages")
+            .insert({
+
+                client_id:
+                    currentClientId,
+
+                sender_id:
+                    user.id,
+
+                sender_role:
+                    "client",
+
+                message:
+                    message
+
+            });
+
+
+    /*
+     * MESSAGE ERROR
+     */
+
+    if (error) {
+
+        console.error(
+            "Message send error:",
+            error
+        );
+
+
+        dashboardMessage.textContent =
+            "Could not send your message: " +
+            error.message;
+
+
+        input.disabled = false;
+
+        sendButton.disabled = false;
+
+        sendButton.textContent =
+            "SEND";
+
+        return;
+
+    }
+
+
+    /*
+     * CLEAR INPUT
+     */
+
+    input.value = "";
+
+
+    /*
+     * RESTORE BUTTON
+     */
+
+    input.disabled = false;
+
+    sendButton.disabled = false;
+
+    sendButton.textContent =
+        "SEND";
+
+
+    /*
+     * RELOAD CHAT
+     */
+
+    await loadClientChat();
+
+}
+
+
+/* =========================================================
+   INITIALIZE CLIENT CHAT
+========================================================= */
+
+async function initializeClientChat(
+    clientId
+) {
+
+    currentClientId =
+        clientId;
+
+
+    const chatForm =
+        document.getElementById(
+            "clientChatForm"
+        );
+
+
+    if (!chatForm) {
+        return;
+    }
+
+
+    /*
+     * PREVENT DUPLICATE SUBMIT LISTENER
+     */
+
+    if (
+        chatForm.dataset.initialized ===
+        "true"
+    ) {
+
+        await loadClientChat();
+
+        return;
+
+    }
+
+
+    chatForm.dataset.initialized =
+        "true";
+
+
+    /*
+     * CHAT FORM SUBMIT
+     */
+
+    chatForm.addEventListener(
+        "submit",
+        async function (event) {
+
+            event.preventDefault();
+
+
+            await sendClientChatMessage();
+
+        }
+    );
+
+
+    /*
+     * LOAD EXISTING MESSAGES
+     */
+
+    await loadClientChat();
+
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+document
+    .getElementById(
+        "clientLogoutButton"
+    )
+    .addEventListener(
+        "click",
+        async function () {
+
+            const {
+                error
+            } =
+                await supabaseClient
+                    .auth
+                    .signOut();
+
+
+            if (error) {
+
+                dashboardMessage.textContent =
+                    error.message;
+
+                return;
+
+            }
+
+
+            window.location.href =
+                "client-login.html";
+
+        }
+    );
+
+
+/* =========================================================
+   DASHBOARD CARD NAVIGATION
+========================================================= */
+
+document
+    .querySelectorAll(
+        "[data-scroll-target]"
+    )
+    .forEach(
+        function (button) {
+
+            button.addEventListener(
                 "click",
-                async function () {
+                function () {
 
-                    const {
-                        error
-                    } =
-                        await supabaseClient
-                            .auth
-                            .signOut();
+                    const targetId =
+                        this.dataset
+                            .scrollTarget;
 
 
-                    if (error) {
+                    const target =
+                        document.getElementById(
+                            targetId
+                        );
 
-                        dashboardMessage.textContent =
-                            error.message;
 
+                    if (!target) {
                         return;
-
                     }
 
 
-                    window.location.href =
-                        "client-login.html";
+                    target.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start"
+                    });
 
                 }
             );
 
+        }
+    );
 
 
-        /* =========================================================
-           DASHBOARD CARD NAVIGATION
-        ========================================================= */
+/* =========================================================
+   START DASHBOARD
+========================================================= */
 
-        document
-            .querySelectorAll(
-                "[data-scroll-target]"
-            )
-            .forEach(
-                function (button) {
-
-                    button.addEventListener(
-                        "click",
-                        function () {
-
-                            const targetId =
-                                this.dataset
-                                    .scrollTarget;
-
-
-                            const target =
-                                document.getElementById(
-                                    targetId
-                                );
-
-
-                            if (!target) {
-                                return;
-                            }
-
-
-                            target.scrollIntoView({
-                                behavior: "smooth",
-                                block: "start"
-                            });
-
-                        }
-                    );
-
-                }
-            );
-
-
-
-        /* =========================================================
-           START DASHBOARD
-        ========================================================= */
-
-        loadClientDashboard();
+loadClientDashboard();
 
     </script>
 
