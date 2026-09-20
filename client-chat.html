@@ -1823,30 +1823,28 @@
         );
 
 
+/* =========================================================
+   CHAT INPUT — ENTER / NEW LINE
+========================================================= */
 
-        /* =====================================================
-           ENTER TO SEND
-        ====================================================== */
+chatInput.addEventListener(
+    "keydown",
+    function (event) {
 
-        chatInput.addEventListener(
-            "keydown",
-            function (event) {
+        /* SHIFT + ENTER = NEW LINE */
+        if (event.key === "Enter" && event.shiftKey) {
+            return;
+        }
 
-                if (
-                    event.key ===
-                    "Enter" &&
-                    !event.shiftKey
-                ) {
+        /* ENTER = SEND MESSAGE */
+        if (event.key === "Enter") {
+            event.preventDefault();
 
-                    event.preventDefault();
+            chatForm.requestSubmit();
+        }
 
-                    chatForm.requestSubmit();
-
-                }
-
-            }
-        );
-
+    }
+);
 
 
         /* =====================================================
