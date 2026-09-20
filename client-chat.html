@@ -1,0 +1,1839 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Private Chat | FOFANA.</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+
+
+        body {
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(154, 67, 255, 0.16),
+                    transparent 38%
+                ),
+                #07030b;
+
+            color: #ffffff;
+
+            overflow: hidden;
+        }
+
+
+        /* =====================================================
+           CHAT PAGE
+        ====================================================== */
+
+        .chat-page {
+            width: 100%;
+            height: 100dvh;
+
+            display: flex;
+            flex-direction: column;
+
+            max-width: 1100px;
+            margin: 0 auto;
+
+            background: #09050d;
+        }
+
+
+        /* =====================================================
+           CHAT HEADER
+        ====================================================== */
+
+        .chat-header {
+            flex-shrink: 0;
+
+            height: 76px;
+
+            display: flex;
+            align-items: center;
+
+            padding: 0 20px;
+
+            border-bottom:
+                1px solid rgba(
+                    255,
+                    255,
+                    255,
+                    0.08
+                );
+
+            background:
+                rgba(
+                    10,
+                    5,
+                    15,
+                    0.96
+                );
+
+            backdrop-filter: blur(12px);
+        }
+
+
+        .chat-back-button {
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin-right: 10px;
+
+            border: none;
+            border-radius: 50%;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.07
+                );
+
+            color: #ffffff;
+
+            font-size: 24px;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .chat-back-button:hover {
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.13
+                );
+
+            transform: translateX(-2px);
+        }
+
+
+        /* =====================================================
+           PROFILE HEADER
+        ====================================================== */
+
+        .chat-profile-button {
+            flex: 1;
+
+            min-width: 0;
+
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 5px 8px;
+
+            border: none;
+
+            background: transparent;
+
+            color: #ffffff;
+
+            text-align: left;
+
+            cursor: pointer;
+
+            border-radius: 14px;
+        }
+
+
+        .chat-profile-button:hover {
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.05
+                );
+        }
+
+
+        .chat-avatar {
+            width: 48px;
+            height: 48px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7b2cff,
+                    #c66bff
+                );
+
+            color: #ffffff;
+
+            font-size: 18px;
+            font-weight: 800;
+
+            overflow: hidden;
+        }
+
+
+        .chat-avatar img {
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+
+            display: block;
+        }
+
+
+        .chat-profile-info {
+            min-width: 0;
+
+            display: flex;
+            flex-direction: column;
+
+            gap: 3px;
+        }
+
+
+        .chat-profile-name {
+            font-size: 16px;
+            font-weight: 800;
+
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+
+        .chat-profile-role {
+            color: rgba(
+                255,
+                255,
+                255,
+                0.58
+            );
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.8px;
+        }
+
+
+        /* =====================================================
+           CONNECTION STATUS
+        ====================================================== */
+
+        .chat-header-status {
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+
+            gap: 6px;
+
+            color: #72c697;
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+
+        .chat-status-dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #72c697;
+        }
+
+
+        /* =====================================================
+           CHAT BODY
+        ====================================================== */
+
+        .chat-body {
+            flex: 1;
+
+            min-height: 0;
+
+            display: flex;
+            flex-direction: column;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        0.015
+                    ),
+                    rgba(
+                        0,
+                        0,
+                        0,
+                        0.08
+                    )
+                );
+        }
+
+
+        /* =====================================================
+           MESSAGES
+        ====================================================== */
+
+        .chat-messages {
+            flex: 1;
+
+            min-height: 0;
+
+            overflow-y: auto;
+
+            padding:
+                24px
+                20px
+                28px;
+
+            display: flex;
+            flex-direction: column;
+
+            gap: 9px;
+
+            scroll-behavior: smooth;
+
+            overscroll-behavior:
+                contain;
+        }
+
+
+        .chat-messages::-webkit-scrollbar {
+            width: 5px;
+        }
+
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.15
+                );
+
+            border-radius: 20px;
+        }
+
+
+        /* =====================================================
+           EMPTY / LOADING STATE
+        ====================================================== */
+
+        .chat-empty-state {
+            flex: 1;
+
+            min-height: 250px;
+
+            display: flex;
+            flex-direction: column;
+
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+
+            color:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.45
+                );
+
+            padding: 30px;
+        }
+
+
+        .chat-empty-icon {
+            width: 64px;
+            height: 64px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin-bottom: 15px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(
+                    166,
+                    91,
+                    255,
+                    0.12
+                );
+
+            color: #b56cff;
+
+            font-size: 25px;
+        }
+
+
+        .chat-empty-state p {
+            margin: 4px 0;
+
+            font-size: 14px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =====================================================
+           MESSAGE BUBBLES
+        ====================================================== */
+
+        .chat-message {
+            position: relative;
+
+            width: fit-content;
+
+            max-width: min(
+                72%,
+                600px
+            );
+
+            padding:
+                11px
+                14px
+                9px;
+
+            border-radius: 16px;
+
+            word-wrap: break-word;
+
+            overflow-wrap: anywhere;
+
+            animation:
+                messageAppear
+                0.18s ease;
+        }
+
+
+        @keyframes messageAppear {
+
+            from {
+                opacity: 0;
+                transform:
+                    translateY(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform:
+                    translateY(0);
+            }
+
+        }
+
+
+        /* =====================================================
+           ADMIN / FOFANA MESSAGE
+        ====================================================== */
+
+        .chat-message.admin {
+            align-self: flex-start;
+
+            background:
+                #20242b;
+
+            color: #ffffff;
+
+            border-top-left-radius: 5px;
+        }
+
+
+        /* =====================================================
+           CLIENT MESSAGE
+        ====================================================== */
+
+        .chat-message.client {
+            align-self: flex-end;
+
+            background:
+                #111111;
+
+            color: #ffffff;
+
+            border-top-right-radius: 5px;
+        }
+
+
+        .chat-message-text {
+            margin: 0;
+
+            font-size: 15px;
+
+            line-height: 1.5;
+
+            white-space: pre-wrap;
+        }
+
+
+        .chat-message-time {
+            display: block;
+
+            margin-top: 6px;
+
+            color:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.48
+                );
+
+            font-size: 10px;
+
+            text-align: right;
+        }
+
+
+        /* =====================================================
+           MESSAGE COMPOSER
+        ====================================================== */
+
+        .chat-composer {
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: flex-end;
+
+            gap: 10px;
+
+            padding:
+                12px
+                16px
+                calc(
+                    12px +
+                    env(
+                        safe-area-inset-bottom
+                    )
+                );
+
+            border-top:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.08
+                );
+
+            background:
+                #0d0912;
+        }
+
+
+        .chat-input-wrapper {
+            flex: 1;
+
+            min-width: 0;
+
+            display: flex;
+            align-items: flex-end;
+
+            padding: 0;
+
+            border:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.13
+                );
+
+            border-radius: 15px;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.05
+                );
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease;
+        }
+
+
+        .chat-input-wrapper:focus-within {
+            border-color:
+                rgba(
+                    181,
+                    108,
+                    255,
+                    0.7
+                );
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.07
+                );
+        }
+
+
+        .chat-input {
+            width: 100%;
+
+            min-height: 48px;
+            max-height: 130px;
+
+            padding:
+                13px
+                15px;
+
+            border: none;
+
+            outline: none;
+
+            resize: none;
+
+            overflow-y: auto;
+
+            background: transparent;
+
+            color: #ffffff;
+
+            caret-color: #ffffff;
+
+            font-family: inherit;
+
+            font-size: 15px;
+
+            line-height: 1.45;
+        }
+
+
+        .chat-input::placeholder {
+            color:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.42
+                );
+        }
+
+
+        .chat-input::-webkit-scrollbar {
+            width: 4px;
+        }
+
+
+        .chat-input::-webkit-scrollbar-thumb {
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.15
+                );
+
+            border-radius: 20px;
+        }
+
+
+        /* =====================================================
+           SEND BUTTON
+        ====================================================== */
+
+        .chat-send-button {
+            flex-shrink: 0;
+
+            min-width: 76px;
+            height: 48px;
+
+            padding: 0 15px;
+
+            border: none;
+
+            border-radius: 13px;
+
+            background:
+                #ffffff;
+
+            color: #111111;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            letter-spacing: 0.8px;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.15s ease,
+                opacity 0.15s ease;
+        }
+
+
+        .chat-send-button:hover {
+            transform:
+                translateY(-1px);
+        }
+
+
+        .chat-send-button:active {
+            transform:
+                translateY(0);
+        }
+
+
+        .chat-send-button:disabled {
+            opacity: 0.45;
+
+            cursor: not-allowed;
+
+            transform: none;
+        }
+
+
+        /* =====================================================
+           ERROR MESSAGE
+        ====================================================== */
+
+        .chat-error {
+            display: none;
+
+            flex-shrink: 0;
+
+            padding:
+                8px
+                16px;
+
+            background:
+                rgba(
+                    180,
+                    0,
+                    0,
+                    0.15
+                );
+
+            color:
+                #ff9c9c;
+
+            font-size: 12px;
+
+            line-height: 1.4;
+        }
+
+
+        .chat-error.visible {
+            display: block;
+        }
+
+
+        /* =====================================================
+           TABLET
+        ====================================================== */
+
+        @media (max-width: 800px) {
+
+            .chat-page {
+                max-width: none;
+            }
+
+            .chat-message {
+                max-width: 78%;
+            }
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 600px) {
+
+            .chat-header {
+                height: 68px;
+
+                padding:
+                    0 10px;
+            }
+
+
+            .chat-back-button {
+                width: 40px;
+                height: 40px;
+
+                margin-right: 4px;
+
+                font-size: 22px;
+            }
+
+
+            .chat-avatar {
+                width: 42px;
+                height: 42px;
+
+                font-size: 16px;
+            }
+
+
+            .chat-profile-button {
+                gap: 9px;
+            }
+
+
+            .chat-profile-name {
+                font-size: 15px;
+            }
+
+
+            .chat-profile-role {
+                font-size: 10px;
+            }
+
+
+            .chat-header-status {
+                font-size: 9px;
+            }
+
+
+            .chat-status-dot {
+                width: 6px;
+                height: 6px;
+            }
+
+
+            .chat-messages {
+                padding:
+                    18px
+                    12px
+                    20px;
+
+                gap: 8px;
+            }
+
+
+            .chat-message {
+                max-width: 84%;
+
+                padding:
+                    10px
+                    13px
+                    8px;
+
+                border-radius: 15px;
+            }
+
+
+            .chat-message-text {
+                font-size: 14px;
+
+                line-height: 1.45;
+            }
+
+
+            .chat-message-time {
+                font-size: 9px;
+            }
+
+
+            .chat-composer {
+                gap: 7px;
+
+                padding:
+                    9px
+                    10px
+                    calc(
+                        9px +
+                        env(
+                            safe-area-inset-bottom
+                        )
+                    );
+            }
+
+
+            .chat-input-wrapper {
+                border-radius: 12px;
+            }
+
+
+            .chat-input {
+                min-height: 46px;
+
+                padding:
+                    12px
+                    13px;
+
+                font-size: 14px;
+            }
+
+
+            .chat-send-button {
+                min-width: 65px;
+                width: 65px;
+
+                height: 46px;
+
+                padding: 0;
+
+                border-radius: 11px;
+
+                font-size: 10px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="chat-page">
+
+
+        <!-- =====================================================
+             CHAT HEADER
+        ====================================================== -->
+
+        <header class="chat-header">
+
+            <button
+                type="button"
+                class="chat-back-button"
+                id="chatBackButton"
+                aria-label="Back to dashboard"
+            >
+                ←
+            </button>
+
+
+            <!--
+                Clicking this profile area will later open
+                the proper profile page.
+            -->
+
+            <button
+                type="button"
+                class="chat-profile-button"
+                id="chatProfileButton"
+                aria-label="Open Fofana profile"
+            >
+
+                <div
+                    class="chat-avatar"
+                    id="chatAvatar"
+                >
+                    F
+                </div>
+
+
+                <div class="chat-profile-info">
+
+                    <span
+                        class="chat-profile-name"
+                        id="chatProfileName"
+                    >
+                        FOFANA
+                    </span>
+
+
+                    <span
+                        class="chat-profile-role"
+                        id="chatProfileRole"
+                    >
+                        ADMIN
+                    </span>
+
+                </div>
+
+            </button>
+
+
+            <div
+                class="chat-header-status"
+                id="chatHeaderStatus"
+            >
+
+                <span class="chat-status-dot"></span>
+
+                Secure
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =====================================================
+             CHAT BODY
+        ====================================================== -->
+
+        <main class="chat-body">
+
+
+            <div
+                id="chatError"
+                class="chat-error"
+            ></div>
+
+
+            <div
+                id="chatMessages"
+                class="chat-messages"
+            >
+
+                <div class="chat-empty-state">
+
+                    <div class="chat-empty-icon">
+                        💬
+                    </div>
+
+                    <p>
+                        Loading conversation...
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 MESSAGE COMPOSER
+            ================================================== -->
+
+            <form
+                id="chatForm"
+                class="chat-composer"
+            >
+
+                <div class="chat-input-wrapper">
+
+                    <textarea
+                        id="chatInput"
+                        class="chat-input"
+                        placeholder="Type a message..."
+                        rows="1"
+                        autocomplete="off"
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    id="chatSendButton"
+                    class="chat-send-button"
+                >
+                    SEND
+                </button>
+
+            </form>
+
+        </main>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         SUPABASE
+    ====================================================== -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+    <script>
+
+        /* =====================================================
+           SUPABASE
+        ====================================================== */
+
+        const SUPABASE_URL =
+            "https://uryfgatzyesolwwmugin.supabase.co";
+
+
+        const SUPABASE_PUBLISHABLE_KEY =
+            "sb_publishable_QL4lxGKETA1_xMFFJ7RV5g_Wuyi_x-d";
+
+
+        const supabaseClient =
+            window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_PUBLISHABLE_KEY
+            );
+
+
+
+        /* =====================================================
+           ELEMENTS
+        ====================================================== */
+
+        const chatMessages =
+            document.getElementById(
+                "chatMessages"
+            );
+
+
+        const chatForm =
+            document.getElementById(
+                "chatForm"
+            );
+
+
+        const chatInput =
+            document.getElementById(
+                "chatInput"
+            );
+
+
+        const chatSendButton =
+            document.getElementById(
+                "chatSendButton"
+            );
+
+
+        const chatError =
+            document.getElementById(
+                "chatError"
+            );
+
+
+        const chatBackButton =
+            document.getElementById(
+                "chatBackButton"
+            );
+
+
+        const chatProfileButton =
+            document.getElementById(
+                "chatProfileButton"
+            );
+
+
+        let currentClientId = null;
+
+        let currentUser = null;
+
+
+
+        /* =====================================================
+           ESCAPE HTML
+        ====================================================== */
+
+        function escapeHtml(value) {
+
+            if (
+                value === null ||
+                value === undefined
+            ) {
+                return "";
+            }
+
+
+            return String(value)
+                .replace(
+                    /&/g,
+                    "&amp;"
+                )
+                .replace(
+                    /</g,
+                    "&lt;"
+                )
+                .replace(
+                    />/g,
+                    "&gt;"
+                )
+                .replace(
+                    /"/g,
+                    "&quot;"
+                )
+                .replace(
+                    /'/g,
+                    "&#039;"
+                );
+
+        }
+
+
+
+        /* =====================================================
+           FORMAT TIME
+        ====================================================== */
+
+        function formatChatTime(
+            dateValue
+        ) {
+
+            if (!dateValue) {
+                return "";
+            }
+
+
+            const date =
+                new Date(
+                    dateValue
+                );
+
+
+            if (
+                Number.isNaN(
+                    date.getTime()
+                )
+            ) {
+                return "";
+            }
+
+
+            return date.toLocaleString(
+                undefined,
+                {
+                    month: "short",
+                    day: "numeric",
+                    hour: "numeric",
+                    minute: "2-digit"
+                }
+            );
+
+        }
+
+
+
+        /* =====================================================
+           SHOW ERROR
+        ====================================================== */
+
+        function showChatError(
+            message
+        ) {
+
+            chatError.textContent =
+                message;
+
+            chatError.classList.add(
+                "visible"
+            );
+
+        }
+
+
+
+        function clearChatError() {
+
+            chatError.textContent = "";
+
+            chatError.classList.remove(
+                "visible"
+            );
+
+        }
+
+
+
+        /* =====================================================
+           LOAD CURRENT CLIENT
+        ====================================================== */
+
+        async function initializeChat() {
+
+            clearChatError();
+
+
+            const {
+                data: {
+                    user
+                },
+                error: userError
+            } =
+                await supabaseClient
+                    .auth
+                    .getUser();
+
+
+            if (
+                userError ||
+                !user
+            ) {
+
+                window.location.href =
+                    "client-login.html";
+
+                return;
+
+            }
+
+
+            currentUser =
+                user;
+
+
+            const {
+                data: profile,
+                error: profileError
+            } =
+                await supabaseClient
+                    .from(
+                        "client_profiles"
+                    )
+                    .select(
+                        "id, full_name, role"
+                    )
+                    .eq(
+                        "id",
+                        user.id
+                    )
+                    .single();
+
+
+            if (
+                profileError ||
+                !profile
+            ) {
+
+                showChatError(
+                    "We could not load your client profile."
+                );
+
+                return;
+
+            }
+
+
+            /* =============================================
+               ADMIN SHOULD NOT USE CLIENT CHAT
+            ============================================== */
+
+            if (
+                profile.role ===
+                "admin"
+            ) {
+
+                window.location.href =
+                    "admin.html";
+
+                return;
+
+            }
+
+
+            if (
+                profile.role !==
+                "client"
+            ) {
+
+                showChatError(
+                    "Your account does not have a valid client role."
+                );
+
+                return;
+
+            }
+
+
+            currentClientId =
+                user.id;
+
+
+            /* =============================================
+               CURRENT ADMIN HEADER
+            ============================================== */
+
+            document.getElementById(
+                "chatProfileName"
+            ).textContent =
+                "FOFANA";
+
+
+            document.getElementById(
+                "chatProfileRole"
+            ).textContent =
+                "ADMIN";
+
+
+            document.getElementById(
+                "chatAvatar"
+            ).textContent =
+                "F";
+
+
+            await loadMessages();
+
+        }
+
+
+
+        /* =====================================================
+           LOAD MESSAGES
+        ====================================================== */
+
+        async function loadMessages() {
+
+            if (!currentClientId) {
+                return;
+            }
+
+
+            clearChatError();
+
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient
+                    .from(
+                        "client_messages"
+                    )
+                    .select(`
+                        id,
+                        client_id,
+                        sender_id,
+                        sender_role,
+                        message,
+                        is_read,
+                        created_at
+                    `)
+                    .eq(
+                        "client_id",
+                        currentClientId
+                    )
+                    .order(
+                        "created_at",
+                        {
+                            ascending: true
+                        }
+                    );
+
+
+            if (error) {
+
+                console.error(
+                    "Chat loading error:",
+                    error
+                );
+
+
+                chatMessages.innerHTML = `
+                    <div class="chat-empty-state">
+
+                        <div class="chat-empty-icon">
+                            !
+                        </div>
+
+                        <p>
+                            Could not load your messages.
+                        </p>
+
+                    </div>
+                `;
+
+
+                showChatError(
+                    "Could not load your conversation."
+                );
+
+
+                return;
+
+            }
+
+
+            if (
+                !data ||
+                data.length === 0
+            ) {
+
+                chatMessages.innerHTML = `
+                    <div class="chat-empty-state">
+
+                        <div class="chat-empty-icon">
+                            💬
+                        </div>
+
+                        <p>
+                            No messages yet.
+                        </p>
+
+                        <p>
+                            Send a message to start
+                            your private conversation
+                            with Fofana.
+                        </p>
+
+                    </div>
+                `;
+
+
+                return;
+
+            }
+
+
+            chatMessages.innerHTML =
+                "";
+
+
+            data.forEach(
+                function (item) {
+
+                    const message =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    message.className =
+                        "chat-message " +
+                        item.sender_role;
+
+
+                    message.innerHTML = `
+
+                        <p class="chat-message-text">
+                            ${escapeHtml(
+                                item.message
+                            )}
+                        </p>
+
+                        <span class="chat-message-time">
+                            ${escapeHtml(
+                                formatChatTime(
+                                    item.created_at
+                                )
+                            )}
+                        </span>
+
+                    `;
+
+
+                    chatMessages.appendChild(
+                        message
+                    );
+
+                }
+            );
+
+
+            scrollToLatest();
+
+        }
+
+
+
+        /* =====================================================
+           SCROLL TO LATEST
+        ====================================================== */
+
+        function scrollToLatest() {
+
+            requestAnimationFrame(
+                function () {
+
+                    chatMessages.scrollTop =
+                        chatMessages.scrollHeight;
+
+                }
+            );
+
+        }
+
+
+
+        /* =====================================================
+           SEND MESSAGE
+        ====================================================== */
+
+        async function sendMessage() {
+
+            if (
+                !currentClientId ||
+                !currentUser
+            ) {
+                return;
+            }
+
+
+            const message =
+                chatInput.value.trim();
+
+
+            if (!message) {
+                return;
+            }
+
+
+            clearChatError();
+
+
+            chatInput.disabled =
+                true;
+
+
+            chatSendButton.disabled =
+                true;
+
+
+            chatSendButton.textContent =
+                "SENDING...";
+
+
+            const {
+                error
+            } =
+                await supabaseClient
+                    .from(
+                        "client_messages"
+                    )
+                    .insert({
+                        client_id:
+                            currentClientId,
+
+                        sender_id:
+                            currentUser.id,
+
+                        sender_role:
+                            "client",
+
+                        message:
+                            message
+                    });
+
+
+            if (error) {
+
+                console.error(
+                    "Message send error:",
+                    error
+                );
+
+
+                showChatError(
+                    "Could not send your message."
+                );
+
+
+                chatInput.disabled =
+                    false;
+
+
+                chatSendButton.disabled =
+                    false;
+
+
+                chatSendButton.textContent =
+                    "SEND";
+
+
+                return;
+
+            }
+
+
+            chatInput.value =
+                "";
+
+
+            chatInput.style.height =
+                "auto";
+
+
+            chatInput.disabled =
+                false;
+
+
+            chatSendButton.disabled =
+                false;
+
+
+            chatSendButton.textContent =
+                "SEND";
+
+
+            chatInput.focus();
+
+
+            await loadMessages();
+
+        }
+
+
+
+        /* =====================================================
+           SEND FORM
+        ====================================================== */
+
+        chatForm.addEventListener(
+            "submit",
+            async function (event) {
+
+                event.preventDefault();
+
+                await sendMessage();
+
+            }
+        );
+
+
+
+        /* =====================================================
+           AUTO-GROW TEXTAREA
+        ====================================================== */
+
+        chatInput.addEventListener(
+            "input",
+            function () {
+
+                this.style.height =
+                    "auto";
+
+
+                this.style.height =
+                    Math.min(
+                        this.scrollHeight,
+                        130
+                    ) + "px";
+
+            }
+        );
+
+
+
+        /* =====================================================
+           ENTER TO SEND
+        ====================================================== */
+
+        chatInput.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (
+                    event.key ===
+                    "Enter" &&
+                    !event.shiftKey
+                ) {
+
+                    event.preventDefault();
+
+                    chatForm.requestSubmit();
+
+                }
+
+            }
+        );
+
+
+
+        /* =====================================================
+           BACK TO DASHBOARD
+        ====================================================== */
+
+        chatBackButton.addEventListener(
+            "click",
+            function () {
+
+                window.location.href =
+                    "client-dashboard.html";
+
+            }
+        );
+
+
+
+        /* =====================================================
+           PROFILE BUTTON
+        ====================================================== */
+
+        chatProfileButton.addEventListener(
+            "click",
+            function () {
+
+                /*
+                 * This page will be created next.
+                 * It will contain the client's/admin's
+                 * profile information and profile settings.
+                 */
+
+                window.location.href =
+                    "client-profile.html";
+
+            }
+        );
+
+
+
+        /* =====================================================
+           START CHAT
+        ====================================================== */
+
+        initializeChat();
+
+    </script>
+
+</body>
+
+</html>
