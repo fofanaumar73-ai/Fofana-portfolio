@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Client Projects | Fofana Tech</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+</head>
+
+<body class="dashboard-page">
+
+    <!-- =========================================================
+         HEADER
+    ========================================================= -->
+
+    <header class="dashboard-header">
+
+        <div class="dashboard-container">
+
+            <a
+                href="index.html"
+                class="brand"
+            >
+                FOFANA<span>.</span>
+            </a>
+
+            <div style="display: flex; gap: 10px; align-items: center;">
+
+                <a
+                    href="dashboard.html"
+                    class="dashboard-button"
+                >
+                    ← Dashboard
+                </a>
+
+                <button
+                    id="logoutButton"
+                    class="dashboard-logout"
+                >
+                    Logout
+                </button>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================================================
+         MAIN
+    ========================================================= -->
+
+    <main class="dashboard-main">
+
+        <div class="dashboard-container">
+
+            <!-- PAGE HEADING -->
+
+            <div class="dashboard-heading">
+
+                <p class="admin-label">
+                    CLIENT MANAGEMENT
+                </p>
+
+                <h1>
+                    Client Projects
+                </h1>
+
+                <p>
+                    Assign projects to clients and track their delivery status.
+                </p>
+
+            </div>
+
+
+            <!-- =====================================================
+                 CREATE PROJECT
+            ===================================================== -->
+
+            <section class="client-project-form-section">
+
+                <div class="dashboard-card">
+
+                    <h2>
+                        Assign New Project
+                    </h2>
+
+                    <p>
+                        Create a project and assign it to a client.
+                    </p>
+
+
+                    <form id="clientProjectForm">
+
+
+                        <!-- CLIENT -->
+
+                        <div class="form-group">
+
+                            <label for="clientSelect">
+                                Client
+                            </label>
+
+                            <select
+                                id="clientSelect"
+                                required
+                            >
+
+                                <option value="">
+                                    Select a client
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- EXISTING PORTFOLIO PROJECT -->
+
+                        <div class="form-group">
+
+                            <label for="portfolioProjectSelect">
+                                Existing Portfolio Project
+                            </label>
+
+                            <select
+                                id="portfolioProjectSelect"
+                            >
+
+                                <option value="">
+                                    None — create manually
+                                </option>
+
+                            </select>
+
+                            <small>
+                                Optional. Select an existing portfolio project
+                                to reuse its details.
+                            </small>
+
+                        </div>
+
+
+                        <!-- TITLE -->
+
+                        <div class="form-group">
+
+                            <label for="clientProjectTitle">
+                                Project Title
+                            </label>
+
+                            <input
+                                type="text"
+                                id="clientProjectTitle"
+                                placeholder="e.g. Fashion Store Website"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- DESCRIPTION -->
+
+                        <div class="form-group">
+
+                            <label for="clientProjectDescription">
+                                Description
+                            </label>
+
+                            <textarea
+                                id="clientProjectDescription"
+                                rows="5"
+                                placeholder="Describe the project..."
+                            ></textarea>
+
+                        </div>
+
+
+                        <!-- PROJECT TYPE -->
+
+                        <div class="form-group">
+
+                            <label for="clientProjectType">
+                                Project Type
+                            </label>
+
+                            <input
+                                type="text"
+                                id="clientProjectType"
+                                placeholder="e.g. Shopify Website"
+                            >
+
+                        </div>
+
+
+                        <!-- STATUS -->
+
+                        <div class="form-group">
+
+                            <label for="clientProjectStatus">
+                                Status
+                            </label>
+
+                            <select
+                                id="clientProjectStatus"
+                            >
+
+                                <option value="incomplete">
+                                    Incomplete
+                                </option>
+
+                                <option value="pending">
+                                    Pending
+                                </option>
+
+                                <option value="complete">
+                                    Complete
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- ACCESS LINK -->
+
+                        <div class="form-group">
+
+                            <label for="clientProjectLink">
+                                Access / Project Link
+                            </label>
+
+                            <input
+                                type="url"
+                                id="clientProjectLink"
+                                placeholder="https://..."
+                            >
+
+                        </div>
+
+
+                        <!-- SUBMIT -->
+
+                        <button
+                            type="submit"
+                            class="dashboard-button"
+                            id="saveClientProjectButton"
+                        >
+                            Assign Project
+                        </button>
+
+
+                        <!-- MESSAGE -->
+
+                        <p
+                            id="clientProjectFormMessage"
+                            style="margin-top: 15px;"
+                        ></p>
+
+                    </form>
+
+                </div>
+
+            </section>
+
+
+            <!-- =====================================================
+                 EXISTING CLIENT PROJECTS
+            ===================================================== -->
+
+            <section
+                class="client-projects-list-section"
+                style="margin-top: 40px;"
+            >
+
+                <div class="dashboard-heading">
+
+                    <p class="admin-label">
+                        PROJECT DELIVERY
+                    </p>
+
+                    <h2>
+                        Assigned Projects
+                    </h2>
+
+                </div>
+
+
+                <div id="clientProjectsList">
+
+                    <p>
+                        Loading client projects...
+                    </p>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================================================
+         SUPABASE
+    ========================================================= -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+    <!-- =========================================================
+         EXISTING ADMIN SYSTEM
+    ========================================================= -->
+
+    <script src="admin.js"></script>
+
+
+    <!-- =========================================================
+         CLIENT PROJECTS SCRIPT
+    ========================================================= -->
+
+    <script>
+
+        const CLIENT_PROJECTS_SUPABASE_URL =
+            "https://uryfgatzyesolwwmugin.supabase.co";
+
+        const CLIENT_PROJECTS_SUPABASE_KEY =
+            "sb_publishable_QL4lxGKETA1_xMFFJ7RV5g_Wuyi_x-d";
+
+        const clientProjectsSupabase =
+            window.supabase.createClient(
+                CLIENT_PROJECTS_SUPABASE_URL,
+                CLIENT_PROJECTS_SUPABASE_KEY
+            );
+
+
+        let currentAdminUser = null;
+
+        let clients = [];
+
+        let portfolioProjects = [];
+
+
+        /* =========================================================
+           AUTH CHECK
+        ========================================================= */
+
+        async function protectClientProjectsPage() {
+
+            const {
+                data: {
+                    session
+                }
+            } =
+                await clientProjectsSupabase.auth.getSession();
+
+
+            if (!session) {
+
+                window.location.href =
+                    "admin.html";
+
+                return false;
+
+            }
+
+
+            currentAdminUser =
+                session.user;
+
+
+            const {
+                data: profile,
+                error
+            } =
+                await clientProjectsSupabase
+                    .from("client_profiles")
+                    .select("id, role")
+                    .eq("id", currentAdminUser.id)
+                    .single();
+
+
+            if (
+                error ||
+                !profile ||
+                profile.role !== "admin"
+            ) {
+
+                alert(
+                    "You do not have permission to access this page."
+                );
+
+                window.location.href =
+                    "dashboard.html";
+
+                return false;
+
+            }
+
+
+            return true;
+
+        }
+
+
+        /* =========================================================
+           LOAD CLIENTS
+        ========================================================= */
+
+        async function loadClients() {
+
+            const {
+                data,
+                error
+            } =
+                await clientProjectsSupabase
+                    .from("client_profiles")
+                    .select("*")
+                    .eq("role", "client");
+
+
+            if (error) {
+
+                console.error(
+                    "Error loading clients:",
+                    error
+                );
+
+                return;
+
+            }
+
+
+            clients =
+                data || [];
+
+
+            const clientSelect =
+                document.getElementById(
+                    "clientSelect"
+                );
+
+
+            clients.forEach(
+                function (client) {
+
+                    const option =
+                        document.createElement(
+                            "option"
+                        );
+
+                    option.value =
+                        client.id;
+
+
+                    option.textContent =
+                        client.full_name ||
+                        client.name ||
+                        client.email ||
+                        "Client";
+
+
+                    clientSelect.appendChild(
+                        option
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* =========================================================
+           LOAD PORTFOLIO PROJECTS
+        ========================================================= */
+
+        async function loadPortfolioProjects() {
+
+            const {
+                data,
+                error
+            } =
+                await clientProjectsSupabase
+                    .from("projects")
+                    .select(
+                        "id, title, description, category, project_link"
+                    )
+                    .order(
+                        "created_at",
+                        {
+                            ascending: false
+                        }
+                    );
+
+
+            if (error) {
+
+                console.error(
+                    "Error loading portfolio projects:",
+                    error
+                );
+
+                return;
+
+            }
+
+
+            portfolioProjects =
+                data || [];
+
+
+            const projectSelect =
+                document.getElementById(
+                    "portfolioProjectSelect"
+                );
+
+
+            portfolioProjects.forEach(
+                function (project) {
+
+                    const option =
+                        document.createElement(
+                            "option"
+                        );
+
+                    option.value =
+                        project.id;
+
+                    option.textContent =
+                        project.title;
+
+                    projectSelect.appendChild(
+                        option
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* =========================================================
+           AUTO-FILL FROM EXISTING PROJECT
+        ========================================================= */
+
+        document
+            .getElementById(
+                "portfolioProjectSelect"
+            )
+            .addEventListener(
+                "change",
+                function () {
+
+                    const projectId =
+                        this.value;
+
+
+                    if (!projectId) {
+                        return;
+                    }
+
+
+                    const project =
+                        portfolioProjects.find(
+                            function (item) {
+
+                                return item.id ===
+                                    projectId;
+
+                            }
+                        );
+
+
+                    if (!project) {
+                        return;
+                    }
+
+
+                    document.getElementById(
+                        "clientProjectTitle"
+                    ).value =
+                        project.title || "";
+
+
+                    document.getElementById(
+                        "clientProjectDescription"
+                    ).value =
+                        project.description || "";
+
+
+                    document.getElementById(
+                        "clientProjectType"
+                    ).value =
+                        project.category || "";
+
+
+                    document.getElementById(
+                        "clientProjectLink"
+                    ).value =
+                        project.project_link || "";
+
+                }
+            );
+
+
+        /* =========================================================
+           CREATE CLIENT PROJECT
+        ========================================================= */
+
+        document
+            .getElementById(
+                "clientProjectForm"
+            )
+            .addEventListener(
+                "submit",
+                async function (event) {
+
+                    event.preventDefault();
+
+
+                    const message =
+                        document.getElementById(
+                            "clientProjectFormMessage"
+                        );
+
+
+                    const button =
+                        document.getElementById(
+                            "saveClientProjectButton"
+                        );
+
+
+                    const clientId =
+                        document.getElementById(
+                            "clientSelect"
+                        ).value;
+
+
+                    const projectId =
+                        document.getElementById(
+                            "portfolioProjectSelect"
+                        ).value || null;
+
+
+                    const title =
+                        document.getElementById(
+                            "clientProjectTitle"
+                        ).value.trim();
+
+
+                    const description =
+                        document.getElementById(
+                            "clientProjectDescription"
+                        ).value.trim();
+
+
+                    const projectType =
+                        document.getElementById(
+                            "clientProjectType"
+                        ).value.trim();
+
+
+                    const status =
+                        document.getElementById(
+                            "clientProjectStatus"
+                        ).value;
+
+
+                    const accessLink =
+                        document.getElementById(
+                            "clientProjectLink"
+                        ).value.trim() || null;
+
+
+                    button.disabled =
+                        true;
+
+                    button.textContent =
+                        "Saving...";
+
+
+                    message.textContent =
+                        "";
+
+
+                    let completedAt =
+                        null;
+
+
+                    if (
+                        status ===
+                        "complete"
+                    ) {
+
+                        completedAt =
+                            new Date().toISOString();
+
+                    }
+
+
+                    const {
+                        error
+                    } =
+                        await clientProjectsSupabase
+                            .from(
+                                "client_projects"
+                            )
+                            .insert({
+
+                                client_id:
+                                    clientId,
+
+                                project_id:
+                                    projectId,
+
+                                title:
+                                    title,
+
+                                description:
+                                    description,
+
+                                project_type:
+                                    projectType,
+
+                                status:
+                                    status,
+
+                                access_link:
+                                    accessLink,
+
+                                completed_at:
+                                    completedAt
+
+                            });
+
+
+                    if (error) {
+
+                        console.error(
+                            error
+                        );
+
+                        message.textContent =
+                            "Could not save the project: " +
+                            error.message;
+
+                        button.disabled =
+                            false;
+
+                        button.textContent =
+                            "Assign Project";
+
+                        return;
+
+                    }
+
+
+                    message.textContent =
+                        "Project assigned successfully.";
+
+
+                    document
+                        .getElementById(
+                            "clientProjectForm"
+                        )
+                        .reset();
+
+
+                    button.disabled =
+                        false;
+
+                    button.textContent =
+                        "Assign Project";
+
+
+                    await loadClientProjects();
+
+                }
+            );
+
+
+        /* =========================================================
+           LOAD CLIENT PROJECTS
+        ========================================================= */
+
+        async function loadClientProjects() {
+
+            const container =
+                document.getElementById(
+                    "clientProjectsList"
+                );
+
+
+            container.innerHTML =
+                "<p>Loading client projects...</p>";
+
+
+            const {
+                data,
+                error
+            } =
+                await clientProjectsSupabase
+                    .from("client_projects")
+                    .select("*")
+                    .order(
+                        "created_at",
+                        {
+                            ascending: false
+                        }
+                    );
+
+
+            if (error) {
+
+                console.error(
+                    error
+                );
+
+                container.innerHTML =
+                    "<p>Could not load client projects.</p>";
+
+                return;
+
+            }
+
+
+            if (
+                !data ||
+                data.length === 0
+            ) {
+
+                container.innerHTML =
+                    "<p>No client projects have been assigned yet.</p>";
+
+                return;
+
+            }
+
+
+            container.innerHTML =
+                "";
+
+
+            data.forEach(
+                function (project) {
+
+                    const client =
+                        clients.find(
+                            function (item) {
+
+                                return item.id ===
+                                    project.client_id;
+
+                            }
+                        );
+
+
+                    const clientName =
+                        client
+                            ? (
+                                client.full_name ||
+                                client.name ||
+                                client.email
+                            )
+                            : "Unknown Client";
+
+
+                    const card =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    card.className =
+                        "dashboard-card";
+
+
+                    card.style.marginBottom =
+                        "20px";
+
+
+                    card.innerHTML = `
+
+                        <h2>
+                            ${escapeHtml(project.title)}
+                        </h2>
+
+                        <p>
+                            <strong>Client:</strong>
+                            ${escapeHtml(clientName)}
+                        </p>
+
+                        <p>
+                            <strong>Type:</strong>
+                            ${escapeHtml(project.project_type || "—")}
+                        </p>
+
+                        <p>
+                            <strong>Status:</strong>
+                            ${escapeHtml(project.status)}
+                        </p>
+
+                        <p>
+                            ${escapeHtml(project.description || "")}
+                        </p>
+
+                        ${
+                            project.access_link
+                                ? `
+                                    <p>
+                                        <a
+                                            href="${escapeAttribute(project.access_link)}"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            Open Project
+                                        </a>
+                                    </p>
+                                `
+                                : ""
+                        }
+
+                        <button
+                            type="button"
+                            class="dashboard-button delete-client-project-button"
+                            data-id="${project.id}"
+                            style="margin-top: 10px;"
+                        >
+                            Delete
+                        </button>
+
+                    `;
+
+
+                    container.appendChild(
+                        card
+                    );
+
+                }
+            );
+
+
+            document
+                .querySelectorAll(
+                    ".delete-client-project-button"
+                )
+                .forEach(
+                    function (button) {
+
+                        button.addEventListener(
+                            "click",
+                            async function () {
+
+                                const confirmed =
+                                    confirm(
+                                        "Delete this client project?"
+                                    );
+
+
+                                if (!confirmed) {
+                                    return;
+                                }
+
+
+                                const projectId =
+                                    this.dataset.id;
+
+
+                                const {
+                                    error
+                                } =
+                                    await clientProjectsSupabase
+                                        .from(
+                                            "client_projects"
+                                        )
+                                        .delete()
+                                        .eq(
+                                            "id",
+                                            projectId
+                                        );
+
+
+                                if (error) {
+
+                                    alert(
+                                        "Could not delete project: " +
+                                        error.message
+                                    );
+
+                                    return;
+
+                                }
+
+
+                                await loadClientProjects();
+
+                            }
+                        );
+
+                    }
+                );
+
+        }
+
+
+        /* =========================================================
+           HTML ESCAPING
+        ========================================================= */
+
+        function escapeHtml(value) {
+
+            return String(value)
+                .replace(
+                    /&/g,
+                    "&amp;"
+                )
+                .replace(
+                    /</g,
+                    "&lt;"
+                )
+                .replace(
+                    />/g,
+                    "&gt;"
+                )
+                .replace(
+                    /"/g,
+                    "&quot;"
+                )
+                .replace(
+                    /'/g,
+                    "&#039;"
+                );
+
+        }
+
+
+        function escapeAttribute(value) {
+
+            return escapeHtml(value);
+
+        }
+
+
+        /* =========================================================
+           INITIALIZE
+        ========================================================= */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            async function () {
+
+                const allowed =
+                    await protectClientProjectsPage();
+
+
+                if (!allowed) {
+                    return;
+                }
+
+
+                await loadClients();
+
+                await loadPortfolioProjects();
+
+                await loadClientProjects();
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>
