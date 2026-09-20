@@ -231,29 +231,55 @@
     </main>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <script src="admin.js"></script>
+<script src="admin.js"></script>
 
-    <script>
+<script>
 document.addEventListener("DOMContentLoaded", function () {
+
+    /* =========================================================
+       CLIENT PROJECTS BUTTON
+    ========================================================= */
 
     const clientProjectsButton =
         document.getElementById("clientProjectsButton");
 
-    if (!clientProjectsButton) {
-        return;
+    if (clientProjectsButton) {
+
+        clientProjectsButton.addEventListener(
+            "click",
+            function () {
+
+                window.location.href =
+                    "client-projects.html";
+
+            }
+        );
+
     }
 
-    clientProjectsButton.addEventListener(
-        "click",
-        function () {
 
-            window.location.href =
-                "client-projects.html";
+    /* =========================================================
+       CLIENTS BUTTON
+    ========================================================= */
 
-        }
-    );
+    const clientsButton =
+        document.getElementById("clientsButton");
+
+    if (clientsButton) {
+
+        clientsButton.addEventListener(
+            "click",
+            function () {
+
+                window.location.href =
+                    "clients.html";
+
+            }
+        );
+
+    }
 
 });
 </script>
