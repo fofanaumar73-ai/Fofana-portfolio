@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Clients | Fofana Tech</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body class="dashboard-page">
+
+
+    <!-- =========================================================
+         HEADER
+    ========================================================= -->
+
+    <header class="dashboard-header">
+
+        <div class="dashboard-container">
+
+            <a
+                href="index.html"
+                class="brand"
+            >
+                FOFANA<span>.</span>
+            </a>
+
+
+            <div
+                style="
+                    display:flex;
+                    gap:10px;
+                    align-items:center;
+                "
+            >
+
+                <a
+                    href="dashboard.html"
+                    class="dashboard-button"
+                >
+                    ← Dashboard
+                </a>
+
+
+                <button
+                    id="logoutButton"
+                    class="dashboard-logout"
+                >
+                    Logout
+                </button>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =========================================================
+         MAIN
+    ========================================================= -->
+
+    <main class="dashboard-main">
+
+        <div class="dashboard-container">
+
+
+            <!-- =====================================================
+                 PAGE HEADING
+            ===================================================== -->
+
+            <div class="dashboard-heading">
+
+                <p class="admin-label">
+                    CLIENT MANAGEMENT
+                </p>
+
+                <h1>
+                    Clients
+                </h1>
+
+                <p>
+                    Manage your registered client accounts.
+                </p>
+
+            </div>
+
+
+
+            <!-- =====================================================
+                 CLIENT INFORMATION
+            ===================================================== -->
+
+            <section
+                class="dashboard-card"
+                style="margin-bottom:30px;"
+            >
+
+                <h2>
+                    Add a Client
+                </h2>
+
+                <p>
+                    Client accounts are created through the client
+                    registration system. Once a client registers,
+                    they will appear here automatically.
+                </p>
+
+
+                <a
+                    href="client-signup.html"
+                    class="dashboard-button"
+                    style="
+                        display:inline-block;
+                        margin-top:15px;
+                        text-decoration:none;
+                    "
+                >
+                    Create Client Account
+                </a>
+
+            </section>
+
+
+
+            <!-- =====================================================
+                 CLIENT LIST
+            ===================================================== -->
+
+            <section>
+
+                <div class="dashboard-heading">
+
+                    <p class="admin-label">
+                        REGISTERED CLIENTS
+                    </p>
+
+                    <h2>
+                        Your Clients
+                    </h2>
+
+                </div>
+
+
+                <div id="clientsList">
+
+                    <p>
+                        Loading clients...
+                    </p>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =========================================================
+         SUPABASE
+    ========================================================= -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+
+    <!-- =========================================================
+         EXISTING ADMIN SYSTEM
+    ========================================================= -->
+
+    <script src="admin.js"></script>
+
+
+
+    <!-- =========================================================
+         CLIENT MANAGEMENT
+    ========================================================= -->
+
+    <script>
+
+        const CLIENTS_SUPABASE_URL =
+            "https://uryfgatzyesolwwmugin.supabase.co";
+
+
+        const CLIENTS_SUPABASE_KEY =
+            "sb_publishable_QL4lxGKETA1_xMFFJ7RV5g_Wuyi_x-d";
+
+
+        const clientsSupabase =
+            window.supabase.createClient(
+                CLIENTS_SUPABASE_URL,
+                CLIENTS_SUPABASE_KEY
+            );
+
+
+
+        /* =========================================================
+           AUTHENTICATION
+        ========================================================= */
+
+        async function protectClientsPage() {
+
+            const {
+                data: {
+                    session
+                }
+            } =
+                await clientsSupabase.auth.getSession();
+
+
+            if (!session) {
+
+                window.location.href =
+                    "admin.html";
+
+                return false;
+
+            }
+
+
+            const {
+                data: profile,
+                error
+            } =
+                await clientsSupabase
+                    .from("client_profiles")
+                    .select("id, role")
+                    .eq(
+                        "id",
+                        session.user.id
+                    )
+                    .single();
+
+
+            if (
+                error ||
+                !profile ||
+                profile.role !== "admin"
+            ) {
+
+                alert(
+                    "You do not have permission to access this page."
+                );
+
+                window.location.href =
+                    "dashboard.html";
+
+                return false;
+
+            }
+
+
+            return true;
+
+        }
+
+
+
+        /* =========================================================
+           LOAD CLIENTS
+        ========================================================= */
+
+        async function loadClients() {
+
+            const container =
+                document.getElementById(
+                    "clientsList"
+                );
+
+
+            container.innerHTML =
+                "<p>Loading clients...</p>";
+
+
+            const {
+                data,
+                error
+            } =
+                await clientsSupabase
+                    .from("client_profiles")
+                    .select("*")
+                    .eq(
+                        "role",
+                        "client"
+                    )
+                    .order(
+                        "created_at",
+                        {
+                            ascending: false
+                        }
+                    );
+
+
+            if (error) {
+
+                console.error(
+                    "LOAD CLIENTS ERROR:",
+                    error
+                );
+
+
+                container.innerHTML = `
+
+                    <div class="dashboard-card">
+
+                        <h3>
+                            Unable to load clients
+                        </h3>
+
+                        <p>
+                            ${escapeHtml(
+                                error.message
+                            )}
+                        </p>
+
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+
+            if (
+                !data ||
+                data.length === 0
+            ) {
+
+                container.innerHTML = `
+
+                    <div class="dashboard-card">
+
+                        <h3>
+                            No clients yet
+                        </h3>
+
+                        <p>
+                            No client accounts have been registered yet.
+                        </p>
+
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+
+            container.innerHTML =
+                "";
+
+
+            data.forEach(
+                function (client) {
+
+                    const card =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    card.className =
+                        "dashboard-card";
+
+
+                    card.style.marginBottom =
+                        "20px";
+
+
+                    const clientName =
+                        client.full_name ||
+                        client.name ||
+                        "Client";
+
+
+                    const clientEmail =
+                        client.email ||
+                        "No email available";
+
+
+                    card.innerHTML = `
+
+                        <h2>
+                            ${escapeHtml(
+                                clientName
+                            )}
+                        </h2>
+
+                        <p>
+                            <strong>Email:</strong>
+                            ${escapeHtml(
+                                clientEmail
+                            )}
+                        </p>
+
+                        <p>
+                            <strong>Role:</strong>
+                            ${escapeHtml(
+                                client.role
+                            )}
+                        </p>
+
+                        ${
+                            client.created_at
+                                ? `
+                                    <p>
+                                        <strong>Joined:</strong>
+                                        ${formatDate(
+                                            client.created_at
+                                        )}
+                                    </p>
+                                `
+                                : ""
+                        }
+
+                        <div
+                            style="
+                                display:flex;
+                                gap:10px;
+                                flex-wrap:wrap;
+                                margin-top:15px;
+                            "
+                        >
+
+                            <a
+                                href="client-projects.html"
+                                class="dashboard-button"
+                                style="
+                                    text-decoration:none;
+                                    display:inline-block;
+                                "
+                            >
+                                Assign Project
+                            </a>
+
+                        </div>
+
+                    `;
+
+
+                    container.appendChild(
+                        card
+                    );
+
+                }
+            );
+
+        }
+
+
+
+        /* =========================================================
+           FORMAT DATE
+        ========================================================= */
+
+        function formatDate(
+            value
+        ) {
+
+            return new Date(
+                value
+            ).toLocaleDateString(
+                undefined,
+                {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric"
+                }
+            );
+
+        }
+
+
+
+        /* =========================================================
+           ESCAPE HTML
+        ========================================================= */
+
+        function escapeHtml(
+            value
+        ) {
+
+            return String(
+                value ?? ""
+            )
+                .replace(
+                    /&/g,
+                    "&amp;"
+                )
+                .replace(
+                    /</g,
+                    "&lt;"
+                )
+                .replace(
+                    />/g,
+                    "&gt;"
+                )
+                .replace(
+                    /"/g,
+                    "&quot;"
+                )
+                .replace(
+                    /'/g,
+                    "&#039;"
+                );
+
+        }
+
+
+
+        /* =========================================================
+           INITIALIZE
+        ========================================================= */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            async function () {
+
+                const allowed =
+                    await protectClientsPage();
+
+
+                if (!allowed) {
+
+                    return;
+
+                }
+
+
+                await loadClients();
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>
