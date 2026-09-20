@@ -1599,45 +1599,69 @@
                 "";
 
 
-            data.forEach(
-                function (item) {
+data.forEach(
+    function (item) {
 
-                    const message =
-                        document.createElement(
-                            "div"
-                        );
-
-
-                    message.className =
-                        "chat-message " +
-                        item.sender_role;
-
-
-                    message.innerHTML = `
-
-                        <p class="chat-message-text">
-                            ${escapeHtml(
-                                item.message
-                            )}
-                        </p>
-
-                        <span class="chat-message-time">
-                            ${escapeHtml(
-                                formatChatTime(
-                                    item.created_at
-                                )
-                            )}
-                        </span>
-
-                    `;
-
-
-                    chatMessages.appendChild(
-                        message
-                    );
-
-                }
+        const message =
+            document.createElement(
+                "div"
             );
+
+
+        message.className =
+            "chat-message " +
+            item.sender_role;
+
+
+        const isOwnMessage =
+            item.sender_id === currentUser.id;
+
+
+        message.innerHTML = `
+
+            <div class="chat-message-content">
+
+                <p class="chat-message-text">
+                    ${escapeHtml(
+                        item.message
+                    )}
+                </p>
+
+                <span class="chat-message-time">
+                    ${escapeHtml(
+                        formatChatTime(
+                            item.created_at
+                        )
+                    )}
+                </span>
+
+            </div>
+
+            ${
+                isOwnMessage
+                    ? `
+                        <button
+                            type="button"
+                            class="chat-message-menu"
+                            data-message-id="${item.id}"
+                            aria-label="Message options"
+                            title="Message options"
+                        >
+                            ⋯
+                        </button>
+                    `
+                    : ""
+            }
+
+        `;
+
+
+        chatMessages.appendChild(
+            message
+        );
+
+    }
+);
 
 
             scrollToLatest();
