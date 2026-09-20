@@ -618,12 +618,286 @@
            CREATE CLIENT PROJECT
         ========================================================= */
 
-        document
-            .getElementById(
-                "clientProjectForm"
-            )
-            .addEventListener(
-                "submit",
+document
+    .getElementById("clientProjectForm")
+    .addEventListener(
+        "submit",
+        async function (event) {
+
+            event.preventDefault();
+
+
+            const form =
+                document.getElementById(
+                    "clientProjectForm"
+                );
+
+            const saveButton =
+                document.getElementById(
+                    "saveClientProjectButton"
+                );
+
+
+            const clientId =
+                document.getElementById(
+                    "clientSelect"
+                ).value;
+
+
+            const portfolioProjectId =
+                document.getElementById(
+                    "portfolioProjectSelect"
+                ).value;
+
+
+            const title =
+                document.getElementById(
+                    "clientProjectTitle"
+                ).value.trim();
+
+
+            const description =
+                document.getElementById(
+                    "clientProjectDescription"
+                ).value.trim();
+
+
+            const projectType =
+                document.getElementById(
+                    "clientProjectType"
+                ).value.trim();
+
+
+            const status =
+                document.getElementById(
+                    "clientProjectStatus"
+                ).value;
+
+
+            const accessLink =
+                document.getElementById(
+                    "clientProjectLink"
+                ).value.trim();
+
+
+            /*
+             * VALIDATION
+             */
+
+            if (!clientId) {
+
+                alert(
+                    "Please select a client."
+                );
+
+                return;
+            }
+
+
+            if (!title) {
+
+                alert(
+                    "Please enter a project title."
+                );
+
+                return;
+            }
+
+
+            /*
+             * CHECK WHETHER WE ARE EDITING
+             */
+
+            const editingId =
+                saveButton.dataset.editingId || null;
+
+
+            /*
+             * BUTTON STATE
+             */
+
+            saveButton.disabled = true;
+
+            saveButton.textContent =
+                editingId
+                    ? "Updating..."
+                    : "Saving...";
+
+
+            try {
+
+                /*
+                 * PROJECT DATA
+                 */
+
+                const projectData = {
+
+                    client_id:
+                        clientId,
+
+                    project_id:
+                        portfolioProjectId ||
+                        null,
+
+                    title:
+                        title,
+
+                    description:
+                        description ||
+                        null,
+
+                    project_type:
+                        projectType ||
+                        null,
+
+                    status:
+                        status,
+
+                    access_link:
+                        accessLink ||
+                        null,
+
+                    completed_at:
+                        status === "complete"
+                            ? new Date().toISOString()
+                            : null,
+
+                    updated_at:
+                        new Date().toISOString()
+
+                };
+
+
+                let error;
+
+
+                /*
+                 * UPDATE EXISTING PROJECT
+                 */
+
+                if (editingId) {
+
+                    ({
+                        error
+                    } =
+                        await clientProjectsSupabase
+                            .from(
+                                "client_projects"
+                            )
+                            .update(
+                                projectData
+                            )
+                            .eq(
+                                "id",
+                                editingId
+                            );
+
+
+                    if (error) {
+                        throw error;
+                    }
+
+
+                    alert(
+                        "Client project updated successfully."
+                    );
+
+                }
+
+
+                /*
+                 * CREATE NEW PROJECT
+                 */
+
+                else {
+
+                    ({
+                        error
+                    } =
+                        await clientProjectsSupabase
+                            .from(
+                                "client_projects"
+                            )
+                            .insert(
+                                projectData
+                            );
+
+
+                    if (error) {
+                        throw error;
+                    }
+
+
+                    alert(
+                        "Client project created successfully."
+                    );
+
+                }
+
+
+                /*
+                 * RESET FORM
+                 */
+
+                form.reset();
+
+
+                /*
+                 * REMOVE EDIT MODE
+                 */
+
+                delete saveButton.dataset.editingId;
+
+
+                saveButton.textContent =
+                    "Save Project";
+
+
+                /*
+                 * REFRESH PROJECT LIST
+                 */
+
+                await loadClientProjects();
+
+
+            } catch (error) {
+
+                console.error(
+                    "CLIENT PROJECT SAVE ERROR:",
+                    error
+                );
+
+
+                alert(
+                    "Could not save client project:\n\n" +
+                    error.message
+                );
+
+
+            } finally {
+
+                saveButton.disabled =
+                    false;
+
+
+                /*
+                 * Make sure the button
+                 * returns to normal state.
+                 */
+
+                if (
+                    !saveButton.dataset.editingId
+                ) {
+
+                    saveButton.textContent =
+                        "Save Project";
+
+                }
+
+            }
+
+        }
+    );
                 async function (event) {
 
                     event.preventDefault();
