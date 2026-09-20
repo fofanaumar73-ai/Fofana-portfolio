@@ -5957,39 +5957,31 @@ body > .navbar:not(.project-navbar) {
 
 
 /* =========================================================
-   WHATSAPP-STYLE CHAT LAYOUT
-   HEADER + COMPOSER STAY FIXED
+   FIXED WHATSAPP-STYLE CHAT VIEW
+   HEADER + COMPOSER STAY IN PLACE
    ONLY MESSAGES SCROLL
 ========================================================= */
 
-html,
-body {
-    height: 100%;
-    margin: 0;
-    overflow: hidden;
-}
-
-body {
-    min-height: 100dvh;
-}
-
-
-/* =========================================================
-   CHAT PAGE
-========================================================= */
-
 .chat-page {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+
+    width: 100%;
+    max-width: 1100px;
+
     height: 100dvh;
     height: 100svh;
+
     display: flex;
     flex-direction: column;
+
     overflow: hidden;
 }
 
 
-/* =========================================================
-   CHAT HEADER
-========================================================= */
+/* HEADER NEVER SCROLLS */
 
 .chat-header {
     flex-shrink: 0;
@@ -5998,22 +5990,33 @@ body {
 }
 
 
-/* =========================================================
-   CHAT MESSAGES
-========================================================= */
+/* CHAT BODY FILLS REMAINING SPACE */
+
+.chat-body {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* ONLY THIS AREA SCROLLS */
 
 .chat-messages {
     flex: 1;
     min-height: 0;
+
     overflow-y: auto;
     overflow-x: hidden;
+
     -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
 }
 
 
-/* =========================================================
-   MESSAGE COMPOSER
-========================================================= */
+/* COMPOSER STAYS AT BOTTOM */
 
 .chat-composer {
     flex-shrink: 0;
@@ -6022,19 +6025,19 @@ body {
 }
 
 
-/* =========================================================
-   MOBILE
-========================================================= */
+/* MOBILE */
 
 @media (max-width: 600px) {
 
     .chat-page {
+        left: 0;
+        transform: none;
+
+        width: 100%;
+        max-width: none;
+
         height: 100dvh;
         height: 100svh;
-    }
-
-    .chat-messages {
-        overscroll-behavior: contain;
     }
 
 }
