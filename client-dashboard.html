@@ -17,7 +17,170 @@
         href="style.css"
     >
 
+    <style>
+
+        /* =========================================================
+           CLIENT DASHBOARD ADDITIONS
+        ========================================================= */
+
+        .client-section {
+            margin-top: 40px;
+        }
+
+        .client-section-heading {
+            margin-bottom: 20px;
+        }
+
+        .client-section-heading .section-label {
+            margin-bottom: 6px;
+        }
+
+        .client-projects-grid {
+            display: grid;
+            grid-template-columns: repeat(
+                auto-fit,
+                minmax(280px, 1fr)
+            );
+            gap: 20px;
+        }
+
+        .client-project-card {
+            background: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 18px;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(
+                0,
+                0,
+                0,
+                0.05
+            );
+        }
+
+        .client-project-card h3 {
+            margin-top: 0;
+            margin-bottom: 12px;
+        }
+
+        .client-project-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .client-project-status {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .client-project-status.incomplete {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .client-project-status.pending {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .client-project-status.complete {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .client-project-type {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: #f3f4f6;
+            color: #374151;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .client-project-description {
+            color: #666;
+            line-height: 1.7;
+            margin-bottom: 18px;
+        }
+
+        .client-project-date {
+            font-size: 13px;
+            color: #888;
+            margin-top: 15px;
+        }
+
+        .client-project-link {
+            display: inline-block;
+            margin-top: 12px;
+            text-decoration: none;
+        }
+
+        .client-empty-state {
+            background: #ffffff;
+            border: 1px dashed rgba(
+                0,
+                0,
+                0,
+                0.15
+            );
+            border-radius: 18px;
+            padding: 35px 25px;
+            text-align: center;
+            color: #777;
+        }
+
+        .client-chat-placeholder {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 30px;
+            border: 1px solid rgba(
+                0,
+                0,
+                0,
+                0.08
+            );
+        }
+
+        .client-ai-placeholder {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 30px;
+            border: 1px solid rgba(
+                0,
+                0,
+                0,
+                0.08
+            );
+        }
+
+        .client-dashboard-card {
+            scroll-margin-top: 100px;
+        }
+
+        .client-section {
+            scroll-margin-top: 100px;
+        }
+
+        @media (max-width: 600px) {
+
+            .client-project-card {
+                padding: 20px;
+            }
+
+        }
+
+    </style>
+
 </head>
+
 
 <body class="client-dashboard-page">
 
@@ -58,6 +221,7 @@
     </header>
 
 
+
     <!-- =========================================================
          DASHBOARD
     ========================================================= -->
@@ -65,7 +229,9 @@
     <main class="client-dashboard-container">
 
 
-        <!-- WELCOME -->
+        <!-- =====================================================
+             WELCOME
+        ===================================================== -->
 
         <section class="client-welcome-card">
 
@@ -88,6 +254,7 @@
         </section>
 
 
+
         <!-- =====================================================
              DASHBOARD CARDS
         ====================================================== -->
@@ -97,7 +264,10 @@
 
             <!-- PROJECTS -->
 
-            <article class="client-dashboard-card">
+            <article
+                class="client-dashboard-card"
+                data-target="projectsSection"
+            >
 
                 <div class="client-card-icon">
                     PROJECTS
@@ -114,6 +284,7 @@
                 <button
                     type="button"
                     class="secondary-button client-card-button"
+                    data-scroll-target="projectsSection"
                 >
                     VIEW PROJECTS
                 </button>
@@ -121,9 +292,13 @@
             </article>
 
 
+
             <!-- MESSAGES -->
 
-            <article class="client-dashboard-card">
+            <article
+                class="client-dashboard-card"
+                data-target="messagesSection"
+            >
 
                 <div class="client-card-icon">
                     CHAT
@@ -140,11 +315,13 @@
                 <button
                     type="button"
                     class="secondary-button client-card-button"
+                    data-scroll-target="messagesSection"
                 >
                     OPEN CHAT
                 </button>
 
             </article>
+
 
 
             <!-- PROFILE -->
@@ -166,11 +343,13 @@
                 <button
                     type="button"
                     class="secondary-button client-card-button"
+                    data-scroll-target="accountSection"
                 >
                     PROFILE SETTINGS
                 </button>
 
             </article>
+
 
 
             <!-- NOTIFICATIONS -->
@@ -192,6 +371,7 @@
                 <button
                     type="button"
                     class="secondary-button client-card-button"
+                    data-scroll-target="notificationsSection"
                 >
                     VIEW NOTIFICATIONS
                 </button>
@@ -201,11 +381,183 @@
         </section>
 
 
+
+        <!-- =====================================================
+             MY PROJECTS
+        ====================================================== -->
+
+        <section
+            id="projectsSection"
+            class="client-section"
+        >
+
+            <div class="client-section-heading">
+
+                <p class="section-label">
+                    PROJECT DELIVERY
+                </p>
+
+                <h2>
+                    My Projects
+                </h2>
+
+                <p>
+                    Projects assigned to your account by Fofana.
+                </p>
+
+            </div>
+
+
+            <div
+                id="clientProjectsContainer"
+                class="client-projects-grid"
+            >
+
+                <div class="client-empty-state">
+                    Loading your projects...
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             MESSAGES
+        ====================================================== -->
+
+        <section
+            id="messagesSection"
+            class="client-section"
+        >
+
+            <div class="client-section-heading">
+
+                <p class="section-label">
+                    PRIVATE COMMUNICATION
+                </p>
+
+                <h2>
+                    Messages
+                </h2>
+
+                <p>
+                    Communicate privately with Fofana about your project.
+                </p>
+
+            </div>
+
+
+            <div class="client-chat-placeholder">
+
+                <h3>
+                    Your private chat
+                </h3>
+
+                <p>
+                    Your conversation with Fofana will appear here.
+                </p>
+
+                <p>
+                    Chat is being connected to your client account.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             AI ASSISTANT
+        ====================================================== -->
+
+        <section
+            id="aiSection"
+            class="client-section"
+        >
+
+            <div class="client-section-heading">
+
+                <p class="section-label">
+                    FOFANA AI
+                </p>
+
+                <h2>
+                    AI Assistant
+                </h2>
+
+                <p>
+                    Get help with your project and dashboard.
+                </p>
+
+            </div>
+
+
+            <div class="client-ai-placeholder">
+
+                <h3>
+                    🤖 FOFANA AI
+                </h3>
+
+                <p>
+                    Your AI assistant will be available here.
+                </p>
+
+                <p>
+                    You will be able to ask questions and
+                    get assistance with your project.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             NOTIFICATIONS
+        ====================================================== -->
+
+        <section
+            id="notificationsSection"
+            class="client-section"
+        >
+
+            <div class="client-section-heading">
+
+                <p class="section-label">
+                    UPDATES
+                </p>
+
+                <h2>
+                    Notifications
+                </h2>
+
+            </div>
+
+
+            <div class="client-empty-state">
+
+                <p>
+                    No new notifications.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
         <!-- =====================================================
              ACCOUNT INFORMATION
         ====================================================== -->
 
-        <section class="client-account-card">
+        <section
+            id="accountSection"
+            class="client-account-card client-section"
+        >
 
             <div>
 
@@ -265,6 +617,7 @@
         </section>
 
 
+
         <!-- =====================================================
              ERROR / STATUS
         ====================================================== -->
@@ -274,7 +627,9 @@
             class="client-dashboard-message"
         ></p>
 
+
     </main>
+
 
 
     <!-- =========================================================
@@ -284,14 +639,16 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 
+
     <!-- =========================================================
          CLIENT DASHBOARD JAVASCRIPT
-    ========================================================== -->
+    ========================================================= -->
 
     <script>
 
         const SUPABASE_URL =
             "https://uryfgatzyesolwwmugin.supabase.co";
+
 
         const SUPABASE_PUBLISHABLE_KEY =
             "sb_publishable_QL4lxGKETA1_xMFFJ7RV5g_Wuyi_x-d";
@@ -309,6 +666,282 @@
                 "clientDashboardMessage"
             );
 
+
+
+        /* =========================================================
+           ESCAPE HTML
+        ========================================================= */
+
+        function escapeHtml(value) {
+
+            return String(value || "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+
+        }
+
+
+
+        /* =========================================================
+           FORMAT DATE
+        ========================================================= */
+
+        function formatDate(dateValue) {
+
+            if (!dateValue) {
+                return "";
+            }
+
+            const date =
+                new Date(dateValue);
+
+            if (Number.isNaN(date.getTime())) {
+                return "";
+            }
+
+            return date.toLocaleDateString(
+                undefined,
+                {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric"
+                }
+            );
+
+        }
+
+
+
+        /* =========================================================
+           LOAD CLIENT PROJECTS
+        ========================================================= */
+
+        async function loadClientProjects(
+            clientId
+        ) {
+
+            const container =
+                document.getElementById(
+                    "clientProjectsContainer"
+                );
+
+
+            container.innerHTML =
+                `
+                    <div class="client-empty-state">
+                        Loading your projects...
+                    </div>
+                `;
+
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient
+                    .from("client_projects")
+                    .select(
+                        `
+                            id,
+                            title,
+                            description,
+                            project_type,
+                            status,
+                            access_link,
+                            completed_at,
+                            created_at,
+                            updated_at
+                        `
+                    )
+                    .eq(
+                        "client_id",
+                        clientId
+                    )
+                    .order(
+                        "created_at",
+                        {
+                            ascending: false
+                        }
+                    );
+
+
+            if (error) {
+
+                console.error(
+                    "Client projects error:",
+                    error
+                );
+
+
+                container.innerHTML =
+                    `
+                        <div class="client-empty-state">
+                            <p>
+                                We could not load your projects.
+                            </p>
+                        </div>
+                    `;
+
+                return;
+
+            }
+
+
+            if (
+                !data ||
+                data.length === 0
+            ) {
+
+                container.innerHTML =
+                    `
+                        <div class="client-empty-state">
+
+                            <h3>
+                                No projects yet
+                            </h3>
+
+                            <p>
+                                Your assigned projects will appear here.
+                            </p>
+
+                        </div>
+                    `;
+
+                return;
+
+            }
+
+
+            container.innerHTML = "";
+
+
+            data.forEach(
+                function (project) {
+
+                    const card =
+                        document.createElement(
+                            "article"
+                        );
+
+
+                    card.className =
+                        "client-project-card";
+
+
+                    const status =
+                        project.status ||
+                        "incomplete";
+
+
+                    const completedDate =
+                        formatDate(
+                            project.completed_at
+                        );
+
+
+                    card.innerHTML = `
+
+                        <h3>
+                            ${escapeHtml(
+                                project.title
+                            )}
+                        </h3>
+
+
+                        <div class="client-project-meta">
+
+                            <span
+                                class="
+                                    client-project-status
+                                    ${escapeHtml(status)}
+                                "
+                            >
+                                ${escapeHtml(status)}
+                            </span>
+
+
+                            ${
+                                project.project_type
+                                    ? `
+                                        <span class="client-project-type">
+                                            ${escapeHtml(
+                                                project.project_type
+                                            )}
+                                        </span>
+                                    `
+                                    : ""
+                            }
+
+                        </div>
+
+
+                        ${
+                            project.description
+                                ? `
+                                    <p class="client-project-description">
+                                        ${escapeHtml(
+                                            project.description
+                                        )}
+                                    </p>
+                                `
+                                : ""
+                        }
+
+
+                        ${
+                            project.access_link
+                                ? `
+                                    <a
+                                        href="${escapeHtml(
+                                            project.access_link
+                                        )}"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="
+                                            secondary-button
+                                            client-project-link
+                                        "
+                                    >
+                                        OPEN PROJECT
+                                    </a>
+                                `
+                                : ""
+                        }
+
+
+                        ${
+                            completedDate
+                                ? `
+                                    <p class="client-project-date">
+                                        Completed:
+                                        ${escapeHtml(
+                                            completedDate
+                                        )}
+                                    </p>
+                                `
+                                : ""
+                        }
+
+                    `;
+
+
+                    container.appendChild(
+                        card
+                    );
+
+                }
+            );
+
+        }
+
+
+
+        /* =========================================================
+           LOAD CLIENT DASHBOARD
+        ========================================================= */
 
         async function loadClientDashboard() {
 
@@ -338,6 +971,7 @@
                     "client-login.html";
 
                 return;
+
             }
 
 
@@ -372,33 +1006,44 @@
                     profileError
                 );
 
+
                 dashboardMessage.textContent =
                     "We could not load your client profile.";
 
                 return;
+
             }
 
 
-/*
- * ROLE CHECK
- */
+            /*
+             * ROLE CHECK
+             */
 
-if (profile.role === "admin") {
+            if (
+                profile.role ===
+                "admin"
+            ) {
 
-    window.location.href =
-        "admin.html";
+                window.location.href =
+                    "admin.html";
 
-    return;
-}
+                return;
+
+            }
 
 
-if (profile.role !== "client") {
+            if (
+                profile.role !==
+                "client"
+            ) {
 
-    dashboardMessage.textContent =
-        "Your account does not have a valid client role.";
+                dashboardMessage.textContent =
+                    "Your account does not have a valid client role.";
 
-    return;
-}
+                return;
+
+            }
+
 
             /*
              * DISPLAY INFORMATION
@@ -438,12 +1083,22 @@ if (profile.role !== "client") {
             ).textContent =
                 profile.role.toUpperCase();
 
+
+            /*
+             * LOAD CLIENT PROJECTS
+             */
+
+            await loadClientProjects(
+                user.id
+            );
+
         }
 
 
-        /*
-         * LOGOUT
-         */
+
+        /* =========================================================
+           LOGOUT
+        ========================================================= */
 
         document
             .getElementById(
@@ -456,7 +1111,9 @@ if (profile.role !== "client") {
                     const {
                         error
                     } =
-                        await supabaseClient.auth.signOut();
+                        await supabaseClient
+                            .auth
+                            .signOut();
 
 
                     if (error) {
@@ -465,6 +1122,7 @@ if (profile.role !== "client") {
                             error.message;
 
                         return;
+
                     }
 
 
@@ -475,13 +1133,59 @@ if (profile.role !== "client") {
             );
 
 
-        /*
-         * START DASHBOARD
-         */
+
+        /* =========================================================
+           DASHBOARD CARD NAVIGATION
+        ========================================================= */
+
+        document
+            .querySelectorAll(
+                "[data-scroll-target]"
+            )
+            .forEach(
+                function (button) {
+
+                    button.addEventListener(
+                        "click",
+                        function () {
+
+                            const targetId =
+                                this.dataset
+                                    .scrollTarget;
+
+
+                            const target =
+                                document.getElementById(
+                                    targetId
+                                );
+
+
+                            if (!target) {
+                                return;
+                            }
+
+
+                            target.scrollIntoView({
+                                behavior: "smooth",
+                                block: "start"
+                            });
+
+                        }
+                    );
+
+                }
+            );
+
+
+
+        /* =========================================================
+           START DASHBOARD
+        ========================================================= */
 
         loadClientDashboard();
 
     </script>
+
 
 </body>
 
