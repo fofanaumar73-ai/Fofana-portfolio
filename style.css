@@ -5954,3 +5954,87 @@ body > .navbar:not(.project-navbar) {
     }
 
 }
+
+
+/* =========================================================
+   WHATSAPP-STYLE CHAT LAYOUT
+   HEADER + COMPOSER STAY FIXED
+   ONLY MESSAGES SCROLL
+========================================================= */
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+
+body {
+    min-height: 100dvh;
+}
+
+
+/* =========================================================
+   CHAT PAGE
+========================================================= */
+
+.chat-page {
+    height: 100dvh;
+    height: 100svh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   CHAT HEADER
+========================================================= */
+
+.chat-header {
+    flex-shrink: 0;
+    position: relative;
+    z-index: 100;
+}
+
+
+/* =========================================================
+   CHAT MESSAGES
+========================================================= */
+
+.chat-messages {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
+
+/* =========================================================
+   MESSAGE COMPOSER
+========================================================= */
+
+.chat-composer {
+    flex-shrink: 0;
+    position: relative;
+    z-index: 100;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .chat-page {
+        height: 100dvh;
+        height: 100svh;
+    }
+
+    .chat-messages {
+        overscroll-behavior: contain;
+    }
+
+}
