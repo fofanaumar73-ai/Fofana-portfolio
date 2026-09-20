@@ -1936,28 +1936,27 @@ chatMessages.addEventListener(
 
 
 /* =========================================================
-   CHAT INPUT — ENTER / NEW LINE
+   CHAT INPUT — MULTILINE
 ========================================================= */
 
 chatInput.addEventListener(
     "keydown",
     function (event) {
 
-        /* SHIFT + ENTER = NEW LINE */
-        if (event.key === "Enter" && event.shiftKey) {
-            return;
-        }
+        /*
+         * ENTER = NEW LINE
+         * SHIFT + ENTER = NEW LINE
+         *
+         * Messages are sent using the SEND button.
+         */
 
-        /* ENTER = SEND MESSAGE */
         if (event.key === "Enter") {
-            event.preventDefault();
-
-            chatForm.requestSubmit();
+            return;
         }
 
     }
 );
-
+        
 
         /* =====================================================
            BACK TO DASHBOARD
