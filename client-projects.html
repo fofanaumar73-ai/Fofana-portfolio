@@ -790,229 +790,376 @@
             );
 
 
-        /* =========================================================
-           LOAD CLIENT PROJECTS
-        ========================================================= */
+    /* =========================================================
+   LOAD CLIENT PROJECTS
+========================================================= */
 
-        async function loadClientProjects() {
+async function loadClientProjects() {
 
-            const container =
-                document.getElementById(
-                    "clientProjectsList"
-                );
-
-
-            container.innerHTML =
-                "<p>Loading client projects...</p>";
+    const container =
+        document.getElementById(
+            "clientProjectsList"
+        );
 
 
-            const {
-                data,
-                error
-            } =
-                await clientProjectsSupabase
-                    .from("client_projects")
-                    .select("*")
-                    .order(
-                        "created_at",
-                        {
-                            ascending: false
-                        }
-                    );
+    container.innerHTML =
+        "<p>Loading client projects...</p>";
 
 
-            if (error) {
-
-                console.error(
-                    error
-                );
-
-                container.innerHTML =
-                    "<p>Could not load client projects.</p>";
-
-                return;
-
-            }
-
-
-            if (
-                !data ||
-                data.length === 0
-            ) {
-
-                container.innerHTML =
-                    "<p>No client projects have been assigned yet.</p>";
-
-                return;
-
-            }
-
-
-            container.innerHTML =
-                "";
-
-
-            data.forEach(
-                function (project) {
-
-                    const client =
-                        clients.find(
-                            function (item) {
-
-                                return item.id ===
-                                    project.client_id;
-
-                            }
-                        );
-
-
-                    const clientName =
-                        client
-                            ? (
-                                client.full_name ||
-                                client.name ||
-                                client.email
-                            )
-                            : "Unknown Client";
-
-
-                    const card =
-                        document.createElement(
-                            "div"
-                        );
-
-
-                    card.className =
-                        "dashboard-card";
-
-
-                    card.style.marginBottom =
-                        "20px";
-
-
-                    card.innerHTML = `
-
-                        <h2>
-                            ${escapeHtml(project.title)}
-                        </h2>
-
-                        <p>
-                            <strong>Client:</strong>
-                            ${escapeHtml(clientName)}
-                        </p>
-
-                        <p>
-                            <strong>Type:</strong>
-                            ${escapeHtml(project.project_type || "—")}
-                        </p>
-
-                        <p>
-                            <strong>Status:</strong>
-                            ${escapeHtml(project.status)}
-                        </p>
-
-                        <p>
-                            ${escapeHtml(project.description || "")}
-                        </p>
-
-                        ${
-                            project.access_link
-                                ? `
-                                    <p>
-                                        <a
-                                            href="${escapeAttribute(project.access_link)}"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
-                                            Open Project
-                                        </a>
-                                    </p>
-                                `
-                                : ""
-                        }
-
-                        <button
-                            type="button"
-                            class="dashboard-button delete-client-project-button"
-                            data-id="${project.id}"
-                            style="margin-top: 10px;"
-                        >
-                            Delete
-                        </button>
-
-                    `;
-
-
-                    container.appendChild(
-                        card
-                    );
-
+    const {
+        data,
+        error
+    } =
+        await clientProjectsSupabase
+            .from("client_projects")
+            .select("*")
+            .order(
+                "created_at",
+                {
+                    ascending: false
                 }
             );
 
 
-            document
-                .querySelectorAll(
-                    ".delete-client-project-button"
-                )
-                .forEach(
-                    function (button) {
+    if (error) {
 
-                        button.addEventListener(
-                            "click",
-                            async function () {
+        console.error(
+            error
+        );
 
-                                const confirmed =
-                                    confirm(
-                                        "Delete this client project?"
-                                    );
+        container.innerHTML =
+            "<p>Could not load client projects.</p>";
+
+        return;
+
+    }
 
 
-                                if (!confirmed) {
-                                    return;
-                                }
+    if (
+        !data ||
+        data.length === 0
+    ) {
+
+        container.innerHTML =
+            "<p>No client projects have been assigned yet.</p>";
+
+        return;
+
+    }
 
 
-                                const projectId =
-                                    this.dataset.id;
+    container.innerHTML =
+        "";
 
 
-                                const {
-                                    error
-                                } =
-                                    await clientProjectsSupabase
-                                        .from(
-                                            "client_projects"
-                                        )
-                                        .delete()
-                                        .eq(
-                                            "id",
-                                            projectId
-                                        );
+    data.forEach(
+        function (project) {
 
+            const client =
+                clients.find(
+                    function (item) {
 
-                                if (error) {
-
-                                    alert(
-                                        "Could not delete project: " +
-                                        error.message
-                                    );
-
-                                    return;
-
-                                }
-
-
-                                await loadClientProjects();
-
-                            }
-                        );
+                        return item.id ===
+                            project.client_id;
 
                     }
                 );
 
-        }
 
+            const clientName =
+                client
+                    ? (
+                        client.full_name ||
+                        client.name ||
+                        client.email
+                    )
+                    : "Unknown Client";
+
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className =
+                "dashboard-card";
+
+
+            card.style.marginBottom =
+                "20px";
+
+
+            card.innerHTML = `
+
+                <h2>
+                    ${escapeHtml(project.title)}
+                </h2>
+
+                <p>
+                    <strong>Client:</strong>
+                    ${escapeHtml(clientName)}
+                </p>
+
+                <p>
+                    <strong>Type:</strong>
+                    ${escapeHtml(
+                        project.project_type || "—"
+                    )}
+                </p>
+
+                <p>
+                    <strong>Status:</strong>
+                    ${escapeHtml(project.status)}
+                </p>
+
+                <p>
+                    ${escapeHtml(
+                        project.description || ""
+                    )}
+                </p>
+
+                ${
+                    project.access_link
+                        ? `
+                            <p>
+                                <a
+                                    href="${escapeAttribute(
+                                        project.access_link
+                                    )}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    Open Project
+                                </a>
+                            </p>
+                        `
+                        : ""
+                }
+
+                <div
+                    style="
+                        display:flex;
+                        gap:10px;
+                        flex-wrap:wrap;
+                        margin-top:15px;
+                    "
+                >
+
+                    <button
+                        type="button"
+                        class="dashboard-button edit-client-project-button"
+                        data-id="${project.id}"
+                    >
+                        Edit
+                    </button>
+
+                    <button
+                        type="button"
+                        class="dashboard-button delete-client-project-button"
+                        data-id="${project.id}"
+                    >
+                        Delete
+                    </button>
+
+                </div>
+
+            `;
+
+
+            container.appendChild(
+                card
+            );
+
+        }
+    );
+
+
+    /* =====================================================
+       DELETE BUTTONS
+    ===================================================== */
+
+    document
+        .querySelectorAll(
+            ".delete-client-project-button"
+        )
+        .forEach(
+            function (button) {
+
+                button.addEventListener(
+                    "click",
+                    async function () {
+
+                        const confirmed =
+                            confirm(
+                                "Delete this client project?"
+                            );
+
+
+                        if (!confirmed) {
+                            return;
+                        }
+
+
+                        const projectId =
+                            this.dataset.id;
+
+
+                        const {
+                            error
+                        } =
+                            await clientProjectsSupabase
+                                .from(
+                                    "client_projects"
+                                )
+                                .delete()
+                                .eq(
+                                    "id",
+                                    projectId
+                                );
+
+
+                        if (error) {
+
+                            alert(
+                                "Could not delete project: " +
+                                error.message
+                            );
+
+                            return;
+
+                        }
+
+
+                        await loadClientProjects();
+
+                    }
+                );
+
+            }
+        );
+
+
+    /* =====================================================
+       EDIT BUTTONS
+    ===================================================== */
+
+    document
+        .querySelectorAll(
+            ".edit-client-project-button"
+        )
+        .forEach(
+            function (button) {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        const projectId =
+                            this.dataset.id;
+
+
+                        const project =
+                            data.find(
+                                function (item) {
+
+                                    return item.id ===
+                                        projectId;
+
+                                }
+                            );
+
+
+                        if (!project) {
+                            return;
+                        }
+
+
+                        /* -----------------------------------------
+                           LOAD PROJECT INTO FORM
+                        ----------------------------------------- */
+
+                        document.getElementById(
+                            "clientSelect"
+                        ).value =
+                            project.client_id || "";
+
+
+                        document.getElementById(
+                            "portfolioProjectSelect"
+                        ).value =
+                            project.project_id || "";
+
+
+                        document.getElementById(
+                            "clientProjectTitle"
+                        ).value =
+                            project.title || "";
+
+
+                        document.getElementById(
+                            "clientProjectDescription"
+                        ).value =
+                            project.description || "";
+
+
+                        document.getElementById(
+                            "clientProjectType"
+                        ).value =
+                            project.project_type || "";
+
+
+                        document.getElementById(
+                            "clientProjectStatus"
+                        ).value =
+                            project.status || "incomplete";
+
+
+                        document.getElementById(
+                            "clientProjectLink"
+                        ).value =
+                            project.access_link || "";
+
+
+                        /* -----------------------------------------
+                           CHANGE FORM BUTTON
+                        ----------------------------------------- */
+
+                        const saveButton =
+                            document.getElementById(
+                                "saveClientProjectButton"
+                            );
+
+
+                        saveButton.textContent =
+                            "Update Project";
+
+
+                        saveButton.dataset.editingId =
+                            project.id;
+
+
+                        /* -----------------------------------------
+                           SCROLL TO FORM
+                        ----------------------------------------- */
+
+                        document
+                            .getElementById(
+                                "clientProjectForm"
+                            )
+                            .scrollIntoView({
+                                behavior: "smooth",
+                                block: "start"
+                            });
+
+                    }
+                );
+
+            }
+        );
+
+}
+        
 
         /* =========================================================
            HTML ESCAPING
