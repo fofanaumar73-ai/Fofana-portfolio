@@ -1706,6 +1706,26 @@ document
     );
 
 
+        /* =========================================================
+   VIEW PROJECTS BUTTON
+========================================================= */
+
+const viewProjectsButton =
+    document.getElementById(
+        "viewProjectsButton"
+    );
+
+if (viewProjectsButton) {
+    viewProjectsButton.addEventListener(
+        "click",
+        function () {
+            window.location.href =
+                "client-projects-view.html";
+        }
+    );
+}
+        
+
 /* =========================================================
    START DASHBOARD
 ========================================================= */
