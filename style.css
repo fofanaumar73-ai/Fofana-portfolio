@@ -5498,3 +5498,27 @@ body > .navbar:not(.project-navbar) {
 
     border-bottom: 1px solid rgba(255,255,255,0.08) !important;
 }
+
+
+/* =========================================================
+   CLIENT PROJECTS DASHBOARD CARD
+========================================================= */
+
+.client-projects-dashboard-card {
+    position: relative;
+}
+
+.client-projects-dashboard-card
+.dashboard-card-icon {
+    font-size: 32px;
+    margin-bottom: 18px;
+}
+
+.client-projects-dashboard-card h2 {
+    margin-bottom: 10px;
+}
+
+.client-projects-dashboard-card p {
+    line-height: 1.7;
+    color: rgba(255,255,255,0.62);
+}
