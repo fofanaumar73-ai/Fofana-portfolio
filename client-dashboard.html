@@ -449,21 +449,61 @@
             </div>
 
 
-            <div class="client-chat-placeholder">
+            <div class="client-chat-box">
 
-                <h3>
-                    Your private chat
-                </h3>
+    <div class="client-chat-header">
 
-                <p>
-                    Your conversation with Fofana will appear here.
-                </p>
+        <div>
+            <strong>FOFANA</strong>
+            <span>Private Client Chat</span>
+        </div>
 
-                <p>
-                    Chat is being connected to your client account.
-                </p>
+        <span
+            id="chatConnectionStatus"
+            class="chat-status"
+        >
+            ● Secure
+        </span>
 
-            </div>
+    </div>
+
+
+    <div
+        id="clientChatMessages"
+        class="client-chat-messages"
+    >
+
+        <div class="chat-empty-state">
+            Loading conversation...
+        </div>
+
+    </div>
+
+
+    <form
+        id="clientChatForm"
+        class="client-chat-form"
+    >
+
+        <input
+            type="text"
+            id="clientChatInput"
+            placeholder="Type your message..."
+            autocomplete="off"
+            required
+        >
+
+        <button
+            type="submit"
+            id="clientChatSendButton"
+            class="secondary-button"
+        >
+            SEND
+        </button>
+
+    </form>
+
+</div>
 
         </section>
 
