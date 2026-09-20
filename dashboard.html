@@ -308,6 +308,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
+
+        /* =========================================================
+       CLIENT MESSAGES BUTTON
+    ========================================================= */
+
+    const clientMessagesButton =
+        document.getElementById(
+            "clientMessagesButton"
+        );
+
+    if (clientMessagesButton) {
+
+        clientMessagesButton.addEventListener(
+            "click",
+            function () {
+
+                window.location.href =
+                    "client-messages.html";
+
+            }
+        );
+
+    }
+
 });
 </script>
 
