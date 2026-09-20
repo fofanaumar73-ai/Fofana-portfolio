@@ -5522,3 +5522,135 @@ body > .navbar:not(.project-navbar) {
     line-height: 1.7;
     color: rgba(255,255,255,0.62);
 }
+
+
+/* =========================================================
+   CLIENT CHAT
+========================================================= */
+
+.client-chat-box {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.client-chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    padding: 20px 24px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.client-chat-header strong {
+    display: block;
+    font-size: 16px;
+}
+
+.client-chat-header span {
+    display: block;
+    font-size: 13px;
+    margin-top: 4px;
+    opacity: 0.65;
+}
+
+.client-chat-header .chat-status {
+    color: #16803c;
+    font-size: 12px;
+    margin: 0;
+}
+
+.client-chat-messages {
+    height: 420px;
+    overflow-y: auto;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    background: #fafafa;
+}
+
+.chat-empty-state {
+    margin: auto;
+    text-align: center;
+    color: #777;
+}
+
+.chat-message {
+    max-width: 75%;
+    padding: 12px 15px;
+    border-radius: 15px;
+    line-height: 1.5;
+    word-wrap: break-word;
+}
+
+.chat-message.client {
+    align-self: flex-end;
+    background: #111;
+    color: #fff;
+    border-bottom-right-radius: 4px;
+}
+
+.chat-message.admin {
+    align-self: flex-start;
+    background: #fff;
+    color: #222;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-bottom-left-radius: 4px;
+}
+
+.chat-message-text {
+    margin: 0;
+}
+
+.chat-message-time {
+    display: block;
+    margin-top: 6px;
+    font-size: 10px;
+    opacity: 0.6;
+}
+
+.client-chat-form {
+    display: flex;
+    gap: 10px;
+    padding: 18px;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    background: #fff;
+}
+
+.client-chat-form input {
+    flex: 1;
+    min-width: 0;
+    padding: 13px 15px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    outline: none;
+}
+
+.client-chat-form input:focus {
+    border-color: #111;
+}
+
+.client-chat-form button {
+    white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+
+    .client-chat-messages {
+        height: 350px;
+        padding: 16px;
+    }
+
+    .chat-message {
+        max-width: 88%;
+    }
+
+    .client-chat-form {
+        padding: 12px;
+    }
+
+}
