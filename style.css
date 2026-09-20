@@ -5657,102 +5657,173 @@ body > .navbar:not(.project-navbar) {
 
 
 /* =========================================================
-   CLIENT CHAT INPUT
+   CLIENT CHAT FORM
 ========================================================= */
 
 .client-chat-form {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     gap: 10px;
+
+    width: 100%;
+    box-sizing: border-box;
+
     padding: 16px;
+
     border-top: 1px solid rgba(0, 0, 0, 0.08);
+
     background: #ffffff;
 }
 
-.client-chat-form input {
+
+/* =========================================================
+   CHAT TEXT AREA
+========================================================= */
+
+.client-chat-form textarea {
     flex: 1;
+
     width: 100%;
     min-width: 0;
-    height: 48px;
-    padding: 0 15px;
+
+    min-height: 48px;
+    max-height: 140px;
+
+    box-sizing: border-box;
+
+    padding: 13px 15px;
 
     border: 1px solid rgba(0, 0, 0, 0.15);
+
     border-radius: 12px;
 
     background: #ffffff;
-    color: #222;
+
+    color: #111111;
+
+    caret-color: #111111;
 
     font-family: inherit;
+
     font-size: 15px;
+
+    line-height: 1.45;
 
     outline: none;
 
-    box-sizing: border-box;
+    resize: none;
+
+    overflow-y: auto;
 }
 
-.client-chat-form input::placeholder {
-    color: #999;
+
+.client-chat-form textarea::placeholder {
+    color: #999999;
     opacity: 1;
 }
 
-.client-chat-form input:focus {
-    border-color: #111;
-    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.06);
+
+.client-chat-form textarea:focus {
+    border-color: #111111;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(0, 0, 0, 0.06);
 }
 
-.client-chat-form input:disabled {
+
+.client-chat-form textarea:disabled {
     opacity: 0.6;
-    cursor: not-allowed;
-}
 
-.client-chat-form button {
-    flex-shrink: 0;
-    height: 48px;
-    min-width: 90px;
-
-    padding: 0 18px;
-
-    border: none;
-    border-radius: 12px;
-
-    font-family: inherit;
-    font-size: 13px;
-    font-weight: 700;
-
-    cursor: pointer;
-    white-space: nowrap;
-}
-
-.client-chat-form button:disabled {
-    opacity: 0.6;
     cursor: not-allowed;
 }
 
 
 /* =========================================================
-   MOBILE CHAT INPUT
+   SEND BUTTON
+========================================================= */
+
+.client-chat-form button {
+    flex-shrink: 0;
+
+    width: auto;
+    min-width: 82px;
+
+    height: 48px;
+
+    padding: 0 16px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    font-family: inherit;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    white-space: nowrap;
+}
+
+
+.client-chat-form button:disabled {
+    opacity: 0.6;
+
+    cursor: not-allowed;
+}
+
+
+/* =========================================================
+   MOBILE CHAT FORM
 ========================================================= */
 
 @media (max-width: 600px) {
 
     .client-chat-form {
+
         gap: 8px;
+
         padding: 12px;
+
+        align-items: flex-end;
+
     }
 
-    .client-chat-form input {
-        height: 46px;
-        padding: 0 13px;
-        font-size: 14px;
+
+    .client-chat-form textarea {
+
+        min-height: 46px;
+
+        max-height: 110px;
+
+        padding: 12px 13px;
+
         border-radius: 10px;
+
+        font-size: 14px;
+
+        line-height: 1.4;
+
     }
+
 
     .client-chat-form button {
+
+        min-width: 68px;
+
+        width: 68px;
+
         height: 46px;
-        min-width: 72px;
-        padding: 0 14px;
-        font-size: 12px;
+
+        padding: 0;
+
         border-radius: 10px;
+
+        font-size: 11px;
+
     }
 
 }
