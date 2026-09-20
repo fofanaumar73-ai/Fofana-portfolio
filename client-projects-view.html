@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>My Projects | FOFANA</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, Helvetica, sans-serif;
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(145, 65, 255, 0.18),
+                    transparent 35%
+                ),
+                #07030b;
+            color: #ffffff;
+        }
+
+        .page-header {
+            padding: 28px 20px 10px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(255,255,255,0.18);
+            background: rgba(255,255,255,0.06);
+            color: #ffffff;
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .back-button:hover {
+            background: rgba(255,255,255,0.12);
+        }
+
+        .eyebrow {
+            margin-top: 38px;
+            color: #b56cff;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            margin: 12px 0 8px;
+            font-size: clamp(32px, 6vw, 54px);
+            line-height: 1.05;
+        }
+
+        .page-description {
+            margin: 0;
+            color: rgba(255,255,255,0.72);
+            font-size: 17px;
+            line-height: 1.6;
+        }
+
+        .projects-wrapper {
+            max-width: 1100px;
+            margin: 35px auto 80px;
+            padding: 0 20px;
+        }
+
+        .project-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .filter-button {
+            border: 1px solid rgba(255,255,255,0.14);
+            background: rgba(255,255,255,0.06);
+            color: #ffffff;
+            padding: 10px 17px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .filter-button.active {
+            background: #ffffff;
+            color: #111111;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .project-card {
+            background: #ffffff;
+            color: #111111;
+            border-radius: 24px;
+            padding: 25px;
+            min-height: 270px;
+            display: flex;
+            flex-direction: column;
+            box-shadow:
+                0 20px 60px rgba(0,0,0,0.25);
+        }
+
+        .project-card.hidden {
+            display: none;
+        }
+
+        .project-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .project-title {
+            margin: 0;
+            font-size: 22px;
+            line-height: 1.25;
+        }
+
+        .status-badge {
+            flex-shrink: 0;
+            padding: 8px 12px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .status-incomplete {
+            background: #ffe2e2;
+            color: #a00000;
+        }
+
+        .status-pending {
+            background: #fff0c9;
+            color: #8a5a00;
+        }
+
+        .status-complete {
+            background: #d9f5e4;
+            color: #16743b;
+        }
+
+        .project-type {
+            display: inline-block;
+            width: fit-content;
+            margin-bottom: 15px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: #f1f2f5;
+            color: #454b58;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .project-description {
+            color: #666666;
+            font-size: 15px;
+            line-height: 1.65;
+            margin: 0 0 22px;
+        }
+
+        .project-date {
+            color: #888888;
+            font-size: 12px;
+            margin-top: auto;
+            margin-bottom: 16px;
+        }
+
+        .view-project-button {
+            width: 100%;
+            border: none;
+            border-radius: 12px;
+            padding: 13px 16px;
+            background: #111111;
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+        }
+
+        .view-project-button:hover {
+            opacity: 0.88;
+        }
+
+        .empty-state,
+        .loading-state,
+        .error-state {
+            background: #ffffff;
+            color: #555555;
+            border-radius: 24px;
+            padding: 45px 25px;
+            text-align: center;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .error-state {
+            color: #9b0000;
+        }
+
+        /* =====================================================
+           PROJECT MODAL
+        ===================================================== */
+
+        .project-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(0,0,0,0.78);
+            backdrop-filter: blur(8px);
+        }
+
+        .project-modal.open {
+            display: flex;
+        }
+
+        .modal-content {
+            width: min(650px, 100%);
+            max-height: 90vh;
+            overflow-y: auto;
+            background: #ffffff;
+            color: #111111;
+            border-radius: 26px;
+            padding: 28px;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 38px;
+            height: 38px;
+            border: none;
+            border-radius: 50%;
+            background: #eeeeee;
+            color: #111111;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .modal-status {
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .modal-content h2 {
+            margin: 0 45px 12px 0;
+            font-size: 28px;
+        }
+
+        .modal-content p {
+            color: #666666;
+            line-height: 1.7;
+        }
+
+        .project-info {
+            margin-top: 25px;
+            padding: 18px;
+            border-radius: 16px;
+            background: #f5f5f7;
+        }
+
+        .project-info-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 10px 0;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .project-info-row:last-child {
+            border-bottom: none;
+        }
+
+        .project-info-label {
+            color: #777777;
+        }
+
+        .project-info-value {
+            font-weight: 700;
+            text-align: right;
+        }
+
+        .status-message {
+            margin-top: 22px;
+            padding: 18px;
+            border-radius: 15px;
+            line-height: 1.6;
+        }
+
+        .status-message.incomplete {
+            background: #fff0f0;
+            color: #8c0000;
+        }
+
+        .status-message.pending {
+            background: #fff8df;
+            color: #795000;
+        }
+
+        .status-message.complete {
+            background: #eafaf0;
+            color: #176b38;
+        }
+
+        .access-project-button {
+            display: block;
+            width: 100%;
+            margin-top: 22px;
+            padding: 15px;
+            border: none;
+            border-radius: 13px;
+            background: #111111;
+            color: #ffffff;
+            text-align: center;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .access-project-button:hover {
+            opacity: 0.88;
+        }
+
+        @media (max-width: 600px) {
+
+            .page-header {
+                padding: 22px 16px 5px;
+            }
+
+            .projects-wrapper {
+                padding: 0 16px;
+                margin-top: 25px;
+            }
+
+            .project-card {
+                border-radius: 20px;
+                padding: 21px;
+            }
+
+            .project-top {
+                flex-direction: column;
+            }
+
+            .modal-content {
+                padding: 23px 18px;
+                border-radius: 22px;
+            }
+
+            .project-info-row {
+                flex-direction: column;
+                gap: 4px;
+            }
+
+            .project-info-value {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="page-header">
+
+        <a
+            href="client-dashboard.html"
+            class="back-button"
+        >
+            ← Back to Dashboard
+        </a>
+
+        <div class="eyebrow">
+            CLIENT PORTAL
+        </div>
+
+        <h1>My Projects</h1>
+
+        <p class="page-description">
+            View your active and completed projects
+            assigned by Fofana.
+        </p>
+
+    </header>
+
+
+    <main class="projects-wrapper">
+
+        <div class="project-filters">
+
+            <button
+                type="button"
+                class="filter-button active"
+                data-filter="all"
+            >
+                All
+            </button>
+
+            <button
+                type="button"
+                class="filter-button"
+                data-filter="incomplete"
+            >
+                Incomplete
+            </button>
+
+            <button
+                type="button"
+                class="filter-button"
+                data-filter="pending"
+            >
+                Pending
+            </button>
+
+            <button
+                type="button"
+                class="filter-button"
+                data-filter="complete"
+            >
+                Completed
+            </button>
+
+        </div>
+
+
+        <div
+            id="projectsContainer"
+            class="projects-grid"
+        >
+            <div class="loading-state">
+                Loading your projects...
+            </div>
+        </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         PROJECT DETAILS MODAL
+    ====================================================== -->
+
+    <div
+        id="projectModal"
+        class="project-modal"
+    >
+
+        <div class="modal-content">
+
+            <button
+                type="button"
+                id="closeProjectModal"
+                class="modal-close"
+            >
+                ×
+            </button>
+
+            <span
+                id="modalStatus"
+                class="status-badge modal-status"
+            ></span>
+
+            <h2 id="modalProjectTitle">
+                Project
+            </h2>
+
+            <p id="modalProjectDescription"></p>
+
+            <div class="project-info">
+
+                <div class="project-info-row">
+
+                    <span class="project-info-label">
+                        Project Type
+                    </span>
+
+                    <span
+                        id="modalProjectType"
+                        class="project-info-value"
+                    >
+                    </span>
+
+                </div>
+
+
+                <div class="project-info-row">
+
+                    <span class="project-info-label">
+                        Created
+                    </span>
+
+                    <span
+                        id="modalProjectCreated"
+                        class="project-info-value"
+                    >
+                    </span>
+
+                </div>
+
+
+                <div
+                    id="modalCompletedRow"
+                    class="project-info-row"
+                >
+
+                    <span class="project-info-label">
+                        Completed
+                    </span>
+
+                    <span
+                        id="modalProjectCompleted"
+                        class="project-info-value"
+                    >
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="modalStatusMessage"
+                class="status-message"
+            >
+            </div>
+
+
+            <a
+                id="accessProjectButton"
+                class="access-project-button"
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                style="display: none;"
+            >
+                ACCESS PROJECT
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         SUPABASE
+    ====================================================== -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+    <script>
+
+        const SUPABASE_URL =
+            "https://uryfgatzyesolwwmugin.supabase.co";
+
+        const SUPABASE_KEY =
+            "sb_publishable_QL4lxGKETA1_xMFFJ7RV5g_Wuyi_x-d";
+
+        const supabaseClient =
+            window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_KEY
+            );
+
+
+        let allProjects = [];
+
+
+        /* =====================================================
+           ESCAPE HTML
+        ====================================================== */
+
+        function escapeHtml(value) {
+
+            if (value === null ||
+                value === undefined) {
+                return "";
+            }
+
+            return String(value)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+
+        /* =====================================================
+           FORMAT DATE
+        ====================================================== */
+
+        function formatDate(dateValue) {
+
+            if (!dateValue) {
+                return "—";
+            }
+
+            const date =
+                new Date(dateValue);
+
+            if (Number.isNaN(date.getTime())) {
+                return "—";
+            }
+
+            return date.toLocaleDateString(
+                undefined,
+                {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric"
+                }
+            );
+        }
+
+
+        /* =====================================================
+           STATUS HELPERS
+        ====================================================== */
+
+        function getStatusLabel(status) {
+
+            if (status === "complete") {
+                return "COMPLETED";
+            }
+
+            if (status === "pending") {
+                return "PENDING";
+            }
+
+            return "INCOMPLETE";
+        }
+
+
+        function getStatusClass(status) {
+
+            if (status === "complete") {
+                return "status-complete";
+            }
+
+            if (status === "pending") {
+                return "status-pending";
+            }
+
+            return "status-incomplete";
+        }
+
+
+        /* =====================================================
+           AUTHENTICATION
+        ====================================================== */
+
+        async function checkClientAccess() {
+
+            const {
+                data: { user },
+                error: userError
+            } =
+                await supabaseClient.auth.getUser();
+
+
+            if (userError || !user) {
+
+                window.location.href =
+                    "client-login.html";
+
+                return null;
+            }
+
+
+            const {
+                data: profile,
+                error: profileError
+            } =
+                await supabaseClient
+                    .from("client_profiles")
+                    .select(
+                        "id, full_name, role"
+                    )
+                    .eq("id", user.id)
+                    .single();
+
+
+            if (profileError ||
+                !profile) {
+
+                document.getElementById(
+                    "projectsContainer"
+                ).innerHTML = `
+                    <div class="error-state">
+                        We could not load your
+                        client profile.
+                    </div>
+                `;
+
+                return null;
+            }
+
+
+            if (profile.role === "admin") {
+
+                window.location.href =
+                    "admin.html";
+
+                return null;
+            }
+
+
+            if (profile.role !== "client") {
+
+                document.getElementById(
+                    "projectsContainer"
+                ).innerHTML = `
+                    <div class="error-state">
+                        Your account does not have
+                        a valid client role.
+                    </div>
+                `;
+
+                return null;
+            }
+
+
+            return user;
+        }
+
+
+        /* =====================================================
+           LOAD PROJECTS
+        ====================================================== */
+
+        async function loadProjects() {
+
+            const container =
+                document.getElementById(
+                    "projectsContainer"
+                );
+
+
+            const user =
+                await checkClientAccess();
+
+
+            if (!user) {
+                return;
+            }
+
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient
+                    .from("client_projects")
+                    .select(`
+                        id,
+                        client_id,
+                        title,
+                        description,
+                        project_type,
+                        status,
+                        access_link,
+                        completed_at,
+                        created_at,
+                        updated_at
+                    `)
+                    .eq(
+                        "client_id",
+                        user.id
+                    )
+                    .order(
+                        "updated_at",
+                        {
+                            ascending: false
+                        }
+                    );
+
+
+            if (error) {
+
+                console.error(
+                    "Projects loading error:",
+                    error
+                );
+
+                container.innerHTML = `
+                    <div class="error-state">
+                        We could not load your
+                        projects.
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            allProjects =
+                data || [];
+
+
+            renderProjects(
+                "all"
+            );
+        }
+
+
+        /* =====================================================
+           RENDER PROJECTS
+        ====================================================== */
+
+        function renderProjects(
+            filter
+        ) {
+
+            const container =
+                document.getElementById(
+                    "projectsContainer"
+                );
+
+
+            let projects =
+                allProjects;
+
+
+            if (filter !== "all") {
+
+                projects =
+                    allProjects.filter(
+                        function (project) {
+
+                            return (
+                                project.status ===
+                                filter
+                            );
+
+                        }
+                    );
+            }
+
+
+            if (!projects.length) {
+
+                container.innerHTML = `
+                    <div class="empty-state">
+                        You don't have any
+                        projects in this category yet.
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            container.innerHTML = "";
+
+
+            projects.forEach(
+                function (project) {
+
+                    const card =
+                        document.createElement(
+                            "article"
+                        );
+
+                    card.className =
+                        "project-card";
+
+
+                    card.dataset.status =
+                        project.status;
+
+
+                    card.innerHTML = `
+
+                        <div class="project-top">
+
+                            <h2 class="project-title">
+                                ${escapeHtml(
+                                    project.title
+                                )}
+                            </h2>
+
+                            <span
+                                class="status-badge
+                                ${getStatusClass(
+                                    project.status
+                                )}"
+                            >
+                                ${getStatusLabel(
+                                    project.status
+                                )}
+                            </span>
+
+                        </div>
+
+
+                        ${
+                            project.project_type
+                            ? `
+                                <span class="project-type">
+                                    ${escapeHtml(
+                                        project.project_type
+                                    )}
+                                </span>
+                            `
+                            : ""
+                        }
+
+
+                        <p class="project-description">
+                            ${
+                                escapeHtml(
+                                    project.description ||
+                                    "No project description available."
+                                )
+                            }
+                        </p>
+
+
+                        <div class="project-date">
+                            Last updated:
+                            ${formatDate(
+                                project.updated_at
+                            )}
+                        </div>
+
+
+                        <button
+                            type="button"
+                            class="view-project-button"
+                            data-project-id="${escapeHtml(
+                                project.id
+                            )}"
+                        >
+                            VIEW DETAILS
+                        </button>
+
+                    `;
+
+
+                    container.appendChild(
+                        card
+                    );
+                }
+            );
+
+
+            document
+                .querySelectorAll(
+                    ".view-project-button"
+                )
+                .forEach(
+                    function (button) {
+
+                        button.addEventListener(
+                            "click",
+                            function () {
+
+                                openProjectDetails(
+                                    this.dataset.projectId
+                                );
+
+                            }
+                        );
+
+                    }
+                );
+        }
+
+
+        /* =====================================================
+           OPEN PROJECT DETAILS
+        ====================================================== */
+
+        function openProjectDetails(
+            projectId
+        ) {
+
+            const project =
+                allProjects.find(
+                    function (item) {
+
+                        return item.id ===
+                            projectId;
+
+                    }
+                );
+
+
+            if (!project) {
+                return;
+            }
+
+
+            const modal =
+                document.getElementById(
+                    "projectModal"
+                );
+
+
+            const modalStatus =
+                document.getElementById(
+                    "modalStatus"
+                );
+
+
+            const statusMessage =
+                document.getElementById(
+                    "modalStatusMessage"
+                );
+
+
+            const accessButton =
+                document.getElementById(
+                    "accessProjectButton"
+                );
+
+
+            modalStatus.textContent =
+                getStatusLabel(
+                    project.status
+                );
+
+
+            modalStatus.className =
+                "status-badge modal-status " +
+                getStatusClass(
+                    project.status
+                );
+
+
+            document.getElementById(
+                "modalProjectTitle"
+            ).textContent =
+                project.title || "Project";
+
+
+            document.getElementById(
+                "modalProjectDescription"
+            ).textContent =
+                project.description ||
+                "No project description available.";
+
+
+            document.getElementById(
+                "modalProjectType"
+            ).textContent =
+                project.project_type ||
+                "—";
+
+
+            document.getElementById(
+                "modalProjectCreated"
+            ).textContent =
+                formatDate(
+                    project.created_at
+                );
+
+
+            document.getElementById(
+                "modalProjectCompleted"
+            ).textContent =
+                formatDate(
+                    project.completed_at
+                );
+
+
+            accessButton.style.display =
+                "none";
+
+
+            /* =================================================
+               INCOMPLETE
+            ================================================== */
+
+            if (
+                project.status ===
+                "incomplete"
+            ) {
+
+                statusMessage.className =
+                    "status-message incomplete";
+
+                statusMessage.textContent =
+                    "Your project has not been " +
+                    "delivered or completed yet. " +
+                    "Please have patience. Fofana " +
+                    "is still working on your project.";
+
+            }
+
+
+            /* =================================================
+               PENDING
+            ================================================== */
+
+            else if (
+                project.status ===
+                "pending"
+            ) {
+
+                statusMessage.className =
+                    "status-message pending";
+
+                statusMessage.textContent =
+                    "Your project is almost done! " +
+                    "We are putting the finishing " +
+                    "touches together. Please have " +
+                    "a little more patience.";
+
+            }
+
+
+            /* =================================================
+               COMPLETED
+            ================================================== */
+
+            else if (
+                project.status ===
+                "complete"
+            ) {
+
+                statusMessage.className =
+                    "status-message complete";
+
+                statusMessage.textContent =
+                    "Your project has been completed " +
+                    "and is ready for you to access.";
+
+                if (
+                    project.access_link &&
+                    project.access_link.trim()
+                ) {
+
+                    accessButton.href =
+                        project.access_link;
+
+                    accessButton.style.display =
+                        "block";
+
+                }
+
+            }
+
+
+            modal.classList.add(
+                "open"
+            );
+        }
+
+
+        /* =====================================================
+           CLOSE MODAL
+        ====================================================== */
+
+        document
+            .getElementById(
+                "closeProjectModal"
+            )
+            .addEventListener(
+                "click",
+                function () {
+
+                    document
+                        .getElementById(
+                            "projectModal"
+                        )
+                        .classList.remove(
+                            "open"
+                        );
+
+                }
+            );
+
+
+        document
+            .getElementById(
+                "projectModal"
+            )
+            .addEventListener(
+                "click",
+                function (event) {
+
+                    if (
+                        event.target ===
+                        this
+                    ) {
+
+                        this.classList.remove(
+                            "open"
+                        );
+
+                    }
+
+                }
+            );
+
+
+        /* =====================================================
+           FILTER BUTTONS
+        ====================================================== */
+
+        document
+            .querySelectorAll(
+                ".filter-button"
+            )
+            .forEach(
+                function (button) {
+
+                    button.addEventListener(
+                        "click",
+                        function () {
+
+                            document
+                                .querySelectorAll(
+                                    ".filter-button"
+                                )
+                                .forEach(
+                                    function (item) {
+
+                                        item.classList
+                                            .remove(
+                                                "active"
+                                            );
+
+                                    }
+                                );
+
+
+                            this.classList.add(
+                                "active"
+                            );
+
+
+                            renderProjects(
+                                this.dataset.filter
+                            );
+
+                        }
+                    );
+
+                }
+            );
+
+
+        /* =====================================================
+           START
+        ====================================================== */
+
+        loadProjects();
+
+    </script>
+
+</body>
+</html>
