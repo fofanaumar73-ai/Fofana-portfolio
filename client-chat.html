@@ -1424,6 +1424,43 @@ body {
         let currentUser = null;
 
 
+        /* =====================================================
+   CHAT ATTACHMENTS
+====================================================== */
+
+const chatAttachmentButton =
+    document.getElementById(
+        "chatAttachmentButton"
+    );
+
+const chatFileInput =
+    document.getElementById(
+        "chatFileInput"
+    );
+
+const chatAttachmentPreview =
+    document.getElementById(
+        "chatAttachmentPreview"
+    );
+
+const chatAttachmentName =
+    document.getElementById(
+        "chatAttachmentName"
+    );
+
+const chatAttachmentSize =
+    document.getElementById(
+        "chatAttachmentSize"
+    );
+
+const removeChatAttachment =
+    document.getElementById(
+        "removeChatAttachment"
+    );
+
+
+let pendingAttachment = null;
+        
 
         /* =====================================================
            ESCAPE HTML
