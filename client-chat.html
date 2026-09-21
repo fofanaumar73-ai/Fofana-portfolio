@@ -2272,13 +2272,16 @@ chatMessages.addEventListener(
             }
 
 
-            const message =
-                chatInput.value.trim();
+const message =
+    chatInput.value.trim();
 
 
-            if (!message) {
-                return;
-            }
+if (
+    !message &&
+    !pendingAttachment
+) {
+    return;
+}
 
 
             clearChatError();
