@@ -1857,7 +1857,7 @@ removeChatAttachment.addEventListener(
         ====================================================== */
 
 
-        /* =====================================================
+/* =====================================================
    BUILD ATTACHMENT HTML
 ====================================================== */
 
@@ -1890,15 +1890,18 @@ async function buildAttachmentHtml(item) {
 
         return `
             <div class="chat-message-attachment">
+
                 <span class="chat-message-attachment-icon">
                     📎
                 </span>
+
                 <span class="chat-message-attachment-name">
                     ${escapeHtml(
                         item.attachment_name ||
                         "Attachment"
                     )}
                 </span>
+
             </div>
         `;
     }
@@ -1916,37 +1919,62 @@ async function buildAttachmentHtml(item) {
 
 
     const fileType =
-        item.attachment_type ||
-        "";
+        (
+            item.attachment_type ||
+            ""
+        ).toLowerCase();
 
 
-    /* IMAGE */
+    const originalFileName =
+        (
+            item.attachment_name ||
+            ""
+        ).toLowerCase();
 
-    if (
-        fileType.startsWith(
-            "image/"
-        )
-    ) {
+
+    /* =================================================
+       IMAGE DETECTION
+    ================================================= */
+
+    const isImage =
+        fileType.startsWith("image/") ||
+        /\.(jpg|jpeg|png|gif|webp|bmp|svg)$/i.test(
+            originalFileName
+        );
+
+
+    /* =================================================
+       IMAGE
+    ================================================= */
+
+    if (isImage) {
 
         return `
-            <div class="chat-message-attachment">
+            <div class="chat-message-attachment chat-image-attachment">
+
                 <a
                     href="${fileUrl}"
                     target="_blank"
                     rel="noopener noreferrer"
                 >
+
                     <img
                         src="${fileUrl}"
                         alt="${fileName}"
                         class="chat-message-image"
+                        loading="lazy"
                     >
+
                 </a>
+
             </div>
         `;
     }
 
 
-    /* OTHER FILE */
+    /* =================================================
+       OTHER FILE
+    ================================================= */
 
     return `
         <div class="chat-message-attachment">
@@ -1970,198 +1998,6 @@ async function buildAttachmentHtml(item) {
         </div>
     `;
 }
-        
-        async function loadMessages() {
-
-            if (!currentClientId) {
-                return;
-            }
-
-
-            clearChatError();
-
-
-            const {
-                data,
-                error
-            } =
-                await supabaseClient
-                    .from(
-                        "client_messages"
-                    )
-.select(`
-    id,
-    client_id,
-    sender_id,
-    sender_role,
-    message,
-    is_read,
-    created_at,
-    attachment_path,
-    attachment_name,
-    attachment_type,
-    attachment_size
-`)
-                    .eq(
-                        "client_id",
-                        currentClientId
-                    )
-                    .order(
-                        "created_at",
-                        {
-                            ascending: true
-                        }
-                    );
-
-
-            if (error) {
-
-                console.error(
-                    "Chat loading error:",
-                    error
-                );
-
-
-                chatMessages.innerHTML = `
-                    <div class="chat-empty-state">
-
-                        <div class="chat-empty-icon">
-                            !
-                        </div>
-
-                        <p>
-                            Could not load your messages.
-                        </p>
-
-                    </div>
-                `;
-
-
-                showChatError(
-                    "Could not load your conversation."
-                );
-
-
-                return;
-
-            }
-
-
-            if (
-                !data ||
-                data.length === 0
-            ) {
-
-                chatMessages.innerHTML = `
-                    <div class="chat-empty-state">
-
-                        <div class="chat-empty-icon">
-                            💬
-                        </div>
-
-                        <p>
-                            No messages yet.
-                        </p>
-
-                        <p>
-                            Send a message to start
-                            your private conversation
-                            with Fofana.
-                        </p>
-
-                    </div>
-                `;
-
-
-                return;
-
-            }
-
-
-            chatMessages.innerHTML =
-                "";
-
-
-for (const item of data) {
-
-        const message =
-            document.createElement(
-                "div"
-            );
-
-
-        message.className =
-            "chat-message " +
-            item.sender_role;
-
-
-        const isOwnMessage =
-            item.sender_id === currentUser.id;
-
-
-    const attachmentHtml =
-    await buildAttachmentHtml(
-        item
-    );
-    
-
-        message.innerHTML = `
-
-<div class="chat-message-content">
-
-    ${attachmentHtml}
-
-    ${
-        item.message
-            ? `
-                <p class="chat-message-text">
-                    ${escapeHtml(
-                        item.message
-                    )}
-                </p>
-            `
-            : ""
-    }
-
-                <span class="chat-message-time">
-                    ${escapeHtml(
-                        formatChatTime(
-                            item.created_at
-                        )
-                    )}
-                </span>
-
-            </div>
-
-            ${
-                isOwnMessage
-                    ? `
-                        <button
-                            type="button"
-                            class="chat-message-menu"
-                            data-message-id="${item.id}"
-                            aria-label="Message options"
-                            title="Message options"
-                        >
-                            ⋯
-                        </button>
-                    `
-                    : ""
-            }
-
-        `;
-
-
-        chatMessages.appendChild(
-            message
-        );
-
-    }
-
-
-            scrollToLatest();
-
-        }
 
 
         /* =====================================================
