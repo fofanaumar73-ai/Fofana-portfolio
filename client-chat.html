@@ -867,13 +867,20 @@ body {
 
 
             .chat-messages {
-                padding:
-                    18px
-                    12px
-                    20px;
+    flex: 1;
 
-                gap: 8px;
-            }
+    min-height: 0;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    padding:
+        18px
+        12px
+        20px;
+
+    gap: 8px;
+}
 
 
             .chat-message {
@@ -900,19 +907,26 @@ body {
             }
 
 
-            .chat-composer {
-                gap: 7px;
+.chat-composer {
+    flex-shrink: 0;
 
-                padding:
-                    9px
-                    10px
-                    calc(
-                        9px +
-                        env(
-                            safe-area-inset-bottom
-                        )
-                    );
-            }
+    min-height: 64px;
+
+    gap: 7px;
+
+    padding:
+        9px
+        10px
+        calc(
+            9px +
+            env(
+                safe-area-inset-bottom
+            )
+        );
+
+    position: relative;
+    z-index: 30;
+}
 
 
             .chat-input-wrapper {
