@@ -2175,18 +2175,97 @@ async function deleteMessage(messageId) {
     clearChatError();
 
 
+const {
+    data: messageData,
+    error: fetchError
+} =
+    await supabaseClient
+        .from("client_messages")
+        .select(
+            "id, attachment_path"
+        )
+        .eq("id", messageId)
+        .eq(
+            "sender_id",
+            currentUser.id
+        )
+        .single();
+
+
+if (fetchError || !messageData) {
+
+    console.error(
+        "Message fetch before delete error:",
+        fetchError
+    );
+
+    showChatError(
+        "Could not find this message."
+    );
+
+    return;
+}
+
+
+/* DELETE ATTACHMENT FROM STORAGE */
+
+if (messageData.attachment_path) {
+
     const {
-        error
+        error: storageError
     } =
         await supabaseClient
-            .from("client_messages")
-            .delete()
-            .eq("id", messageId)
-            .eq(
-                "sender_id",
-                currentUser.id
-            );
+            .storage
+            .from("client-chat-files")
+            .remove([
+                messageData.attachment_path
+            ]);
 
+
+    if (storageError) {
+
+        console.error(
+            "Attachment delete error:",
+            storageError
+        );
+
+        showChatError(
+            "Could not delete the attached file."
+        );
+
+        return;
+    }
+}
+
+
+/* DELETE MESSAGE */
+
+const {
+    error
+} =
+    await supabaseClient
+        .from("client_messages")
+        .delete()
+        .eq("id", messageId)
+        .eq(
+            "sender_id",
+            currentUser.id
+        );
+
+
+if (error) {
+
+    console.error(
+        "Message delete error:",
+        error
+    );
+
+    showChatError(
+        "Could not delete this message."
+    );
+
+    return;
+}
 
     if (error) {
 
