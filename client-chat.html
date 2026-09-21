@@ -1960,6 +1960,41 @@ chatInput.addEventListener(
         );
 
 
+        /* =========================================================
+   MOBILE KEYBOARD VIEWPORT HANDLING
+========================================================= */
+
+if (window.visualViewport) {
+
+    function handleKeyboardViewport() {
+
+        const chatPage =
+            document.querySelector(".chat-page");
+
+        if (!chatPage) {
+            return;
+        }
+
+        const viewportHeight =
+            window.visualViewport.height;
+
+        chatPage.style.height =
+            viewportHeight + "px";
+    }
+
+    window.visualViewport.addEventListener(
+        "resize",
+        handleKeyboardViewport
+    );
+
+    window.visualViewport.addEventListener(
+        "scroll",
+        handleKeyboardViewport
+    );
+
+    handleKeyboardViewport();
+}
+        
 
         /* =====================================================
            START CHAT
