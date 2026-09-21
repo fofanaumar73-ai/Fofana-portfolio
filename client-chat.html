@@ -2565,6 +2565,52 @@ chatInput.addEventListener(
 
 
         /* =====================================================
+   MOBILE KEYBOARD VIEWPORT
+====================================================== */
+
+function handleVisualViewport() {
+
+    if (!window.visualViewport) {
+        return;
+    }
+
+    const viewport =
+        window.visualViewport;
+
+
+    document.documentElement.style.setProperty(
+        "--chat-viewport-height",
+        `${viewport.height}px`
+    );
+
+
+    document.documentElement.style.setProperty(
+        "--chat-viewport-top",
+        `${viewport.offsetTop}px`
+    );
+}
+
+
+if (window.visualViewport) {
+
+    handleVisualViewport();
+
+
+    window.visualViewport.addEventListener(
+        "resize",
+        handleVisualViewport
+    );
+
+
+    window.visualViewport.addEventListener(
+        "scroll",
+        handleVisualViewport
+    );
+
+}
+        
+
+        /* =====================================================
            START CHAT
         ====================================================== */
 
