@@ -2084,6 +2084,12 @@ for (const item of data) {
             item.sender_id === currentUser.id;
 
 
+    const attachmentHtml =
+    await buildAttachmentHtml(
+        item
+    );
+    
+
         message.innerHTML = `
 
             <div class="chat-message-content">
