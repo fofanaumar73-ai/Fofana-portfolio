@@ -1987,43 +1987,6 @@ chatInput.addEventListener(
         );
 
 
-/* =========================================================
-   MOBILE KEYBOARD VIEWPORT HANDLING
-========================================================= */
-
-if (window.visualViewport) {
-
-    const chatPage =
-        document.querySelector(".chat-page");
-
-    function handleKeyboardViewport() {
-
-        if (!chatPage) {
-            return;
-        }
-
-        const viewport =
-            window.visualViewport;
-
-        chatPage.style.height =
-            viewport.height + "px";
-
-        /*
-         * Prevent Safari from moving the
-         * document when the keyboard opens.
-         */
-        window.scrollTo(0, 0);
-    }
-
-    window.visualViewport.addEventListener(
-        "resize",
-        handleKeyboardViewport
-    );
-
-    handleKeyboardViewport();
-}
-        
-
         /* =====================================================
            START CHAT
         ====================================================== */
