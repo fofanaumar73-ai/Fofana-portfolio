@@ -1841,6 +1841,121 @@ removeChatAttachment.addEventListener(
            LOAD MESSAGES
         ====================================================== */
 
+
+        /* =====================================================
+   BUILD ATTACHMENT HTML
+====================================================== */
+
+async function buildAttachmentHtml(item) {
+
+    if (!item.attachment_path) {
+        return "";
+    }
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .storage
+            .from("client-chat-files")
+            .createSignedUrl(
+                item.attachment_path,
+                3600
+            );
+
+
+    if (error || !data || !data.signedUrl) {
+
+        console.error(
+            "Attachment URL error:",
+            error
+        );
+
+        return `
+            <div class="chat-message-attachment">
+                <span class="chat-message-attachment-icon">
+                    📎
+                </span>
+                <span class="chat-message-attachment-name">
+                    ${escapeHtml(
+                        item.attachment_name ||
+                        "Attachment"
+                    )}
+                </span>
+            </div>
+        `;
+    }
+
+
+    const fileUrl =
+        data.signedUrl;
+
+
+    const fileName =
+        escapeHtml(
+            item.attachment_name ||
+            "Attachment"
+        );
+
+
+    const fileType =
+        item.attachment_type ||
+        "";
+
+
+    /* IMAGE */
+
+    if (
+        fileType.startsWith(
+            "image/"
+        )
+    ) {
+
+        return `
+            <div class="chat-message-attachment">
+                <a
+                    href="${fileUrl}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <img
+                        src="${fileUrl}"
+                        alt="${fileName}"
+                        class="chat-message-image"
+                    >
+                </a>
+            </div>
+        `;
+    }
+
+
+    /* OTHER FILE */
+
+    return `
+        <div class="chat-message-attachment">
+
+            <a
+                href="${fileUrl}"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+
+                <span class="chat-message-attachment-icon">
+                    📎
+                </span>
+
+                <span class="chat-message-attachment-name">
+                    ${fileName}
+                </span>
+
+            </a>
+
+        </div>
+    `;
+}
+        
         async function loadMessages() {
 
             if (!currentClientId) {
