@@ -975,9 +975,16 @@ body {
 
         @media (max-width: 600px) {
 
-            .chat-page {
-    height: 100vh;
-    height: 100dvh;
+.chat-page {
+    height: var(
+        --chat-viewport-height,
+        100dvh
+    );
+
+    top: var(
+        --chat-viewport-top,
+        0px
+    );
 }
             
             .chat-header {
