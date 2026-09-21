@@ -1965,35 +1965,36 @@ chatInput.addEventListener(
         );
 
 
-        /* =========================================================
+/* =========================================================
    MOBILE KEYBOARD VIEWPORT HANDLING
 ========================================================= */
 
 if (window.visualViewport) {
 
-    function handleKeyboardViewport() {
+    const chatPage =
+        document.querySelector(".chat-page");
 
-        const chatPage =
-            document.querySelector(".chat-page");
+    function handleKeyboardViewport() {
 
         if (!chatPage) {
             return;
         }
 
-        const viewportHeight =
-            window.visualViewport.height;
+        const viewport =
+            window.visualViewport;
 
         chatPage.style.height =
-            viewportHeight + "px";
+            viewport.height + "px";
+
+        /*
+         * Prevent Safari from moving the
+         * document when the keyboard opens.
+         */
+        window.scrollTo(0, 0);
     }
 
     window.visualViewport.addEventListener(
         "resize",
-        handleKeyboardViewport
-    );
-
-    window.visualViewport.addEventListener(
-        "scroll",
         handleKeyboardViewport
     );
 
