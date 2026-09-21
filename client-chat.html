@@ -1460,6 +1460,136 @@ const removeChatAttachment =
 
 
 let pendingAttachment = null;
+
+
+        /* =====================================================
+   SELECT ATTACHMENT
+====================================================== */
+
+function formatFileSize(bytes) {
+
+    if (!bytes) {
+        return "0 Bytes";
+    }
+
+    const units = [
+        "Bytes",
+        "KB",
+        "MB",
+        "GB"
+    ];
+
+    const index =
+        Math.floor(
+            Math.log(bytes) /
+            Math.log(1024)
+        );
+
+    return (
+        parseFloat(
+            (
+                bytes /
+                Math.pow(
+                    1024,
+                    index
+                )
+            ).toFixed(1)
+        ) +
+        " " +
+        units[index]
+    );
+}
+
+
+chatAttachmentButton.addEventListener(
+    "click",
+    function () {
+
+        chatFileInput.click();
+
+    }
+);
+
+
+chatFileInput.addEventListener(
+    "change",
+    function () {
+
+        const file =
+            this.files &&
+            this.files[0];
+
+        if (!file) {
+            return;
+        }
+
+
+        /* MAXIMUM FILE SIZE: 10 MB */
+
+        const maxFileSize =
+            10 * 1024 * 1024;
+
+        if (file.size > maxFileSize) {
+
+            showChatError(
+                "File is too large. Maximum size is 10 MB."
+            );
+
+            this.value = "";
+
+            return;
+        }
+
+
+        clearChatError();
+
+
+        pendingAttachment =
+            file;
+
+
+        chatAttachmentName.textContent =
+            file.name;
+
+
+        chatAttachmentSize.textContent =
+            formatFileSize(
+                file.size
+            );
+
+
+        chatAttachmentPreview.style.display =
+            "flex";
+
+    }
+);
+
+
+removeChatAttachment.addEventListener(
+    "click",
+    function () {
+
+        pendingAttachment =
+            null;
+
+
+        chatFileInput.value =
+            "";
+
+
+        chatAttachmentName.textContent =
+            "";
+
+
+        chatAttachmentSize.textContent =
+            "";
+
+
+        chatAttachmentPreview.style.display =
+            "none";
+
+    }
+);
         
 
         /* =====================================================
