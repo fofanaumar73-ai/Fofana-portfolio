@@ -1915,36 +1915,6 @@ chatMessages.addEventListener(
         );
 
 
-        /* =========================================================
-   PREVENT IOS AUTO-SCROLL ON MESSAGE INPUT
-========================================================= */
-
-if (chatInput) {
-
-    chatInput.addEventListener(
-        "focus",
-        function () {
-
-            if (!window.visualViewport) {
-                return;
-            }
-
-            setTimeout(
-                function () {
-
-                    window.scrollTo(
-                        0,
-                        0
-                    );
-
-                },
-                50
-            );
-        }
-    );
-}
-
-
         /* =====================================================
            AUTO-GROW TEXTAREA
         ====================================================== */
@@ -1967,6 +1937,46 @@ if (chatInput) {
         );
 
 
+        /* =========================================================
+   MOBILE INPUT FOCUS HANDLING
+========================================================= */
+
+if (chatInput) {
+
+    chatInput.addEventListener(
+        "focus",
+        function () {
+
+            setTimeout(
+                function () {
+
+                    if (
+                        window.visualViewport &&
+                        /iPhone|iPad|iPod/i.test(
+                            navigator.userAgent
+                        )
+                    ) {
+
+                        window.scrollTo(
+                            0,
+                            0
+                        );
+
+                    }
+
+                    if (chatMessages) {
+                        chatMessages.scrollTop =
+                            chatMessages.scrollHeight;
+                    }
+
+                },
+                100
+            );
+
+        }
+    );
+}
+        
         
 /* =========================================================
    CHAT INPUT — MULTILINE
