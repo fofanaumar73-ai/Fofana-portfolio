@@ -1859,15 +1859,19 @@ removeChatAttachment.addEventListener(
                     .from(
                         "client_messages"
                     )
-                    .select(`
-                        id,
-                        client_id,
-                        sender_id,
-                        sender_role,
-                        message,
-                        is_read,
-                        created_at
-                    `)
+.select(`
+    id,
+    client_id,
+    sender_id,
+    sender_role,
+    message,
+    is_read,
+    created_at,
+    attachment_path,
+    attachment_name,
+    attachment_type,
+    attachment_size
+`)
                     .eq(
                         "client_id",
                         currentClientId
