@@ -2092,13 +2092,21 @@ for (const item of data) {
 
         message.innerHTML = `
 
-            <div class="chat-message-content">
+<div class="chat-message-content">
 
+    ${attachmentHtml}
+
+    ${
+        item.message
+            ? `
                 <p class="chat-message-text">
                     ${escapeHtml(
                         item.message
                     )}
                 </p>
+            `
+            : ""
+    }
 
                 <span class="chat-message-time">
                     ${escapeHtml(
