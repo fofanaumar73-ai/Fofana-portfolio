@@ -732,6 +732,188 @@ body {
         }
 
 
+    /* =====================================================
+   CHAT ATTACHMENTS
+====================================================== */
+
+.chat-attachment-button {
+    flex-shrink: 0;
+
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 13px;
+
+    background: rgba(255,255,255,0.05);
+    color: #ffffff;
+
+    font-size: 20px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.15s ease;
+}
+
+.chat-attachment-button:hover {
+    background: rgba(255,255,255,0.10);
+}
+
+.chat-attachment-button:active {
+    transform: scale(0.95);
+}
+
+
+/* ATTACHMENT PREVIEW */
+
+.chat-attachment-preview {
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    margin: 0 16px 8px;
+    padding: 10px 12px;
+
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 12px;
+
+    background: rgba(255,255,255,0.05);
+}
+
+.attachment-preview-icon {
+    flex-shrink: 0;
+
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background: rgba(181,108,255,0.14);
+
+    font-size: 18px;
+}
+
+.attachment-preview-info {
+    flex: 1;
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+.attachment-preview-info strong {
+    overflow: hidden;
+
+    color: #ffffff;
+
+    font-size: 13px;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.attachment-preview-info span {
+    color: rgba(255,255,255,0.45);
+
+    font-size: 11px;
+}
+
+.remove-attachment-button {
+    flex-shrink: 0;
+
+    width: 30px;
+    height: 30px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: rgba(255,255,255,0.08);
+    color: #ffffff;
+
+    font-size: 20px;
+    line-height: 1;
+
+    cursor: pointer;
+}
+
+
+/* ATTACHMENT INSIDE MESSAGE */
+
+.chat-message-attachment {
+    margin-bottom: 7px;
+}
+
+.chat-message-attachment a {
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    max-width: 100%;
+
+    padding: 9px 10px;
+
+    border-radius: 10px;
+
+    background: rgba(255,255,255,0.07);
+
+    color: #ffffff;
+
+    text-decoration: none;
+
+    font-size: 13px;
+}
+
+.chat-message-attachment a:hover {
+    background: rgba(255,255,255,0.12);
+}
+
+.chat-message-attachment-icon {
+    flex-shrink: 0;
+}
+
+.chat-message-attachment-name {
+    min-width: 0;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.chat-message-image {
+    display: block;
+
+    max-width: 260px;
+    max-height: 300px;
+
+    margin-bottom: 7px;
+
+    border-radius: 12px;
+
+    object-fit: contain;
+
+    cursor: pointer;
+}
+
+    
         /* =====================================================
            ERROR MESSAGE
         ====================================================== */
