@@ -1950,47 +1950,6 @@ chatMessages.addEventListener(
             }
         );
 
-
-        /* =========================================================
-   MOBILE INPUT FOCUS HANDLING
-========================================================= */
-
-if (chatInput) {
-
-    chatInput.addEventListener(
-        "focus",
-        function () {
-
-            setTimeout(
-                function () {
-
-                    if (
-                        window.visualViewport &&
-                        /iPhone|iPad|iPod/i.test(
-                            navigator.userAgent
-                        )
-                    ) {
-
-                        window.scrollTo(
-                            0,
-                            0
-                        );
-
-                    }
-
-                    if (chatMessages) {
-                        chatMessages.scrollTop =
-                            chatMessages.scrollHeight;
-                    }
-
-                },
-                100
-            );
-
-        }
-    );
-}
-        
         
 /* =========================================================
    CHAT INPUT — MULTILINE
