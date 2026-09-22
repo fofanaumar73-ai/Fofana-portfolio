@@ -165,22 +165,73 @@ if (adminLoginForm) {
 
                 if (data?.session) {
 
-                    loginMessage.textContent =
-                        "Login successful. Redirecting...";
-
-                    loginMessage.style.color =
-                        "#7dff9b";
+    const authenticatedUser =
+        data.user;
 
 
-                    setTimeout(() => {
+    /* =================================================
+       VERIFY ADMIN UID
+    ================================================= */
 
-                        window.location.href =
-                            "dashboard.html";
+    const ADMIN_UID =
+        "8b78dc4b-9483-488e-9eb6-22cc39fff83b";
 
-                    }, 700);
 
-                    return;
-                }
+    if (
+        !authenticatedUser ||
+        authenticatedUser.id !== ADMIN_UID
+    ) {
+
+        console.error(
+            "UNAUTHORIZED ADMIN LOGIN:",
+            authenticatedUser?.id
+        );
+
+
+        /* Sign the unauthorized user back out */
+
+        await portfolioSupabase.auth.signOut();
+
+
+        loginMessage.textContent =
+            "This page is authenticated. You are not authorized to access the Admin Dashboard.";
+
+        loginMessage.style.color =
+            "#ff3b3b";
+
+
+        loginButton.disabled =
+            false;
+
+        loginButton.textContent =
+            "Login";
+
+
+        return;
+    }
+
+
+    /* =================================================
+       ADMIN VERIFIED
+    ================================================= */
+
+    loginMessage.textContent =
+        "Admin verified. Redirecting...";
+
+    loginMessage.style.color =
+        "#7dff9b";
+
+
+    setTimeout(() => {
+
+        window.location.href =
+            "dashboard.html";
+
+    }, 700);
+
+
+    return;
+}
 
 
                 loginMessage.textContent =
