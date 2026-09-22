@@ -2253,6 +2253,61 @@ async function markMessagesAsDelivered() {
 
 }
 
+
+        /* =====================================================
+   MARK ADMIN MESSAGES AS SEEN
+====================================================== */
+
+async function markMessagesAsSeen() {
+
+    if (
+        !currentClientId ||
+        !currentUser
+    ) {
+        return;
+    }
+
+
+    const {
+        error
+    } =
+        await supabaseClient
+            .from("client_messages")
+            .update({
+                delivery_status:
+                    "seen",
+
+                seen_at:
+                    new Date().toISOString(),
+
+                is_read:
+                    true
+            })
+            .eq(
+                "client_id",
+                currentClientId
+            )
+            .eq(
+                "sender_role",
+                "admin"
+            )
+            .neq(
+                "delivery_status",
+                "seen"
+            );
+
+
+    if (error) {
+
+        console.error(
+            "Mark seen error:",
+            error
+        );
+
+    }
+
+}
+
         
         /* =====================================================
    DELETE MESSAGE
