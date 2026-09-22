@@ -1,1 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Client Messages | FOFANA</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+    <main class="client-messages-page">
+
+        <!-- HEADER -->
+
+        <header class="client-messages-header">
+
+            <button
+                type="button"
+                class="client-messages-back"
+                id="clientMessagesBack"
+                aria-label="Back"
+            >
+                ←
+            </button>
+
+
+            <div class="client-messages-title">
+
+                <h1>
+                    Client Messages
+                </h1>
+
+                <p>
+                    Private client conversations
+                </p>
+
+            </div>
+
+        </header>
+
+
+        <!-- SEARCH -->
+
+        <section class="client-messages-search">
+
+            <input
+                type="search"
+                id="clientSearchInput"
+                placeholder="Search clients..."
+                autocomplete="off"
+            >
+
+        </section>
+
+
+        <!-- CLIENT LIST -->
+
+        <section
+            class="client-messages-list"
+            id="clientMessagesList"
+        >
+
+            <div class="client-messages-loading">
+
+                <div class="client-messages-loading-icon">
+                    💬
+                </div>
+
+                <p>
+                    Loading conversations...
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- ERROR -->
+
+        <div
+            class="client-messages-error"
+            id="clientMessagesError"
+            style="display:none;"
+        ></div>
+
+    </main>
+
+
+    <!-- SUPABASE -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
+
+
+    <script>
+
+        /* =====================================================
+           SUPABASE
+        ====================================================== */
+
+        const SUPABASE_URL =
+            "https://uryfgatzyesolwwmugin.supabase.co";
+
+
+        const SUPABASE_KEY =
+            "sb_publishable_QL4lxGKETA1_xMFFJ7RV5g_Wuyi_x-d";
+
+
+        const supabaseClient =
+            window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_KEY
+            );
+
+
+        /* =====================================================
+           ELEMENTS
+        ====================================================== */
+
+        const clientMessagesList =
+            document.getElementById(
+                "clientMessagesList"
+            );
+
+
+        const clientSearchInput =
+            document.getElementById(
+                "clientSearchInput"
+            );
+
+
+        const clientMessagesError =
+            document.getElementById(
+                "clientMessagesError"
+            );
+
+
+        const clientMessagesBack =
+            document.getElementById(
+                "clientMessagesBack"
+            );
+
+
+        let allClients = [];
+
+
+        /* =====================================================
+           ERROR
+        ====================================================== */
+
+        function showClientMessagesError(
+            message
+        ) {
+
+            clientMessagesError.textContent =
+                message;
+
+            clientMessagesError.style.display =
+                "block";
+
+        }
+
+
+        function clearClientMessagesError() {
+
+            clientMessagesError.textContent =
+                "";
+
+            clientMessagesError.style.display =
+                "none";
+
+        }
+
+
+        /* =====================================================
+           FORMAT TIME
+        ====================================================== */
+
+        function formatMessageTime(
+            timestamp
+        ) {
+
+            if (!timestamp) {
+                return "";
+            }
+
+
+            const date =
+                new Date(timestamp);
+
+
+            return date.toLocaleString(
+                [],
+                {
+                    day: "numeric",
+                    month: "short",
+                    hour: "2-digit",
+                    minute: "2-digit"
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           LOAD CLIENTS
+        ====================================================== */
+
+        async function loadClients() {
+
+            clearClientMessagesError();
+
+
+            const {
+                data: {
+                    user
+                }
+            } =
+                await supabaseClient
+                    .auth
+                    .getUser();
+
+
+            if (!user) {
+
+                window.location.href =
+                    "admin.html";
+
+                return;
+
+            }
+
+
+            /* =================================================
+               CHECK ADMIN
+            ================================================= */
+
+            const {
+                data: profile,
+                error: profileError
+            } =
+                await supabaseClient
+                    .from("client_profiles")
+                    .select(
+                        "id, full_name, email, role"
+                    )
+                    .eq(
+                        "id",
+                        user.id
+                    )
+                    .single();
+
+
+            if (
+                profileError ||
+                !profile ||
+                profile.role !== "admin"
+            ) {
+
+                window.location.href =
+                    "admin.html";
+
+                return;
+
+            }
+
+
+            /* =================================================
+               LOAD CLIENT PROFILES
+            ================================================= */
+
+            const {
+                data: clients,
+                error
+            } =
+                await supabaseClient
+                    .from("client_profiles")
+                    .select(
+                        "id, full_name, email, role, created_at"
+                    )
+                    .eq(
+                        "role",
+                        "client"
+                    )
+                    .order(
+                        "created_at",
+                        {
+                            ascending: false
+                        }
+                    );
+
+
+            if (error) {
+
+                console.error(
+                    "Client loading error:",
+                    error
+                );
+
+
+                showClientMessagesError(
+                    "Could not load your clients."
+                );
+
+
+                return;
+
+            }
+
+
+            allClients =
+                clients || [];
+
+
+            await loadConversationPreview();
+
+        }
+
+
+        /* =====================================================
+           LOAD CONVERSATION PREVIEWS
+        ====================================================== */
+
+        async function loadConversationPreview() {
+
+            if (!allClients.length) {
+
+                renderClients([]);
+
+                return;
+
+            }
+
+
+            const clientIds =
+                allClients.map(
+                    client => client.id
+                );
+
+
+            const {
+                data: messages,
+                error
+            } =
+                await supabaseClient
+                    .from("client_messages")
+                    .select(`
+                        id,
+                        client_id,
+                        sender_id,
+                        sender_role,
+                        message,
+                        is_read,
+                        delivery_status,
+                        created_at,
+                        attachment_name
+                    `)
+                    .in(
+                        "client_id",
+                        clientIds
+                    )
+                    .order(
+                        "created_at",
+                        {
+                            ascending: false
+                        }
+                    );
+
+
+            if (error) {
+
+                console.error(
+                    "Message preview error:",
+                    error
+                );
+
+
+                showClientMessagesError(
+                    "Could not load conversations."
+                );
+
+
+                return;
+
+            }
+
+
+            const latestByClient =
+                {};
+
+
+            const unreadByClient =
+                {};
+
+
+            for (
+                const message
+                of messages || []
+            ) {
+
+                if (
+                    !latestByClient[
+                        message.client_id
+                    ]
+                ) {
+
+                    latestByClient[
+                        message.client_id
+                    ] =
+                        message;
+
+                }
+
+
+                if (
+                    message.sender_role ===
+                    "client" &&
+                    !message.is_read
+                ) {
+
+                    unreadByClient[
+                        message.client_id
+                    ] =
+                        (
+                            unreadByClient[
+                                message.client_id
+                            ] || 0
+                        ) + 1;
+
+                }
+
+            }
+
+
+            allClients =
+                allClients.map(
+                    client => ({
+
+                        ...client,
+
+                        latestMessage:
+                            latestByClient[
+                                client.id
+                            ] || null,
+
+                        unreadCount:
+                            unreadByClient[
+                                client.id
+                            ] || 0
+
+                    })
+                );
+
+
+            renderClients(
+                allClients
+            );
+
+        }
+
+
+        /* =====================================================
+           RENDER CLIENTS
+        ====================================================== */
+
+        function renderClients(
+            clients
+        ) {
+
+            clientMessagesList.innerHTML =
+                "";
+
+
+            if (!clients.length) {
+
+                clientMessagesList.innerHTML = `
+
+                    <div class="client-messages-empty">
+
+                        <div class="client-messages-empty-icon">
+                            👥
+                        </div>
+
+                        <h2>
+                            No clients yet
+                        </h2>
+
+                        <p>
+                            Client conversations will
+                            appear here.
+                        </p>
+
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+
+            clients.forEach(
+                client => {
+
+                    const card =
+                        document.createElement(
+                            "button"
+                        );
+
+
+                    card.type =
+                        "button";
+
+
+                    card.className =
+                        "client-message-card";
+
+
+                    card.dataset.clientId =
+                        client.id;
+
+
+                    const firstLetter =
+                        (
+                            client.full_name ||
+                            client.email ||
+                            "C"
+                        )
+                            .trim()
+                            .charAt(0)
+                            .toUpperCase();
+
+
+                    const latest =
+                        client.latestMessage;
+
+
+                    let preview =
+                        "No messages yet.";
+
+
+                    if (latest) {
+
+                        if (
+                            latest.message
+                        ) {
+
+                            preview =
+                                latest.message;
+
+                        } else if (
+                            latest.attachment_name
+                        ) {
+
+                            preview =
+                                "📎 " +
+                                latest.attachment_name;
+
+                        }
+
+                    }
+
+
+                    card.innerHTML = `
+
+                        <span class="client-message-avatar">
+                            ${firstLetter}
+                        </span>
+
+
+                        <span class="client-message-info">
+
+                            <strong>
+                                ${
+                                    escapeHtml(
+                                        client.full_name ||
+                                        "Unnamed Client"
+                                    )
+                                }
+                            </strong>
+
+
+                            <span class="client-message-email">
+                                ${
+                                    escapeHtml(
+                                        client.email ||
+                                        ""
+                                    )
+                                }
+                            </span>
+
+
+                            <span class="client-message-preview">
+                                ${
+                                    escapeHtml(
+                                        preview
+                                    )
+                                }
+                            </span>
+
+                        </span>
+
+
+                        <span class="client-message-meta">
+
+                            ${
+                                latest
+                                    ? `
+                                        <time>
+                                            ${
+                                                escapeHtml(
+                                                    formatMessageTime(
+                                                        latest.created_at
+                                                    )
+                                                )
+                                            }
+                                        </time>
+                                    `
+                                    : ""
+                            }
+
+
+                            ${
+                                client.unreadCount > 0
+                                    ? `
+                                        <span class="client-message-unread">
+                                            ${client.unreadCount}
+                                        </span>
+                                    `
+                                    : ""
+                            }
+
+                        </span>
+
+                    `;
+
+
+                    card.addEventListener(
+                        "click",
+                        function () {
+
+                            window.location.href =
+                                `admin-chat.html?client=${encodeURIComponent(
+                                    client.id
+                                )}`;
+
+                        }
+                    );
+
+
+                    clientMessagesList.appendChild(
+                        card
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           ESCAPE HTML
+        ====================================================== */
+
+        function escapeHtml(
+            value
+        ) {
+
+            return String(
+                value ?? ""
+            )
+                .replace(
+                    /&/g,
+                    "&amp;"
+                )
+                .replace(
+                    /</g,
+                    "&lt;"
+                )
+                .replace(
+                    />/g,
+                    "&gt;"
+                )
+                .replace(
+                    /"/g,
+                    "&quot;"
+                )
+                .replace(
+                    /'/g,
+                    "&#039;"
+                );
+
+        }
+
+
+        /* =====================================================
+           SEARCH
+        ====================================================== */
+
+        clientSearchInput.addEventListener(
+            "input",
+            function () {
+
+                const search =
+                    this.value
+                        .trim()
+                        .toLowerCase();
+
+
+                if (!search) {
+
+                    renderClients(
+                        allClients
+                    );
+
+                    return;
+
+                }
+
+
+                const filtered =
+                    allClients.filter(
+                        client => {
+
+                            return (
+                                (
+                                    client.full_name ||
+                                    ""
+                                )
+                                    .toLowerCase()
+                                    .includes(search)
+                                ||
+                                (
+                                    client.email ||
+                                    ""
+                                )
+                                    .toLowerCase()
+                                    .includes(search)
+                            );
+
+                        }
+                    );
+
+
+                renderClients(
+                    filtered
+                );
+
+            }
+        );
+
+
+        /* =====================================================
+           BACK
+        ====================================================== */
+
+        clientMessagesBack.addEventListener(
+            "click",
+            function () {
+
+                window.location.href =
+                    "dashboard.html";
+
+            }
+        );
+
+
+        /* =====================================================
+           INITIALIZE
+        ====================================================== */
+
+        loadClients();
+
+    </script>
+
+</body>
+
+</html>
