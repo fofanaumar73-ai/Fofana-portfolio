@@ -5956,3 +5956,586 @@ body > .navbar:not(.project-navbar) {
 }
 
 
+/* =====================================================
+   CLIENT MESSAGES PAGE
+====================================================== */
+
+.client-messages-page {
+    min-height: 100vh;
+    width: 100%;
+
+    padding: 30px 20px 50px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #f8fafc 0%,
+            #ffffff 100%
+        );
+
+    color: #111827;
+
+    box-sizing: border-box;
+}
+
+
+/* =====================================================
+   HEADER
+====================================================== */
+
+.client-messages-header {
+    width: 100%;
+    max-width: 900px;
+
+    margin: 0 auto 25px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 16px;
+}
+
+
+.client-messages-back {
+    width: 44px;
+    height: 44px;
+
+    flex-shrink: 0;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+
+    background: #ffffff;
+
+    color: #111827;
+
+    font-size: 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.client-messages-back:hover {
+    background: #f3f4f6;
+
+    transform: translateX(-2px);
+}
+
+
+.client-messages-title {
+    min-width: 0;
+}
+
+
+.client-messages-title h1 {
+    margin: 0;
+
+    font-size: 26px;
+    font-weight: 800;
+
+    line-height: 1.2;
+}
+
+
+.client-messages-title p {
+    margin: 5px 0 0;
+
+    color: #6b7280;
+
+    font-size: 14px;
+}
+
+
+/* =====================================================
+   SEARCH
+====================================================== */
+
+.client-messages-search {
+    width: 100%;
+    max-width: 900px;
+
+    margin: 0 auto 20px;
+}
+
+
+.client-messages-search input {
+    width: 100%;
+
+    height: 48px;
+
+    padding: 0 16px;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 13px;
+
+    background: #ffffff;
+
+    color: #111827;
+
+    font-size: 14px;
+
+    outline: none;
+
+    box-sizing: border-box;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.client-messages-search input:focus {
+    border-color: #111827;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(17, 24, 39, 0.08);
+}
+
+
+.client-messages-search input::placeholder {
+    color: #9ca3af;
+}
+
+
+/* =====================================================
+   CLIENT LIST
+====================================================== */
+
+.client-messages-list {
+    width: 100%;
+    max-width: 900px;
+
+    margin: 0 auto;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+
+/* =====================================================
+   CLIENT CARD
+====================================================== */
+
+.client-message-card {
+    width: 100%;
+
+    min-height: 78px;
+
+    padding: 12px 15px;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+
+    background: #ffffff;
+
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    box-sizing: border-box;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.client-message-card:hover {
+    transform: translateY(-1px);
+
+    border-color: #d1d5db;
+
+    background: #fafafa;
+
+    box-shadow:
+        0 6px 20px
+        rgba(0, 0, 0, 0.06);
+}
+
+
+.client-message-card:active {
+    transform: scale(0.99);
+}
+
+
+/* =====================================================
+   AVATAR
+====================================================== */
+
+.client-message-avatar {
+    width: 48px;
+    height: 48px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: #111827;
+
+    color: #ffffff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 17px;
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   CLIENT INFORMATION
+====================================================== */
+
+.client-message-info {
+    min-width: 0;
+
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 2px;
+}
+
+
+.client-message-info strong {
+    color: #111827;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+
+.client-message-email {
+    color: #9ca3af;
+
+    font-size: 11px;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+
+.client-message-preview {
+    margin-top: 3px;
+
+    color: #6b7280;
+
+    font-size: 13px;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+
+/* =====================================================
+   MESSAGE META
+====================================================== */
+
+.client-message-meta {
+    min-width: 70px;
+
+    align-self: stretch;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: flex-end;
+    justify-content: center;
+
+    gap: 7px;
+}
+
+
+.client-message-meta time {
+    color: #9ca3af;
+
+    font-size: 10px;
+
+    white-space: nowrap;
+}
+
+
+/* =====================================================
+   UNREAD COUNT
+====================================================== */
+
+.client-message-unread {
+    min-width: 21px;
+    height: 21px;
+
+    padding: 0 6px;
+
+    border-radius: 50%;
+
+    background: #111827;
+
+    color: #ffffff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    box-sizing: border-box;
+}
+
+
+/* =====================================================
+   LOADING
+====================================================== */
+
+.client-messages-loading {
+    min-height: 220px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+}
+
+
+.client-messages-loading-icon {
+    width: 55px;
+    height: 55px;
+
+    margin-bottom: 12px;
+
+    border-radius: 50%;
+
+    background: #f3f4f6;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 24px;
+}
+
+
+.client-messages-loading p {
+    margin: 0;
+
+    color: #6b7280;
+
+    font-size: 14px;
+}
+
+
+/* =====================================================
+   EMPTY STATE
+====================================================== */
+
+.client-messages-empty {
+    min-height: 300px;
+
+    padding: 40px 20px;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+
+    background: #ffffff;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    box-sizing: border-box;
+}
+
+
+.client-messages-empty-icon {
+    font-size: 42px;
+
+    margin-bottom: 12px;
+}
+
+
+.client-messages-empty h2 {
+    margin: 0;
+
+    font-size: 20px;
+}
+
+
+.client-messages-empty p {
+    margin: 7px 0 0;
+
+    color: #6b7280;
+
+    font-size: 14px;
+}
+
+
+/* =====================================================
+   ERROR
+====================================================== */
+
+.client-messages-error {
+    width: 100%;
+    max-width: 900px;
+
+    margin: 15px auto 0;
+
+    padding: 12px 15px;
+
+    border-radius: 12px;
+
+    background: #fef2f2;
+
+    border: 1px solid #fecaca;
+
+    color: #b91c1c;
+
+    font-size: 13px;
+
+    box-sizing: border-box;
+}
+
+
+/* =====================================================
+   MOBILE
+====================================================== */
+
+@media (max-width: 600px) {
+
+    .client-messages-page {
+        padding:
+            20px 12px
+            35px;
+    }
+
+
+    .client-messages-header {
+        margin-bottom: 20px;
+
+        gap: 11px;
+    }
+
+
+    .client-messages-back {
+        width: 40px;
+        height: 40px;
+
+        border-radius: 11px;
+
+        font-size: 22px;
+    }
+
+
+    .client-messages-title h1 {
+        font-size: 21px;
+    }
+
+
+    .client-messages-title p {
+        font-size: 12px;
+    }
+
+
+    .client-messages-search {
+        margin-bottom: 14px;
+    }
+
+
+    .client-messages-search input {
+        height: 46px;
+
+        border-radius: 12px;
+    }
+
+
+    .client-message-card {
+        min-height: 72px;
+
+        padding: 10px 11px;
+
+        border-radius: 14px;
+
+        gap: 10px;
+    }
+
+
+    .client-message-avatar {
+        width: 43px;
+        height: 43px;
+
+        font-size: 15px;
+    }
+
+
+    .client-message-info strong {
+        font-size: 14px;
+    }
+
+
+    .client-message-email {
+        font-size: 10px;
+    }
+
+
+    .client-message-preview {
+        font-size: 12px;
+    }
+
+
+    .client-message-meta {
+        min-width: 52px;
+
+        gap: 5px;
+    }
+
+
+    .client-message-meta time {
+        font-size: 9px;
+    }
+
+
+    .client-message-unread {
+        min-width: 19px;
+        height: 19px;
+
+        font-size: 9px;
+    }
+
+}
