@@ -257,7 +257,7 @@
                 await supabaseClient
                     .from("client_profiles")
                     .select(
-                        "id, full_name, email, role"
+                        "id, full_name, role"
                     )
                     .eq(
                         "id",
