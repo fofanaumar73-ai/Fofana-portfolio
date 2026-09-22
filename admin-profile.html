@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>FOFANA | Admin Profile</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <main class="admin-profile-page">
+
+
+        <!-- =================================================
+             HEADER
+        ================================================= -->
+
+        <header class="admin-profile-header">
+
+            <button
+                type="button"
+                id="adminProfileBackButton"
+                class="admin-profile-back"
+            >
+                ←
+            </button>
+
+
+            <h1>
+                My Profile
+            </h1>
+
+        </header>
+
+
+
+        <!-- =================================================
+             PROFILE CARD
+        ================================================= -->
+
+        <section class="admin-profile-card">
+
+
+            <div
+                class="admin-profile-avatar"
+                id="adminProfileAvatar"
+            >
+                F
+            </div>
+
+
+            <h2 id="adminProfileName">
+                FOFANA
+            </h2>
+
+
+            <div
+                class="admin-profile-role"
+                id="adminProfileRole"
+            >
+                ADMIN
+            </div>
+
+
+
+            <!-- =================================================
+                 ABOUT FOFANA
+            ================================================= -->
+
+            <div class="admin-profile-about">
+
+                <div class="admin-profile-about-header">
+
+                    <h3>
+                        ABOUT FOFANA
+                    </h3>
+
+
+                    <button
+                        type="button"
+                        id="editAboutButton"
+                        class="admin-profile-edit-button"
+                    >
+                        EDIT
+                    </button>
+
+                </div>
+
+
+                <p
+                    id="adminProfileAbout"
+                    class="admin-profile-about-text"
+                >
+                    No information has been added yet.
+                </p>
+
+
+                <!-- =================================================
+                     EDITOR
+                ================================================= -->
+
+                <div
+                    id="adminAboutEditor"
+                    class="admin-about-editor"
+                    style="display:none;"
+                >
+
+                    <textarea
+                        id="adminAboutInput"
+                        placeholder="Write something about yourself..."
+                        maxlength="2000"
+                    ></textarea>
+
+
+                    <div class="admin-about-editor-actions">
+
+                        <button
+                            type="button"
+                            id="saveAboutButton"
+                            class="admin-about-save"
+                        >
+                            SAVE
+                        </button>
+
+
+                        <button
+                            type="button"
+                            id="cancelAboutButton"
+                            class="admin-about-cancel"
+                        >
+                            CANCEL
+                        </button>
+
+
+                        <button
+                            type="button"
+                            id="deleteAboutButton"
+                            class="admin-about-delete"
+                        >
+                            DELETE
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        id="adminAboutStatus"
+                        class="admin-about-status"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+
+            <div
+                id="adminProfileError"
+                class="admin-profile-error"
+            ></div>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =================================================
+         SUPABASE
+    ================================================= -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+    <script>
+
+        const SUPABASE_URL =
+            "https://uryfgatzyesolwwmugin.supabase.co";
+
+
+        const SUPABASE_KEY =
+            "sb_publishable_QL4lxGKETA1_xMFFJ7RV5g_Wuyi_x-d";
+
+
+        const supabaseClient =
+            window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_KEY
+            );
+
+
+
+        /* =================================================
+           ELEMENTS
+        ================================================= */
+
+        const adminProfileBackButton =
+            document.getElementById(
+                "adminProfileBackButton"
+            );
+
+
+        const adminProfileAvatar =
+            document.getElementById(
+                "adminProfileAvatar"
+            );
+
+
+        const adminProfileName =
+            document.getElementById(
+                "adminProfileName"
+            );
+
+
+        const adminProfileRole =
+            document.getElementById(
+                "adminProfileRole"
+            );
+
+
+        const adminProfileAbout =
+            document.getElementById(
+                "adminProfileAbout"
+            );
+
+
+        const editAboutButton =
+            document.getElementById(
+                "editAboutButton"
+            );
+
+
+        const adminAboutEditor =
+            document.getElementById(
+                "adminAboutEditor"
+            );
+
+
+        const adminAboutInput =
+            document.getElementById(
+                "adminAboutInput"
+            );
+
+
+        const saveAboutButton =
+            document.getElementById(
+                "saveAboutButton"
+            );
+
+
+        const cancelAboutButton =
+            document.getElementById(
+                "cancelAboutButton"
+            );
+
+
+        const deleteAboutButton =
+            document.getElementById(
+                "deleteAboutButton"
+            );
+
+
+        const adminAboutStatus =
+            document.getElementById(
+                "adminAboutStatus"
+            );
+
+
+        const adminProfileError =
+            document.getElementById(
+                "adminProfileError"
+            );
+
+
+
+        /* =================================================
+           CURRENT ADMIN
+        ================================================= */
+
+        let currentAdmin = null;
+
+
+
+        /* =================================================
+           ERROR
+        ================================================= */
+
+        function showAdminProfileError(
+            message
+        ) {
+
+            adminProfileError.textContent =
+                message;
+
+            adminProfileError.style.display =
+                "block";
+
+        }
+
+
+
+        function clearAdminProfileError() {
+
+            adminProfileError.textContent =
+                "";
+
+            adminProfileError.style.display =
+                "none";
+
+        }
+
+
+
+        /* =================================================
+           STATUS
+        ================================================= */
+
+        function showAboutStatus(
+            message,
+            type = ""
+        ) {
+
+            adminAboutStatus.textContent =
+                message;
+
+            adminAboutStatus.className =
+                "admin-about-status";
+
+            if (type) {
+
+                adminAboutStatus.classList.add(
+                    type
+                );
+
+            }
+
+        }
+
+
+
+        /* =================================================
+           LOAD ADMIN PROFILE
+        ================================================= */
+
+        async function loadAdminProfile() {
+
+            clearAdminProfileError();
+
+
+            const {
+                data: {
+                    user
+                },
+                error: userError
+            } =
+                await supabaseClient.auth.getUser();
+
+
+            if (
+                userError ||
+                !user
+            ) {
+
+                window.location.href =
+                    "admin.html";
+
+                return;
+            }
+
+
+
+            /* =================================================
+               CHECK ADMIN ROLE
+            ================================================= */
+
+            const {
+                data: profile,
+                error: profileError
+            } =
+                await supabaseClient
+                    .from("client_profiles")
+                    .select(
+                        "id, full_name, role, about"
+                    )
+                    .eq(
+                        "id",
+                        user.id
+                    )
+                    .single();
+
+
+            if (
+                profileError ||
+                !profile ||
+                profile.role !== "admin"
+            ) {
+
+                window.location.href =
+                    "admin.html";
+
+                return;
+            }
+
+
+            currentAdmin =
+                profile;
+
+
+
+            /* =================================================
+               DISPLAY PROFILE
+            ================================================= */
+
+            const name =
+                profile.full_name ||
+                "FOFANA";
+
+
+            adminProfileName.textContent =
+                name.toUpperCase();
+
+
+            adminProfileRole.textContent =
+                "ADMIN";
+
+
+            adminProfileAvatar.textContent =
+                name
+                    .charAt(0)
+                    .toUpperCase();
+
+
+            displayAbout(
+                profile.about
+            );
+
+        }
+
+
+
+        /* =================================================
+           DISPLAY ABOUT
+        ================================================= */
+
+        function displayAbout(
+            about
+        ) {
+
+            if (
+                about &&
+                about.trim()
+            ) {
+
+                adminProfileAbout.textContent =
+                    about;
+
+            } else {
+
+                adminProfileAbout.textContent =
+                    "No information has been added yet.";
+
+            }
+
+        }
+
+
+
+        /* =================================================
+           OPEN EDITOR
+        ================================================= */
+
+        editAboutButton.addEventListener(
+            "click",
+            function() {
+
+                adminAboutInput.value =
+                    currentAdmin?.about || "";
+
+
+                adminAboutEditor.style.display =
+                    "block";
+
+
+                editAboutButton.style.display =
+                    "none";
+
+
+                adminAboutInput.focus();
+
+            }
+        );
+
+
+
+        /* =================================================
+           CANCEL EDIT
+        ================================================= */
+
+        cancelAboutButton.addEventListener(
+            "click",
+            function() {
+
+                adminAboutEditor.style.display =
+                    "none";
+
+
+                editAboutButton.style.display =
+                    "inline-flex";
+
+
+                showAboutStatus("");
+
+            }
+        );
+
+
+
+        /* =================================================
+           SAVE ABOUT
+        ================================================= */
+
+        saveAboutButton.addEventListener(
+            "click",
+            async function() {
+
+                const about =
+                    adminAboutInput.value.trim();
+
+
+                saveAboutButton.disabled =
+                    true;
+
+
+                clearAdminProfileError();
+
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabaseClient
+                        .from("client_profiles")
+                        .update({
+                            about:
+                                about || null
+                        })
+                        .eq(
+                            "id",
+                            currentAdmin.id
+                        )
+                        .select(
+                            "id, full_name, role, about"
+                        )
+                        .single();
+
+
+                if (error) {
+
+                    console.error(
+                        "Save About error:",
+                        error
+                    );
+
+
+                    showAboutStatus(
+                        "Could not save your About section.",
+                        "error"
+                    );
+
+
+                    saveAboutButton.disabled =
+                        false;
+
+                    return;
+                }
+
+
+                currentAdmin =
+                    data;
+
+
+                displayAbout(
+                    data.about
+                );
+
+
+                adminAboutEditor.style.display =
+                    "none";
+
+
+                editAboutButton.style.display =
+                    "inline-flex";
+
+
+                showAboutStatus(
+                    "About Fofana updated.",
+                    "success"
+                );
+
+
+                saveAboutButton.disabled =
+                    false;
+
+            }
+        );
+
+
+
+        /* =================================================
+           DELETE ABOUT
+        ================================================= */
+
+        deleteAboutButton.addEventListener(
+            "click",
+            async function() {
+
+                const confirmed =
+                    window.confirm(
+                        "Delete your About Fofana description?"
+                    );
+
+
+                if (!confirmed) {
+                    return;
+                }
+
+
+                deleteAboutButton.disabled =
+                    true;
+
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabaseClient
+                        .from("client_profiles")
+                        .update({
+                            about: null
+                        })
+                        .eq(
+                            "id",
+                            currentAdmin.id
+                        )
+                        .select(
+                            "id, full_name, role, about"
+                        )
+                        .single();
+
+
+                if (error) {
+
+                    console.error(
+                        "Delete About error:",
+                        error
+                    );
+
+
+                    showAboutStatus(
+                        "Could not delete your About section.",
+                        "error"
+                    );
+
+
+                    deleteAboutButton.disabled =
+                        false;
+
+                    return;
+                }
+
+
+                currentAdmin =
+                    data;
+
+
+                displayAbout(
+                    null
+                );
+
+
+                adminAboutInput.value =
+                    "";
+
+
+                showAboutStatus(
+                    "About Fofana deleted.",
+                    "success"
+                );
+
+
+                deleteAboutButton.disabled =
+                    false;
+
+            }
+        );
+
+
+
+        /* =================================================
+           BACK BUTTON
+        ================================================= */
+
+        adminProfileBackButton.addEventListener(
+            "click",
+            function() {
+
+                window.history.back();
+
+            }
+        );
+
+
+
+        /* =================================================
+           START
+        ================================================= */
+
+        loadAdminProfile();
+
+    </script>
+
+
+</body>
+
+</html>
