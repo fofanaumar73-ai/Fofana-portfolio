@@ -1851,12 +1851,6 @@ removeChatAttachment.addEventListener(
         }
 
 
-
-        /* =====================================================
-           LOAD MESSAGES
-        ====================================================== */
-
-
 /* =====================================================
    BUILD ATTACHMENT HTML
 ====================================================== */
@@ -1971,6 +1965,201 @@ async function buildAttachmentHtml(item) {
     `;
 }
 
+
+        /* =====================================================
+   LOAD MESSAGES
+====================================================== */
+
+async function loadMessages() {
+
+    if (!currentClientId) {
+        return;
+    }
+
+
+    clearChatError();
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("client_messages")
+            .select(`
+                id,
+                client_id,
+                sender_id,
+                sender_role,
+                message,
+                is_read,
+                created_at,
+                attachment_path,
+                attachment_name,
+                attachment_type,
+                attachment_size
+            `)
+            .eq(
+                "client_id",
+                currentClientId
+            )
+            .order(
+                "created_at",
+                {
+                    ascending: true
+                }
+            );
+
+
+    if (error) {
+
+        console.error(
+            "Chat loading error:",
+            error
+        );
+
+
+        chatMessages.innerHTML = `
+            <div class="chat-empty-state">
+
+                <div class="chat-empty-icon">
+                    !
+                </div>
+
+                <p>
+                    Could not load your messages.
+                </p>
+
+            </div>
+        `;
+
+
+        showChatError(
+            "Could not load your conversation."
+        );
+
+
+        return;
+
+    }
+
+
+    if (
+        !data ||
+        data.length === 0
+    ) {
+
+        chatMessages.innerHTML = `
+            <div class="chat-empty-state">
+
+                <div class="chat-empty-icon">
+                    💬
+                </div>
+
+                <p>
+                    No messages yet.
+                </p>
+
+                <p>
+                    Send a message to start
+                    your private conversation
+                    with Fofana.
+                </p>
+
+            </div>
+        `;
+
+
+        return;
+
+    }
+
+
+    chatMessages.innerHTML =
+        "";
+
+
+    for (const item of data) {
+
+        const message =
+            document.createElement(
+                "div"
+            );
+
+
+        message.className =
+            "chat-message " +
+            item.sender_role;
+
+
+        const isOwnMessage =
+            item.sender_id === currentUser.id;
+
+
+        const attachmentHtml =
+            await buildAttachmentHtml(
+                item
+            );
+
+
+        message.innerHTML = `
+
+            <div class="chat-message-content">
+
+                ${attachmentHtml}
+
+                ${
+                    item.message
+                        ? `
+                            <p class="chat-message-text">
+                                ${escapeHtml(
+                                    item.message
+                                )}
+                            </p>
+                        `
+                        : ""
+                }
+
+                <span class="chat-message-time">
+                    ${escapeHtml(
+                        formatChatTime(
+                            item.created_at
+                        )
+                    )}
+                </span>
+
+            </div>
+
+            ${
+                isOwnMessage
+                    ? `
+                        <button
+                            type="button"
+                            class="chat-message-menu"
+                            data-message-id="${item.id}"
+                            aria-label="Message options"
+                            title="Message options"
+                        >
+                            ⋯
+                        </button>
+                    `
+                    : ""
+            }
+
+        `;
+
+
+        chatMessages.appendChild(
+            message
+        );
+
+    }
+
+
+    scrollToLatest();
+
+}
+        
 
         /* =====================================================
    DELETE MESSAGE
