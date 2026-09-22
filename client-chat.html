@@ -2196,8 +2196,60 @@ seen_at,
     scrollToLatest();
 
 }
-        
 
+
+        /* =====================================================
+   MARK ADMIN MESSAGES AS DELIVERED
+====================================================== */
+
+async function markMessagesAsDelivered() {
+
+    if (
+        !currentClientId ||
+        !currentUser
+    ) {
+        return;
+    }
+
+
+    const {
+        error
+    } =
+        await supabaseClient
+            .from("client_messages")
+            .update({
+                delivery_status:
+                    "delivered",
+
+                delivered_at:
+                    new Date().toISOString()
+            })
+            .eq(
+                "client_id",
+                currentClientId
+            )
+            .eq(
+                "sender_role",
+                "admin"
+            )
+            .eq(
+                "delivery_status",
+                "sent"
+            );
+
+
+    if (error) {
+
+        console.error(
+            "Mark delivered error:",
+            error
+        );
+
+    }
+
+}
+
+        
         /* =====================================================
    DELETE MESSAGE
 ====================================================== */
