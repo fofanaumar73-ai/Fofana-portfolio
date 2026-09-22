@@ -6827,3 +6827,42 @@ body > .navbar:not(.project-navbar) {
     }
 
 }
+
+
+/* =====================================================
+   ADMIN CHAT — KEYBOARD + EXPANDING COMPOSER
+===================================================== */
+
+.admin-chat-page {
+    height: var(
+        --admin-chat-viewport-height,
+        100dvh
+    );
+
+    top: var(
+        --admin-chat-viewport-top,
+        0px
+    );
+}
+
+
+/* Keep the header fixed within the visible chat area */
+.admin-chat-header {
+    flex-shrink: 0;
+}
+
+
+/* Chat area must remain independently scrollable */
+.admin-chat-messages {
+    min-height: 0;
+    overflow-y: auto;
+}
+
+
+/* Expanding message box */
+.admin-chat-composer textarea {
+    min-height: 44px;
+    max-height: 140px;
+    overflow-y: auto;
+    line-height: 1.45;
+}
