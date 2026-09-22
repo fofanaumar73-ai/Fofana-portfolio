@@ -274,18 +274,27 @@
     }
 );
 
-            if (
-                profileError ||
-                !profile ||
-                profile.role !== "admin"
-            ) {
+if (
+    profileError ||
+    !profile ||
+    profile.role !== "admin"
+) {
 
-                window.location.href =
-                    "admin.html";
+    console.error(
+        "ADMIN CHECK FAILED:",
+        {
+            profile,
+            profileError,
+            userId: user.id
+        }
+    );
 
-                return;
+    alert(
+        "Admin check failed. Check the Safari console."
+    );
 
-            }
+    return;
+}
 
 
             /* =================================================
