@@ -2123,14 +2123,48 @@ seen_at,
                         : ""
                 }
 
-                <span class="chat-message-time">
-                    ${escapeHtml(
-                        formatChatTime(
-                            item.created_at
-                        )
-                    )}
-                </span>
+<div class="chat-message-meta">
 
+    <span class="chat-message-time">
+        ${escapeHtml(
+            formatChatTime(
+                item.created_at
+            )
+        )}
+    </span>
+
+    ${
+        isOwnMessage
+            ? `
+                <span
+                    class="chat-message-status ${
+                        item.delivery_status === "seen"
+                            ? "seen"
+                            : item.delivery_status === "delivered"
+                                ? "delivered"
+                                : "sent"
+                    }"
+                    title="${escapeHtml(
+                        item.delivery_status === "seen"
+                            ? "Seen"
+                            : item.delivery_status === "delivered"
+                                ? "Delivered"
+                                : "Sent"
+                    )}"
+                >
+                    ${
+                        item.delivery_status === "seen"
+                            ? "✓✓"
+                            : item.delivery_status === "delivered"
+                                ? "✓✓"
+                                : "✓"
+                    }
+                </span>
+            `
+            : ""
+    }
+
+</div>
             </div>
 
             ${
