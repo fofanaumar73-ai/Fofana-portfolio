@@ -1890,18 +1890,15 @@ async function buildAttachmentHtml(item) {
 
         return `
             <div class="chat-message-attachment">
-
                 <span class="chat-message-attachment-icon">
                     📎
                 </span>
-
                 <span class="chat-message-attachment-name">
                     ${escapeHtml(
                         item.attachment_name ||
                         "Attachment"
                     )}
                 </span>
-
             </div>
         `;
     }
@@ -1919,62 +1916,37 @@ async function buildAttachmentHtml(item) {
 
 
     const fileType =
-        (
-            item.attachment_type ||
-            ""
-        ).toLowerCase();
+        item.attachment_type ||
+        "";
 
 
-    const originalFileName =
-        (
-            item.attachment_name ||
-            ""
-        ).toLowerCase();
+    /* IMAGE */
 
-
-    /* =================================================
-       IMAGE DETECTION
-    ================================================= */
-
-    const isImage =
-        fileType.startsWith("image/") ||
-        /\.(jpg|jpeg|png|gif|webp|bmp|svg)$/i.test(
-            originalFileName
-        );
-
-
-    /* =================================================
-       IMAGE
-    ================================================= */
-
-    if (isImage) {
+    if (
+        fileType.startsWith(
+            "image/"
+        )
+    ) {
 
         return `
-            <div class="chat-message-attachment chat-image-attachment">
-
+            <div class="chat-message-attachment">
                 <a
                     href="${fileUrl}"
                     target="_blank"
                     rel="noopener noreferrer"
                 >
-
                     <img
                         src="${fileUrl}"
                         alt="${fileName}"
                         class="chat-message-image"
-                        loading="lazy"
                     >
-
                 </a>
-
             </div>
         `;
     }
 
 
-    /* =================================================
-       OTHER FILE
-    ================================================= */
+    /* OTHER FILE */
 
     return `
         <div class="chat-message-attachment">
