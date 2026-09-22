@@ -308,7 +308,7 @@ if (
                 await supabaseClient
                     .from("client_profiles")
                     .select(
-                        "id, full_name, email, role, created_at"
+                        "id, full_name, role, created_at"
                     )
                     .eq(
                         "role",
