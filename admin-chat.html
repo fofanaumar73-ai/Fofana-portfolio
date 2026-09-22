@@ -781,6 +781,25 @@
 
 
         /* =================================================
+   CLIENT PROFILE
+================================================= */
+
+adminChatName.addEventListener(
+    "click",
+    function() {
+
+        if (!clientId) {
+            return;
+        }
+
+        window.location.href =
+            `client-profile.html?id=${encodeURIComponent(clientId)}`;
+
+    }
+);
+        
+
+        /* =================================================
    KEYBOARD / VISUAL VIEWPORT
 ================================================= */
 
