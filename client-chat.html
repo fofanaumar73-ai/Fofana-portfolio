@@ -2347,127 +2347,280 @@ chatMessages.addEventListener(
         }
 
 
-
         /* =====================================================
-           SEND MESSAGE
-        ====================================================== */
+   SEND MESSAGE
+====================================================== */
 
-        async function sendMessage() {
+async function sendMessage() {
 
-            if (
-                !currentClientId ||
-                !currentUser
-            ) {
-                return;
-            }
-
-
-const message =
-    chatInput.value.trim();
+    if (
+        !currentClientId ||
+        !currentUser
+    ) {
+        return;
+    }
 
 
-if (
-    !message &&
-    !pendingAttachment
-) {
-    return;
-}
+    const message =
+        chatInput.value.trim();
 
 
-            clearChatError();
+    if (
+        !message &&
+        !pendingAttachment
+    ) {
+        return;
+    }
 
 
-            chatInput.disabled =
-                true;
+    clearChatError();
 
 
-            chatSendButton.disabled =
-                true;
+    chatInput.disabled =
+        true;
+
+    chatAttachmentButton.disabled =
+        true;
+
+    chatSendButton.disabled =
+        true;
 
 
-            chatSendButton.textContent =
-                "SENDING...";
+    chatSendButton.textContent =
+        "SENDING...";
+
+
+    let uploadedFilePath =
+        null;
+
+
+    try {
+
+        /* =================================================
+           UPLOAD ATTACHMENT
+        ================================================= */
+
+        if (pendingAttachment) {
+
+            const safeName =
+                pendingAttachment.name.replace(
+                    /[^a-zA-Z0-9._-]/g,
+                    "_"
+                );
+
+
+            uploadedFilePath =
+                `${currentUser.id}/${crypto.randomUUID()}-${safeName}`;
 
 
             const {
-                error
+                error: uploadError
             } =
                 await supabaseClient
-                    .from(
-                        "client_messages"
-                    )
-                    .insert({
-                        client_id:
-                            currentClientId,
+                    .storage
+                    .from("client-chat-files")
+                    .upload(
+                        uploadedFilePath,
+                        pendingAttachment,
+                        {
+                            cacheControl:
+                                "3600",
 
-                        sender_id:
-                            currentUser.id,
+                            upsert:
+                                false,
 
-                        sender_role:
-                            "client",
+                            contentType:
+                                pendingAttachment.type ||
+                                undefined
+                        }
+                    );
 
-                        message:
-                            message
-                    });
 
-
-            if (error) {
+            if (uploadError) {
 
                 console.error(
-                    "Message send error:",
-                    error
+                    "Attachment upload error:",
+                    uploadError
                 );
 
-
-                showChatError(
-                    "Could not send your message."
+                throw new Error(
+                    "Could not upload the attachment."
                 );
+            }
+        }
 
 
-                chatInput.disabled =
-                    false;
+        /* =================================================
+           INSERT MESSAGE
+        ================================================= */
+
+        const {
+            error
+        } =
+            await supabaseClient
+                .from(
+                    "client_messages"
+                )
+                .insert({
+
+                    client_id:
+                        currentClientId,
+
+                    sender_id:
+                        currentUser.id,
+
+                    sender_role:
+                        "client",
+
+                    message:
+                        message,
+
+                    attachment_path:
+                        uploadedFilePath,
+
+                    attachment_name:
+                        pendingAttachment
+                            ? pendingAttachment.name
+                            : null,
+
+                    attachment_type:
+                        pendingAttachment
+                            ? (
+                                pendingAttachment.type ||
+                                "application/octet-stream"
+                            )
+                            : null,
+
+                    attachment_size:
+                        pendingAttachment
+                            ? pendingAttachment.size
+                            : null
+                });
 
 
-                chatSendButton.disabled =
-                    false;
+        /* =================================================
+           DATABASE INSERT FAILED
+        ================================================= */
+
+        if (error) {
+
+            console.error(
+                "Message send error:",
+                error
+            );
 
 
-                chatSendButton.textContent =
-                    "SEND";
+            /* Remove uploaded file if DB insert failed */
 
+            if (uploadedFilePath) {
 
-                return;
-
+                await supabaseClient
+                    .storage
+                    .from("client-chat-files")
+                    .remove([
+                        uploadedFilePath
+                    ]);
             }
 
 
-            chatInput.value =
-                "";
-
-
-            chatInput.style.height =
-                "auto";
-
-
-            chatInput.disabled =
-                false;
-
-
-            chatSendButton.disabled =
-                false;
-
-
-            chatSendButton.textContent =
-                "SEND";
-
-
-            chatInput.focus();
-
-
-            await loadMessages();
-
+            throw new Error(
+                "Could not save your message."
+            );
         }
 
+
+        /* =================================================
+           CLEAR MESSAGE
+        ================================================= */
+
+        chatInput.value =
+            "";
+
+
+        chatInput.style.height =
+            "auto";
+
+
+        /* =================================================
+           CLEAR ATTACHMENT
+        ================================================= */
+
+        pendingAttachment =
+            null;
+
+
+        chatFileInput.value =
+            "";
+
+
+        chatAttachmentName.textContent =
+            "";
+
+
+        chatAttachmentSize.textContent =
+            "";
+
+
+        chatAttachmentPreview.style.display =
+            "none";
+
+
+        /* =================================================
+           RESTORE CONTROLS
+        ================================================= */
+
+        chatInput.disabled =
+            false;
+
+        chatAttachmentButton.disabled =
+            false;
+
+        chatSendButton.disabled =
+            false;
+
+
+        chatSendButton.textContent =
+            "SEND";
+
+
+        chatInput.focus();
+
+
+        /* =================================================
+           RELOAD CHAT
+        ================================================= */
+
+        await loadMessages();
+
+    } catch (error) {
+
+        console.error(
+            "Send message error:",
+            error
+        );
+
+
+        showChatError(
+            error.message ||
+            "Could not send your message."
+        );
+
+
+        chatInput.disabled =
+            false;
+
+        chatAttachmentButton.disabled =
+            false;
+
+        chatSendButton.disabled =
+            false;
+
+
+        chatSendButton.textContent =
+            "SEND";
+    }
+
+}
 
 
         /* =====================================================
