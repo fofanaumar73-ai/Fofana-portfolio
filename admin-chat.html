@@ -775,6 +775,66 @@
         );
 
 
+        /* =================================================
+   KEYBOARD / VISUAL VIEWPORT
+================================================= */
+
+function handleAdminChatVisualViewport() {
+
+    if (!window.visualViewport) {
+        return;
+    }
+
+    const viewport =
+        window.visualViewport;
+
+    document.documentElement.style.setProperty(
+        "--admin-chat-viewport-height",
+        `${viewport.height}px`
+    );
+
+    document.documentElement.style.setProperty(
+        "--admin-chat-viewport-top",
+        `${viewport.offsetTop}px`
+    );
+}
+
+
+if (window.visualViewport) {
+
+    handleAdminChatVisualViewport();
+
+    window.visualViewport.addEventListener(
+        "resize",
+        handleAdminChatVisualViewport
+    );
+
+    window.visualViewport.addEventListener(
+        "scroll",
+        handleAdminChatVisualViewport
+    );
+}
+
+
+/* =================================================
+   EXPANDING MESSAGE BOX
+================================================= */
+
+adminChatInput.addEventListener(
+    "input",
+    function () {
+
+        this.style.height = "auto";
+
+        this.style.height =
+            Math.min(
+                this.scrollHeight,
+                140
+            ) + "px";
+
+    }
+);
+
 
         /* =================================================
            START
