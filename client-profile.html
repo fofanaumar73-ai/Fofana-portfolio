@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Client Profile | FOFANA</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <main class="client-profile-page">
+
+
+        <!-- =================================================
+             HEADER
+        ================================================= -->
+
+        <header class="client-profile-header">
+
+            <button
+                type="button"
+                id="clientProfileBackButton"
+                class="client-profile-back"
+            >
+                ←
+            </button>
+
+            <h1>
+                Client Profile
+            </h1>
+
+        </header>
+
+
+
+        <!-- =================================================
+             PROFILE
+        ================================================= -->
+
+        <section class="client-profile-card">
+
+
+            <div
+                class="client-profile-avatar"
+                id="clientProfileAvatar"
+            >
+                C
+            </div>
+
+
+            <h2 id="clientProfileName">
+                Loading...
+            </h2>
+
+
+            <div
+                class="client-profile-role"
+                id="clientProfileRole"
+            >
+                CLIENT
+            </div>
+
+
+
+            <div class="client-profile-details">
+
+
+                <div class="client-profile-detail">
+
+                    <span>
+                        Full Name
+                    </span>
+
+                    <strong id="clientProfileFullName">
+                        —
+                    </strong>
+
+                </div>
+
+
+
+                <div class="client-profile-detail">
+
+                    <span>
+                        Email
+                    </span>
+
+                    <strong id="clientProfileEmail">
+                        —
+                    </strong>
+
+                </div>
+
+
+
+                <div class="client-profile-detail">
+
+                    <span>
+                        Role
+                    </span>
+
+                    <strong id="clientProfileRoleDetail">
+                        CLIENT
+                    </strong>
+
+                </div>
+
+
+
+                <div class="client-profile-detail">
+
+                    <span>
+                        Member Since
+                    </span>
+
+                    <strong id="clientProfileCreatedAt">
+                        —
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+
+            <div
+                class="client-profile-error"
+                id="clientProfileError"
+            ></div>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =================================================
+         SUPABASE
+    ================================================= -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+    <script>
+
+        const SUPABASE_URL =
+            "https://uryfgatzyesolwwmugin.supabase.co";
+
+        const SUPABASE_KEY =
+            "sb_publishable_QL4lxGKETA1_xMFFJ7RV5g_Wuyi_x-d";
+
+
+        const supabaseClient =
+            window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_KEY
+            );
+
+
+
+        /* =================================================
+           ELEMENTS
+        ================================================= */
+
+        const clientProfileBackButton =
+            document.getElementById(
+                "clientProfileBackButton"
+            );
+
+        const clientProfileAvatar =
+            document.getElementById(
+                "clientProfileAvatar"
+            );
+
+        const clientProfileName =
+            document.getElementById(
+                "clientProfileName"
+            );
+
+        const clientProfileRole =
+            document.getElementById(
+                "clientProfileRole"
+            );
+
+        const clientProfileFullName =
+            document.getElementById(
+                "clientProfileFullName"
+            );
+
+        const clientProfileEmail =
+            document.getElementById(
+                "clientProfileEmail"
+            );
+
+        const clientProfileRoleDetail =
+            document.getElementById(
+                "clientProfileRoleDetail"
+            );
+
+        const clientProfileCreatedAt =
+            document.getElementById(
+                "clientProfileCreatedAt"
+            );
+
+        const clientProfileError =
+            document.getElementById(
+                "clientProfileError"
+            );
+
+
+
+        /* =================================================
+           CLIENT ID
+        ================================================= */
+
+        const urlParams =
+            new URLSearchParams(
+                window.location.search
+            );
+
+        const clientId =
+            urlParams.get("id");
+
+
+
+        /* =================================================
+           ERROR
+        ================================================= */
+
+        function showClientProfileError(
+            message
+        ) {
+
+            clientProfileError.textContent =
+                message;
+
+            clientProfileError.style.display =
+                "block";
+
+        }
+
+
+
+        /* =================================================
+           LOAD PROFILE
+        ================================================= */
+
+        async function loadClientProfile() {
+
+
+            if (!clientId) {
+
+                showClientProfileError(
+                    "No client profile was selected."
+                );
+
+                return;
+            }
+
+
+
+            /* =================================================
+               CHECK CURRENT USER
+            ================================================= */
+
+            const {
+                data: {
+                    user
+                },
+                error: userError
+            } =
+                await supabaseClient.auth.getUser();
+
+
+            if (
+                userError ||
+                !user
+            ) {
+
+                window.location.href =
+                    "admin.html";
+
+                return;
+            }
+
+
+
+            /* =================================================
+               CHECK ADMIN
+            ================================================= */
+
+            const {
+                data: adminProfile,
+                error: adminError
+            } =
+                await supabaseClient
+                    .from("client_profiles")
+                    .select(
+                        "id, role"
+                    )
+                    .eq(
+                        "id",
+                        user.id
+                    )
+                    .single();
+
+
+            if (
+                adminError ||
+                !adminProfile ||
+                adminProfile.role !== "admin"
+            ) {
+
+                window.location.href =
+                    "admin.html";
+
+                return;
+            }
+
+
+
+            /* =================================================
+               LOAD CLIENT
+            ================================================= */
+
+            const {
+                data: client,
+                error: clientError
+            } =
+                await supabaseClient
+                    .from("client_profiles")
+                    .select(
+                        "id, full_name, role, created_at"
+                    )
+                    .eq(
+                        "id",
+                        clientId
+                    )
+                    .eq(
+                        "role",
+                        "client"
+                    )
+                    .single();
+
+
+            if (
+                clientError ||
+                !client
+            ) {
+
+                console.error(
+                    "Client profile error:",
+                    clientError
+                );
+
+                showClientProfileError(
+                    "Could not load this client profile."
+                );
+
+                return;
+            }
+
+
+
+            /* =================================================
+               LOAD EMAIL FROM AUTH
+            ================================================= */
+
+            let clientEmail =
+                "Not available";
+
+
+            /*
+                The client's email is stored in
+                Supabase Auth rather than
+                client_profiles.
+
+                An admin cannot directly retrieve
+                another user's Auth email from
+                the browser client.
+
+                So we leave this field unavailable
+                for now.
+            */
+
+
+
+            /* =================================================
+               DISPLAY PROFILE
+            ================================================= */
+
+            const name =
+                client.full_name ||
+                "Client";
+
+
+            clientProfileName.textContent =
+                name;
+
+
+            clientProfileFullName.textContent =
+                name;
+
+
+            clientProfileRole.textContent =
+                client.role.toUpperCase();
+
+
+            clientProfileRoleDetail.textContent =
+                client.role.toUpperCase();
+
+
+            clientProfileEmail.textContent =
+                clientEmail;
+
+
+            clientProfileAvatar.textContent =
+                name
+                    .charAt(0)
+                    .toUpperCase();
+
+
+            if (client.created_at) {
+
+                clientProfileCreatedAt.textContent =
+                    new Date(
+                        client.created_at
+                    ).toLocaleDateString(
+                        [],
+                        {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric"
+                        }
+                    );
+
+            }
+
+        }
+
+
+
+        /* =================================================
+           BACK
+        ================================================= */
+
+        clientProfileBackButton.addEventListener(
+            "click",
+            function() {
+
+                window.location.href =
+                    `admin-chat.html?client=${encodeURIComponent(clientId)}`;
+
+            }
+        );
+
+
+
+        /* =================================================
+           START
+        ================================================= */
+
+        loadClientProfile();
+
+    </script>
+
+
+</body>
+
+</html>
