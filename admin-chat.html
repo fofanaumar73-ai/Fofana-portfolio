@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Client Chat | FOFANA</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <main class="admin-chat-page">
+
+
+        <!-- =================================================
+             HEADER
+        ================================================= -->
+
+        <header class="admin-chat-header">
+
+            <button
+                type="button"
+                id="adminChatBackButton"
+                class="admin-chat-back"
+            >
+                ←
+            </button>
+
+
+            <div class="admin-chat-profile">
+
+                <div
+                    class="admin-chat-avatar"
+                    id="adminChatAvatar"
+                >
+                    C
+                </div>
+
+
+                <div>
+
+                    <h1 id="adminChatName">
+                        Client
+                    </h1>
+
+                    <p id="adminChatRole">
+                        CLIENT
+                    </p>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =================================================
+             CHAT AREA
+        ================================================= -->
+
+        <section
+            class="admin-chat-messages"
+            id="adminChatMessages"
+        >
+
+            <div
+                class="admin-chat-loading"
+                id="adminChatLoading"
+            >
+                Loading conversation...
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             COMPOSER
+        ================================================= -->
+
+        <form
+            class="admin-chat-composer"
+            id="adminChatForm"
+        >
+
+            <textarea
+                id="adminChatInput"
+                placeholder="Type a message..."
+                rows="1"
+                autocomplete="off"
+            ></textarea>
+
+
+            <button
+                type="submit"
+                id="adminChatSendButton"
+            >
+                SEND
+            </button>
+
+        </form>
+
+
+        <div
+            class="admin-chat-error"
+            id="adminChatError"
+        ></div>
+
+
+    </main>
+
+
+
+    <!-- =================================================
+         SUPABASE
+    ================================================= -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+    <script>
+
+        const SUPABASE_URL =
+            "https://uryfgatzyesolwwmugin.supabase.co";
+
+        const SUPABASE_KEY =
+            "sb_publishable_QL4lxGKETA1_xMFFJ7RV5g_Wuyi_x-d";
+
+
+        const supabaseClient =
+            window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_KEY
+            );
+
+
+
+        /* =================================================
+           ELEMENTS
+        ================================================= */
+
+        const adminChatMessages =
+            document.getElementById(
+                "adminChatMessages"
+            );
+
+        const adminChatForm =
+            document.getElementById(
+                "adminChatForm"
+            );
+
+        const adminChatInput =
+            document.getElementById(
+                "adminChatInput"
+            );
+
+        const adminChatSendButton =
+            document.getElementById(
+                "adminChatSendButton"
+            );
+
+        const adminChatName =
+            document.getElementById(
+                "adminChatName"
+            );
+
+        const adminChatAvatar =
+            document.getElementById(
+                "adminChatAvatar"
+            );
+
+        const adminChatError =
+            document.getElementById(
+                "adminChatError"
+            );
+
+        const adminChatBackButton =
+            document.getElementById(
+                "adminChatBackButton"
+            );
+
+
+
+        /* =================================================
+           CLIENT ID FROM URL
+        ================================================= */
+
+        const urlParams =
+            new URLSearchParams(
+                window.location.search
+            );
+
+        const clientId =
+            urlParams.get("client");
+
+
+
+        let currentUser = null;
+
+
+
+        /* =================================================
+           HELPERS
+        ================================================= */
+
+        function escapeHtml(value) {
+
+            const div =
+                document.createElement("div");
+
+            div.textContent =
+                value || "";
+
+            return div.innerHTML;
+        }
+
+
+
+        function formatChatTime(timestamp) {
+
+            return new Date(
+                timestamp
+            ).toLocaleTimeString(
+                [],
+                {
+                    hour: "numeric",
+                    minute: "2-digit"
+                }
+            );
+
+        }
+
+
+
+        function showAdminChatError(message) {
+
+            adminChatError.textContent =
+                message;
+
+            adminChatError.style.display =
+                "block";
+
+        }
+
+
+
+        function clearAdminChatError() {
+
+            adminChatError.textContent =
+                "";
+
+            adminChatError.style.display =
+                "none";
+
+        }
+
+
+
+        /* =================================================
+           LOAD CHAT
+        ================================================= */
+
+        async function initializeAdminChat() {
+
+            clearAdminChatError();
+
+
+            if (!clientId) {
+
+                showAdminChatError(
+                    "No client was selected."
+                );
+
+                return;
+            }
+
+
+            const {
+                data: {
+                    user
+                },
+                error: userError
+            } =
+                await supabaseClient.auth.getUser();
+
+
+            if (
+                userError ||
+                !user
+            ) {
+
+                window.location.href =
+                    "admin.html";
+
+                return;
+            }
+
+
+            currentUser =
+                user;
+
+
+
+            /* =================================================
+               CHECK ADMIN
+            ================================================= */
+
+            const {
+                data: profile,
+                error: profileError
+            } =
+                await supabaseClient
+                    .from("client_profiles")
+                    .select(
+                        "id, full_name, role"
+                    )
+                    .eq(
+                        "id",
+                        user.id
+                    )
+                    .single();
+
+
+            if (
+                profileError ||
+                !profile ||
+                profile.role !== "admin"
+            ) {
+
+                window.location.href =
+                    "admin.html";
+
+                return;
+            }
+
+
+
+            /* =================================================
+               LOAD CLIENT
+            ================================================= */
+
+            const {
+                data: client,
+                error: clientError
+            } =
+                await supabaseClient
+                    .from("client_profiles")
+                    .select(
+                        "id, full_name, role"
+                    )
+                    .eq(
+                        "id",
+                        clientId
+                    )
+                    .eq(
+                        "role",
+                        "client"
+                    )
+                    .single();
+
+
+            if (
+                clientError ||
+                !client
+            ) {
+
+                showAdminChatError(
+                    "Could not load this client."
+                );
+
+                return;
+            }
+
+
+
+            /* =================================================
+               HEADER
+            ================================================= */
+
+            const clientName =
+                client.full_name ||
+                "Client";
+
+
+            adminChatName.textContent =
+                clientName;
+
+
+            adminChatAvatar.textContent =
+                clientName
+                    .charAt(0)
+                    .toUpperCase();
+
+
+
+            /* =================================================
+               LOAD MESSAGES
+            ================================================= */
+
+            await loadAdminMessages();
+
+
+
+            /* =================================================
+               MARK CLIENT MESSAGES AS SEEN
+            ================================================= */
+
+            await markClientMessagesAsSeen();
+
+        }
+
+
+
+        /* =================================================
+           LOAD MESSAGES
+        ================================================= */
+
+        async function loadAdminMessages() {
+
+            adminChatLoading();
+
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient
+                    .from("client_messages")
+                    .select(
+                        "id, sender_id, sender_role, message, is_read, delivery_status, delivered_at, seen_at, created_at"
+                    )
+                    .eq(
+                        "client_id",
+                        clientId
+                    )
+                    .order(
+                        "created_at",
+                        {
+                            ascending: true
+                        }
+                    );
+
+
+            if (error) {
+
+                console.error(
+                    "Admin chat load error:",
+                    error
+                );
+
+                showAdminChatError(
+                    "Could not load messages."
+                );
+
+                return;
+            }
+
+
+            adminChatMessages.innerHTML =
+                "";
+
+
+            if (
+                !data ||
+                data.length === 0
+            ) {
+
+                const empty =
+                    document.createElement(
+                        "div"
+                    );
+
+                empty.className =
+                    "admin-chat-empty";
+
+                empty.textContent =
+                    "No messages yet.";
+
+                adminChatMessages.appendChild(
+                    empty
+                );
+
+                return;
+            }
+
+
+
+            data.forEach(
+                function(item) {
+
+                    const isAdmin =
+                        item.sender_role ===
+                        "admin";
+
+
+                    const message =
+                        document.createElement(
+                            "div"
+                        );
+
+                    message.className =
+                        `admin-chat-message ${
+                            isAdmin
+                                ? "admin"
+                                : "client"
+                        }`;
+
+
+                    let statusHtml = "";
+
+
+                    if (isAdmin) {
+
+                        const status =
+                            item.delivery_status ||
+                            "sent";
+
+
+                        statusHtml =
+                            `<span class="admin-chat-status ${status}">
+                                ${
+                                    status === "seen"
+                                        ? "✓✓"
+                                        : status === "delivered"
+                                            ? "✓✓"
+                                            : "✓"
+                                }
+                            </span>`;
+
+                    }
+
+
+                    message.innerHTML = `
+
+                        <div class="admin-chat-bubble">
+
+                            ${
+                                item.message
+                                    ? `<div class="admin-chat-text">
+                                        ${escapeHtml(item.message)}
+                                       </div>`
+                                    : ""
+                            }
+
+                            <div class="admin-chat-meta">
+
+                                <span>
+                                    ${formatChatTime(
+                                        item.created_at
+                                    )}
+                                </span>
+
+                                ${statusHtml}
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+
+                    adminChatMessages.appendChild(
+                        message
+                    );
+
+                }
+            );
+
+
+            scrollAdminChatToBottom();
+
+        }
+
+
+
+        /* =================================================
+           LOADING STATE
+        ================================================= */
+
+        function adminChatLoading() {
+
+            adminChatMessages.innerHTML = `
+
+                <div class="admin-chat-loading">
+                    Loading conversation...
+                </div>
+
+            `;
+
+        }
+
+
+
+        /* =================================================
+           SCROLL
+        ================================================= */
+
+        function scrollAdminChatToBottom() {
+
+            adminChatMessages.scrollTop =
+                adminChatMessages.scrollHeight;
+
+        }
+
+
+
+        /* =================================================
+           MARK CLIENT MESSAGES AS SEEN
+        ================================================= */
+
+        async function markClientMessagesAsSeen() {
+
+            const {
+                error
+            } =
+                await supabaseClient
+                    .from("client_messages")
+                    .update({
+
+                        delivery_status:
+                            "seen",
+
+                        seen_at:
+                            new Date().toISOString(),
+
+                        is_read:
+                            true
+
+                    })
+                    .eq(
+                        "client_id",
+                        clientId
+                    )
+                    .eq(
+                        "sender_role",
+                        "client"
+                    )
+                    .neq(
+                        "delivery_status",
+                        "seen"
+                    );
+
+
+            if (error) {
+
+                console.error(
+                    "Mark client messages seen error:",
+                    error
+                );
+
+            }
+
+        }
+
+
+
+        /* =================================================
+           SEND ADMIN MESSAGE
+        ================================================= */
+
+        adminChatForm.addEventListener(
+            "submit",
+            async function(event) {
+
+                event.preventDefault();
+
+
+                clearAdminChatError();
+
+
+                const message =
+                    adminChatInput.value.trim();
+
+
+                if (!message) {
+
+                    return;
+                }
+
+
+                adminChatSendButton.disabled =
+                    true;
+
+
+                adminChatInput.disabled =
+                    true;
+
+
+                const {
+                    error
+                } =
+                    await supabaseClient
+                        .from("client_messages")
+                        .insert({
+
+                            client_id:
+                                clientId,
+
+                            sender_id:
+                                currentUser.id,
+
+                            sender_role:
+                                "admin",
+
+                            message:
+                                message,
+
+                            delivery_status:
+                                "sent"
+
+                        });
+
+
+                if (error) {
+
+                    console.error(
+                        "Admin send message error:",
+                        error
+                    );
+
+                    showAdminChatError(
+                        "Could not send message."
+                    );
+
+                } else {
+
+                    adminChatInput.value =
+                        "";
+
+                    await loadAdminMessages();
+
+                }
+
+
+                adminChatInput.disabled =
+                    false;
+
+                adminChatSendButton.disabled =
+                    false;
+
+                adminChatInput.focus();
+
+            }
+        );
+
+
+
+        /* =================================================
+           BACK BUTTON
+        ================================================= */
+
+        adminChatBackButton.addEventListener(
+            "click",
+            function() {
+
+                window.location.href =
+                    "client-messages.html";
+
+            }
+        );
+
+
+
+        /* =================================================
+           START
+        ================================================= */
+
+        initializeAdminChat();
+
+    </script>
+
+
+</body>
+
+</html>
