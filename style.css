@@ -7055,3 +7055,150 @@ body > .navbar:not(.project-navbar) {
     }
 
 }
+
+
+/* =====================================================
+   ADMIN PROFILE — ABOUT EDITOR
+===================================================== */
+
+.admin-profile-about-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+
+.admin-profile-about-header h3 {
+    margin: 0;
+}
+
+
+.admin-profile-edit-button {
+    border: 1px solid #444444;
+    border-radius: 8px;
+    padding: 7px 12px;
+    background: #1a1a1a;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+
+.admin-profile-edit-button:hover {
+    background: #242424;
+}
+
+
+.admin-about-editor {
+    margin-top: 18px;
+}
+
+
+.admin-about-editor textarea {
+    width: 100%;
+    min-height: 150px;
+    max-height: 400px;
+    box-sizing: border-box;
+    resize: vertical;
+    padding: 14px;
+    border: 1px solid #333333;
+    border-radius: 12px;
+    outline: none;
+    background: #050505;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+
+.admin-about-editor textarea:focus {
+    border-color: #777777;
+}
+
+
+.admin-about-editor textarea::placeholder {
+    color: #666666;
+}
+
+
+.admin-about-editor-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin-top: 12px;
+}
+
+
+.admin-about-editor-actions button {
+    border: none;
+    border-radius: 8px;
+    padding: 9px 14px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+
+.admin-about-save {
+    background: #ffffff;
+    color: #000000;
+}
+
+
+.admin-about-cancel {
+    background: #242424;
+    color: #ffffff;
+}
+
+
+.admin-about-delete {
+    background: #2a0d0d;
+    color: #ff8080;
+}
+
+
+.admin-about-editor-actions button:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+
+.admin-about-status {
+    min-height: 18px;
+    margin-top: 10px;
+    font-size: 12px;
+    color: #888888;
+}
+
+
+.admin-about-status.success {
+    color: #7ee787;
+}
+
+
+.admin-about-status.error {
+    color: #ff8080;
+}
+
+
+@media (max-width: 600px) {
+
+    .admin-profile-about-header {
+        align-items: center;
+    }
+
+
+    .admin-about-editor-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+
+    .admin-about-delete {
+        grid-column: 1 / -1;
+    }
+
+}
