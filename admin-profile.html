@@ -383,45 +383,56 @@
 
                 return;
             }
+    
+
+/* =================================================
+   LOAD FOFANA'S ADMIN PROFILE
+================================================= */
+
+const ADMIN_UID =
+    "8b78dc4b-9483-488e-9eb6-22cc39fff83b";
 
 
-
-            /* =================================================
-               CHECK ADMIN ROLE
-            ================================================= */
-
-            const {
-                data: profile,
-                error: profileError
-            } =
-                await supabaseClient
-                    .from("client_profiles")
-                    .select(
-                        "id, full_name, role, about"
-                    )
-                    .eq(
-                        "id",
-                        user.id
-                    )
-                    .single();
-
-
-            if (
-                profileError ||
-                !profile ||
-                profile.role !== "admin"
-            ) {
-
-                window.location.href =
-                    "admin.html";
-
-                return;
-            }
+const {
+    data: profile,
+    error: profileError
+} =
+    await supabaseClient
+        .from("client_profiles")
+        .select(
+            "id, full_name, role, about"
+        )
+        .eq(
+            "id",
+            ADMIN_UID
+        )
+        .eq(
+            "role",
+            "admin"
+        )
+        .single();
 
 
-            currentAdmin =
-                profile;
+if (
+    profileError ||
+    !profile
+) {
 
+    console.error(
+        "FOFANA PROFILE ERROR:",
+        profileError
+    );
+
+    showAdminProfileError(
+        "Could not load FOFANA's profile."
+    );
+
+    return;
+}
+
+
+currentAdmin =
+    profile;
 
 
             /* =================================================
