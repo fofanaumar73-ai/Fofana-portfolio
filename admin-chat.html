@@ -1029,6 +1029,34 @@ async function deleteAdminMessage(messageId) {
     await loadAdminMessages();
 
 }
+
+
+        /* =================================================
+   ADMIN MESSAGE MENU
+================================================= */
+
+adminChatMessages.addEventListener(
+    "click",
+    function (event) {
+
+        const menuButton =
+            event.target.closest(
+                ".admin-chat-message-menu"
+            );
+
+        if (!menuButton) {
+            return;
+        }
+
+        const messageId =
+            menuButton.dataset.messageId;
+
+        deleteAdminMessage(
+            messageId
+        );
+
+    }
+);
         
 
         /* =================================================
