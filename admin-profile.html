@@ -861,6 +861,163 @@ if (isAdminViewer) {
         );
 
 
+        /* =================================================
+   PROFILE THEME
+================================================= */
+
+const profileThemeOptions =
+    document.querySelectorAll(
+        ".profile-theme-option"
+    );
+
+const profileThemeStatus =
+    document.getElementById(
+        "profileThemeStatus"
+    );
+
+const PROFILE_THEMES = {
+    black: "#000000",
+    blue: "#123a70",
+    grey: "#555555",
+    milk: "#f4f1e8",
+    "black-purple": "#1b0b2e",
+    "black-green": "#082b1c"
+};
+
+
+/* =================================================
+   APPLY PROFILE THEME
+================================================= */
+
+function applyProfileTheme(theme) {
+
+    const selectedTheme =
+        PROFILE_THEMES[theme]
+            ? theme
+            : "black";
+
+    const backgroundColor =
+        PROFILE_THEMES[selectedTheme];
+
+    document.body.style.background =
+        backgroundColor;
+
+    document.documentElement.style.setProperty(
+        "--profile-theme-background",
+        backgroundColor
+    );
+
+    profileThemeOptions.forEach(
+        function (button) {
+
+            button.classList.toggle(
+                "active",
+                button.dataset.theme ===
+                    selectedTheme
+            );
+
+        }
+    );
+}
+
+
+/* =================================================
+   SAVE PROFILE THEME
+================================================= */
+
+async function saveProfileTheme(theme) {
+
+    if (!currentAdmin) {
+        return;
+    }
+
+    profileThemeStatus.textContent =
+        "Saving...";
+
+    profileThemeStatus.className =
+        "profile-theme-status";
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("client_profiles")
+            .update({
+                profile_theme: theme
+            })
+            .eq(
+                "id",
+                currentAdmin.id
+            )
+            .select(
+                "id, full_name, role, about, profile_theme"
+            )
+            .single();
+
+    if (error) {
+
+        console.error(
+            "Save profile theme error:",
+            error
+        );
+
+        profileThemeStatus.textContent =
+            "Could not save theme.";
+
+        profileThemeStatus.className =
+            "profile-theme-status error";
+
+        return;
+    }
+
+    currentAdmin = data;
+
+    applyProfileTheme(
+        data.profile_theme
+    );
+
+    profileThemeStatus.textContent =
+        "Theme saved.";
+
+    profileThemeStatus.className =
+        "profile-theme-status success";
+
+    setTimeout(
+        function () {
+
+            profileThemeStatus.textContent =
+                "";
+
+        },
+        1800
+    );
+}
+
+
+/* =================================================
+   THEME BUTTONS
+================================================= */
+
+profileThemeOptions.forEach(
+    function (button) {
+
+        button.addEventListener(
+            "click",
+            function () {
+
+                const theme =
+                    button.dataset.theme;
+
+                applyProfileTheme(theme);
+
+                saveProfileTheme(theme);
+
+            }
+        );
+
+    }
+);
 
         /* =================================================
            START
