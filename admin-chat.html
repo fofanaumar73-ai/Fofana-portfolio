@@ -308,6 +308,90 @@ let selectedAdminAttachment = null;
 
 
         /* =================================================
+   ADMIN CHAT ATTACHMENT DISPLAY
+================================================= */
+
+async function buildAdminAttachmentHtml(item) {
+
+    if (!item.attachment_path) {
+        return "";
+    }
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .storage
+            .from("client-chat-files")
+            .createSignedUrl(
+                item.attachment_path,
+                60 * 60
+            );
+
+    if (error || !data?.signedUrl) {
+
+        console.error(
+            "Admin attachment URL error:",
+            error
+        );
+
+        return `
+            <div class="admin-chat-attachment-error">
+                Attachment unavailable
+            </div>
+        `;
+    }
+
+    const url =
+        data.signedUrl;
+
+    const fileName =
+        escapeHtml(
+            item.attachment_name ||
+            "Attachment"
+        );
+
+    const fileType =
+        item.attachment_type || "";
+
+    if (
+        fileType.startsWith("image/")
+    ) {
+
+        return `
+            <div class="admin-chat-attachment-preview">
+                <a
+                    href="${url}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <img
+                        src="${url}"
+                        alt="${fileName}"
+                        class="admin-chat-attachment-image"
+                    >
+                </a>
+            </div>
+        `;
+
+    }
+
+    return `
+        <a
+            href="${url}"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="admin-chat-file"
+        >
+            📎
+            <span>${fileName}</span>
+        </a>
+    `;
+}
+        
+
+        /* =================================================
    ADMIN CHAT ATTACHMENT PICKER
 ================================================= */
 
