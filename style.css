@@ -7421,3 +7421,130 @@ body > .navbar:not(.project-navbar) {
         flex: 1;
     }
 }
+
+
+/* =========================================================
+   PROFILE THEME SELECTOR
+========================================================= */
+
+.admin-profile-theme-section {
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid #242424;
+}
+
+.admin-profile-theme-section h3 {
+    margin: 0;
+    color: #999;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
+
+.admin-profile-theme-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 18px;
+}
+
+.profile-theme-option {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 10px;
+    border: 1px solid #292929;
+    border-radius: 12px;
+    background: #080808;
+    color: #fff;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    transition: 0.2s ease;
+}
+
+.profile-theme-option:hover {
+    border-color: #666;
+    transform: translateY(-1px);
+}
+
+.profile-theme-option.active {
+    border-color: #fff;
+    box-shadow: 0 0 0 1px #fff;
+}
+
+.theme-preview {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    border: 1px solid #444;
+}
+
+/* Theme previews */
+
+.theme-black {
+    background: #000;
+}
+
+.theme-blue {
+    background: #123a70;
+}
+
+.theme-grey {
+    background: #555;
+}
+
+.theme-milk {
+    background: #f4f1e8;
+}
+
+.theme-black-purple {
+    background: linear-gradient(
+        135deg,
+        #000 0%,
+        #000 55%,
+        #32145f 100%
+    );
+}
+
+.theme-black-green {
+    background: linear-gradient(
+        135deg,
+        #000 0%,
+        #000 55%,
+        #124d32 100%
+    );
+}
+
+.profile-theme-status {
+    min-height: 20px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: #888;
+}
+
+.profile-theme-status.success {
+    color: #7dff9b;
+}
+
+.profile-theme-status.error {
+    color: #ff5c5c;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .admin-profile-theme-options {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .profile-theme-option {
+        padding: 9px;
+    }
+}
