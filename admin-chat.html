@@ -878,6 +878,72 @@ if (!message && !selectedAdminAttachment) {
                     true;
 
 
+                let attachmentPath = null;
+let attachmentName = null;
+let attachmentType = null;
+let attachmentSize = null;
+
+if (selectedAdminAttachment) {
+
+    const file =
+        selectedAdminAttachment;
+
+    const safeName =
+        file.name
+            .replace(
+                /[^a-zA-Z0-9._-]/g,
+                "_"
+            );
+
+    attachmentPath =
+        `${currentUser.id}/${crypto.randomUUID()}-${safeName}`;
+
+    attachmentName =
+        file.name;
+
+    attachmentType =
+        file.type || "application/octet-stream";
+
+    attachmentSize =
+        file.size;
+
+    const {
+        error: uploadError
+    } =
+        await supabaseClient
+            .storage
+            .from("client-chat-files")
+            .upload(
+                attachmentPath,
+                file,
+                {
+                    cacheControl: "3600",
+                    upsert: false
+                }
+            );
+
+    if (uploadError) {
+
+        console.error(
+            "Admin attachment upload error:",
+            uploadError
+        );
+
+        showAdminChatError(
+            "Could not upload attachment."
+        );
+
+        adminChatInput.disabled =
+            false;
+
+        adminChatSendButton.disabled =
+            false;
+
+        return;
+    }
+}
+                
+
                 const {
                     error
                 } =
