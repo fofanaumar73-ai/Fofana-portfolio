@@ -9422,3 +9422,58 @@ body > .navbar:not(.project-navbar) {
 .theme-green {
     background: #082b1c;
 }
+
+
+/* =========================================================
+   CLIENT PROFILE THEMES
+========================================================= */
+
+.client-my-profile-page {
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
+}
+
+
+/* THEME BUTTON ACTIVE STATE */
+
+.client-my-profile-theme.active {
+    border-color: #3b82f6;
+    box-shadow:
+        0 0 0 2px rgba(59, 130, 246, 0.25);
+}
+
+
+/* =========================================================
+   THEME PREVIEWS
+========================================================= */
+
+.theme-preview {
+    display: block;
+    width: 100%;
+    height: 65px;
+}
+
+.theme-black {
+    background: #000000;
+}
+
+.theme-blue {
+    background: #123a70;
+}
+
+.theme-grey {
+    background: #555555;
+}
+
+.theme-milk {
+    background: #f4f1e8;
+}
+
+.theme-purple {
+    background: #1b0b2e;
+}
+
+.theme-green {
+    background: #082b1c;
+}
