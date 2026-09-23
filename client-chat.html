@@ -2907,6 +2907,41 @@ function subscribeToClientChatRealtime() {
                         return;
                     }
 
+                    const item = payload.new;
+
+const message =
+    document.createElement("div");
+
+message.className =
+    "chat-message " +
+    item.sender_role;
+
+message.innerHTML = `
+    <div class="chat-message-content">
+
+        <p class="chat-message-text">
+            ${escapeHtml(
+                item.message || ""
+            )}
+        </p>
+
+        <span class="chat-message-time">
+            ${escapeHtml(
+                formatChatTime(
+                    item.created_at
+                )
+            )}
+        </span>
+
+    </div>
+`;
+
+chatMessages.appendChild(
+    message
+);
+
+scrollToLatest();
+                    
                 }
             )
             .subscribe();
