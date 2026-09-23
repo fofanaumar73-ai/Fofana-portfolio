@@ -454,6 +454,102 @@ adminChatAttachmentInput.addEventListener(
 
         clearAdminChatError();
 
+        if (file.type.startsWith("image/")) {
+
+    const imageUrl =
+        URL.createObjectURL(file);
+
+    adminChatAttachmentPreview.innerHTML = `
+        <div class="admin-chat-selected-attachment">
+
+            <img
+                src="${imageUrl}"
+                alt="Selected attachment"
+                class="admin-chat-selected-image"
+            >
+
+            <button
+                type="button"
+                id="adminChatRemoveAttachment"
+                class="admin-chat-remove-attachment"
+                aria-label="Remove attachment"
+            >
+                ✕
+            </button>
+
+        </div>
+    `;
+
+    adminChatAttachmentPreview.style.display =
+        "block";
+
+    document
+        .getElementById(
+            "adminChatRemoveAttachment"
+        )
+        .addEventListener(
+            "click",
+            function () {
+
+                adminChatAttachmentInput.value =
+                    "";
+
+                selectedAdminAttachment =
+                    null;
+
+                adminChatAttachmentPreview.innerHTML =
+                    "";
+
+                adminChatAttachmentPreview.style.display =
+                    "none";
+
+            }
+        );
+
+} else {
+
+    adminChatAttachmentPreview.innerHTML = `
+        <div class="admin-chat-selected-file">
+            📎 ${escapeHtml(file.name)}
+            
+            <button
+                type="button"
+                id="adminChatRemoveAttachment"
+                class="admin-chat-remove-attachment"
+                aria-label="Remove attachment"
+            >
+                ✕
+            </button>
+        </div>
+    `;
+
+    adminChatAttachmentPreview.style.display =
+        "block";
+
+    document
+        .getElementById(
+            "adminChatRemoveAttachment"
+        )
+        .addEventListener(
+            "click",
+            function () {
+
+                adminChatAttachmentInput.value =
+                    "";
+
+                selectedAdminAttachment =
+                    null;
+
+                adminChatAttachmentPreview.innerHTML =
+                    "";
+
+                adminChatAttachmentPreview.style.display =
+                    "none";
+
+            }
+        );
+}
+        
         console.log(
             "Attachment selected:",
             file.name,
