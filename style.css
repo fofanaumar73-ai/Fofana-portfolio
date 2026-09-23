@@ -7570,3 +7570,75 @@ body > .navbar:not(.project-navbar) {
     border-radius: 12px;
     cursor: pointer;
 }
+
+
+/* =================================================
+   ADMIN CHAT SELECTED ATTACHMENT
+================================================= */
+
+.admin-chat-attachment-preview-box {
+    position: relative;
+    width: 100%;
+    max-width: 260px;
+    margin: 6px 0;
+}
+
+.admin-chat-selected-attachment {
+    position: relative;
+    width: fit-content;
+    max-width: 260px;
+}
+
+.admin-chat-selected-image {
+    display: block;
+    width: auto;
+    max-width: 260px;
+    max-height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.admin-chat-remove-attachment {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+
+    width: 28px;
+    height: 28px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: rgba(0, 0, 0, 0.75);
+    color: #fff;
+
+    font-size: 16px;
+    line-height: 28px;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.admin-chat-remove-attachment:hover {
+    background: rgba(0, 0, 0, 0.95);
+}
+
+.admin-chat-selected-file {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    max-width: 260px;
+
+    padding: 8px 38px 8px 10px;
+
+    border-radius: 10px;
+
+    background: rgba(128, 128, 128, 0.15);
+
+    position: relative;
+    word-break: break-word;
+}
