@@ -2285,19 +2285,16 @@ async function buildAttachmentHtml(item) {
         return "";
     }
 
-
     const {
         data,
         error
-    } =
-        await supabaseClient
-            .storage
-            .from("client-chat-files")
-            .createSignedUrl(
-                item.attachment_path,
-                3600
-            );
-
+    } = await supabaseClient
+        .storage
+        .from("client-chat-files")
+        .createSignedUrl(
+            item.attachment_path,
+            3600
+        );
 
     if (error || !data || !data.signedUrl) {
 
@@ -2311,6 +2308,7 @@ async function buildAttachmentHtml(item) {
                 <span class="chat-message-attachment-icon">
                     📎
                 </span>
+
                 <span class="chat-message-attachment-name">
                     ${escapeHtml(
                         item.attachment_name ||
@@ -2321,69 +2319,105 @@ async function buildAttachmentHtml(item) {
         `;
     }
 
-
     const fileUrl =
         data.signedUrl;
 
-
     const fileName =
-        escapeHtml(
-            item.attachment_name ||
-            "Attachment"
-        );
+        item.attachment_name ||
+        "Attachment";
 
+    const safeFileName =
+        escapeHtml(fileName);
 
     const fileType =
         item.attachment_type ||
         "";
 
 
-    /* IMAGE */
+    /* =====================================================
+       IMAGE
+    ====================================================== */
 
     if (
-        fileType.startsWith(
-            "image/"
-        )
+        fileType.startsWith("image/")
     ) {
 
         return `
-            <div class="chat-message-attachment">
-                <a
-                    href="${fileUrl}"
-                    target="_blank"
-                    rel="noopener noreferrer"
+            <div class="chat-message-attachment chat-image-attachment">
+
+                <img
+                    src="${fileUrl}"
+                    alt="${safeFileName}"
+                    class="chat-message-image"
                 >
-                    <img
-                        src="${fileUrl}"
-                        alt="${fileName}"
-                        class="chat-message-image"
+
+                <div class="chat-attachment-actions">
+
+                    <a
+                        href="${fileUrl}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="chat-attachment-open"
                     >
-                </a>
+                        VIEW
+                    </a>
+
+                    <button
+                        type="button"
+                        class="chat-attachment-download"
+                        data-file-url="${fileUrl}"
+                        data-file-name="${safeFileName}"
+                    >
+                        DOWNLOAD
+                    </button>
+
+                </div>
+
             </div>
         `;
     }
 
 
-    /* OTHER FILE */
+    /* =====================================================
+       OTHER FILE
+    ====================================================== */
 
     return `
         <div class="chat-message-attachment">
 
-            <a
-                href="${fileUrl}"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
+            <div class="chat-file-card">
 
                 <span class="chat-message-attachment-icon">
                     📎
                 </span>
 
                 <span class="chat-message-attachment-name">
-                    ${fileName}
+                    ${safeFileName}
                 </span>
 
-            </a>
+            </div>
+
+            <div class="chat-attachment-actions">
+
+                <a
+                    href="${fileUrl}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="chat-attachment-open"
+                >
+                    OPEN
+                </a>
+
+                <button
+                    type="button"
+                    class="chat-attachment-download"
+                    data-file-url="${fileUrl}"
+                    data-file-name="${safeFileName}"
+                >
+                    DOWNLOAD
+                </button>
+
+            </div>
 
         </div>
     `;
