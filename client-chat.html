@@ -2842,6 +2842,80 @@ seen_at,
 
 
         /* =====================================================
+   REALTIME CHAT
+====================================================== */
+
+let clientChatRealtimeChannel = null;
+
+
+function isClientChatNearBottom() {
+
+    const threshold = 100;
+
+    return (
+        chatMessages.scrollHeight -
+        chatMessages.scrollTop -
+        chatMessages.clientHeight
+    ) <= threshold;
+
+}
+
+
+function subscribeToClientChatRealtime() {
+
+    if (!currentClientId) {
+        return;
+    }
+
+    if (clientChatRealtimeChannel) {
+        supabaseClient.removeChannel(
+            clientChatRealtimeChannel
+        );
+    }
+
+    clientChatRealtimeChannel =
+        supabaseClient
+            .channel(
+                `client-chat-${currentClientId}`
+            )
+            .on(
+                "postgres_changes",
+                {
+                    event: "INSERT",
+                    schema: "public",
+                    table: "client_messages",
+                    filter:
+                        `client_id=eq.${currentClientId}`
+                },
+                async function(payload) {
+
+                    /*
+                       Our own message is already
+                       refreshed after sending.
+                    */
+                    if (
+                        currentUser &&
+                        payload.new.sender_id ===
+                        currentUser.id
+                    ) {
+                        return;
+                    }
+
+                    const wasNearBottom =
+                        isClientChatNearBottom();
+
+                    await loadMessages(
+                        wasNearBottom
+                    );
+
+                }
+            )
+            .subscribe();
+
+}
+        
+
+        /* =====================================================
    MARK ADMIN MESSAGES AS DELIVERED
 ====================================================== */
 
