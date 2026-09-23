@@ -7548,3 +7548,25 @@ body > .navbar:not(.project-navbar) {
         padding: 9px;
     }
 }
+
+
+/* =================================================
+   ADMIN CHAT ATTACHMENTS
+================================================= */
+
+.admin-chat-attachment-preview {
+    width: 100%;
+    max-width: 260px;
+    margin-top: 8px;
+}
+
+.admin-chat-attachment-image {
+    display: block;
+    width: 100%;
+    max-width: 260px;
+    max-height: 260px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 12px;
+    cursor: pointer;
+}
