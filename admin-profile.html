@@ -436,6 +436,25 @@ currentAdmin =
 
 
             /* =================================================
+   ONLY ADMIN CAN EDIT
+================================================= */
+
+const isAdminViewer =
+    user.id === ADMIN_UID;
+
+
+if (!isAdminViewer) {
+
+    editAboutButton.style.display =
+        "none";
+
+    adminAboutEditor.style.display =
+        "none";
+
+}
+            
+
+            /* =================================================
                DISPLAY PROFILE
             ================================================= */
 
