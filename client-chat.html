@@ -2907,13 +2907,6 @@ function subscribeToClientChatRealtime() {
                         return;
                     }
 
-                    const wasNearBottom =
-                        isClientChatNearBottom();
-
-                    await loadMessages(
-                        wasNearBottom
-                    );
-
                 }
             )
             .subscribe();
