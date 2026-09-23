@@ -359,6 +359,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
+
+    /* =========================================================
+   MY PROFILE BUTTON
+========================================================= */
+
+const myProfileButton =
+    document.getElementById(
+        "myProfileButton"
+    );
+
+if (myProfileButton) {
+
+    myProfileButton.addEventListener(
+        "click",
+        function () {
+
+            window.location.href =
+                "admin-profile.html";
+
+        }
+    );
+
+}
+    
 });
 </script>
 
