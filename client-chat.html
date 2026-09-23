@@ -3156,18 +3156,18 @@ chatMessages.addEventListener(
            SCROLL TO LATEST
         ====================================================== */
 
-        function scrollToLatest() {
+function scrollToLatest() {
 
-            requestAnimationFrame(
-                function () {
+    requestAnimationFrame(function () {
 
-                    chatMessages.scrollTop =
-                        chatMessages.scrollHeight;
+        chatMessages.scrollTo({
+            top: chatMessages.scrollHeight,
+            behavior: "smooth"
+        });
 
-                }
-            );
+    });
 
-        }
+}
 
 
         /* =====================================================
