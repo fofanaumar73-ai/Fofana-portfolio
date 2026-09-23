@@ -719,7 +719,9 @@ adminChatAttachmentInput.addEventListener(
            LOAD MESSAGES
         ================================================= */
 
-        async function loadAdminMessages() {
+        async function loadAdminMessages(
+    shouldScrollToBottom = true
+) {
 
             adminChatLoading();
 
@@ -889,7 +891,9 @@ ${
                 }
             
 
-            scrollAdminChatToBottom();
+           if (shouldScrollToBottom) {
+    scrollAdminChatToBottom();
+}
 
         }
 
