@@ -2929,6 +2929,133 @@ if (window.visualViewport) {
     );
 
 }
+
+
+        /* =====================================================
+   CHAT THEME
+===================================================== */
+
+const CHAT_THEMES = {
+    black: {
+        page: "#000000",
+        body: "#080808",
+        composer: "#0d0d0d"
+    },
+
+    blue: {
+        page: "#071a33",
+        body: "#0b2342",
+        composer: "#081a30"
+    },
+
+    grey: {
+        page: "#252525",
+        body: "#303030",
+        composer: "#222222"
+    },
+
+    milk: {
+        page: "#f4f1e8",
+        body: "#ebe7dc",
+        composer: "#ded9cd"
+    },
+
+    "black-purple": {
+        page: "#0b0612",
+        body: "#140a1f",
+        composer: "#0d0714"
+    },
+
+    "black-green": {
+        page: "#06100b",
+        body: "#0b1a11",
+        composer: "#07120c"
+    }
+};
+
+
+/* =====================================================
+   APPLY CHAT THEME
+===================================================== */
+
+function applyChatTheme(theme) {
+
+    const selectedTheme =
+        CHAT_THEMES[theme]
+            ? theme
+            : "black";
+
+    const colors =
+        CHAT_THEMES[selectedTheme];
+
+    const chatPage =
+        document.querySelector(".chat-page");
+
+    const chatBody =
+        document.querySelector(".chat-body");
+
+    const chatComposer =
+        document.querySelector(".chat-composer");
+
+    if (chatPage) {
+        chatPage.style.background =
+            colors.page;
+    }
+
+    if (chatBody) {
+        chatBody.style.background =
+            colors.body;
+    }
+
+    if (chatComposer) {
+        chatComposer.style.background =
+            colors.composer;
+    }
+}
+
+
+/* =====================================================
+   SAVE CHAT THEME
+===================================================== */
+
+async function saveChatTheme(theme) {
+
+    if (!currentUser) {
+        return;
+    }
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("client_profiles")
+            .update({
+                chat_theme: theme
+            })
+            .eq(
+                "id",
+                currentUser.id
+            )
+            .select(
+                "id, full_name, role, chat_theme"
+            )
+            .single();
+
+    if (error) {
+
+        console.error(
+            "Save chat theme error:",
+            error
+        );
+
+        return;
+    }
+
+    applyChatTheme(
+        data.chat_theme
+    );
+}
         
 
         /* =====================================================
