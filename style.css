@@ -7952,3 +7952,92 @@ body > .navbar:not(.project-navbar) {
     }
 
 }
+
+
+/* =========================================================
+   CLIENT FLOATING LOGO
+========================================================= */
+
+.client-floating-logo {
+    position: fixed;
+
+    width: 150px;
+    height: auto;
+
+    top: 50%;
+    left: 8%;
+
+    transform: translateY(-50%);
+
+    opacity: 0.18;
+
+    pointer-events: none;
+
+    z-index: 0;
+
+    animation: clientFloatingLogo 4s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   FLOATING ANIMATION
+========================================================= */
+
+@keyframes clientFloatingLogo {
+
+    0%,
+    100% {
+        transform: translateY(-50%) translateY(0);
+    }
+
+    50% {
+        transform: translateY(-50%) translateY(-22px);
+    }
+
+}
+
+
+/* =========================================================
+   KEEP LOGIN CARD ABOVE LOGO
+========================================================= */
+
+.client-auth-card {
+    position: relative;
+    z-index: 2;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .client-floating-logo {
+        width: 100px;
+
+        left: 50%;
+        top: 8%;
+
+        transform: translateX(-50%);
+
+        opacity: 0.12;
+
+        animation: clientFloatingLogoMobile 4s ease-in-out infinite;
+    }
+
+}
+
+
+@keyframes clientFloatingLogoMobile {
+
+    0%,
+    100% {
+        transform: translateX(-50%) translateY(0);
+    }
+
+    50% {
+        transform: translateX(-50%) translateY(-15px);
+    }
+
+}
