@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>My Profile | FOFANA</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+    <!-- =====================================================
+         CLIENT MY PROFILE
+    ====================================================== -->
+
+    <main class="client-my-profile-page">
+
+
+        <!-- =================================================
+             HEADER
+        ================================================== -->
+
+        <header class="client-my-profile-header">
+
+            <button
+                type="button"
+                id="clientMyProfileBackButton"
+                class="client-profile-back"
+            >
+                ←
+            </button>
+
+
+            <div>
+
+                <p class="section-label">
+                    ACCOUNT
+                </p>
+
+                <h1>
+                    My Profile
+                </h1>
+
+                <p>
+                    Manage your personal information
+                    and profile preferences.
+                </p>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =================================================
+             PROFILE HERO
+        ================================================== -->
+
+        <section class="client-my-profile-hero">
+
+
+            <div
+                class="client-my-profile-avatar"
+                id="clientMyProfileAvatar"
+            >
+                C
+            </div>
+
+
+            <div class="client-my-profile-identity">
+
+                <h2 id="clientMyProfileNamePreview">
+                    Loading...
+                </h2>
+
+
+                <span
+                    id="clientMyProfileRole"
+                    class="client-my-profile-role"
+                >
+                    CLIENT
+                </span>
+
+
+                <p
+                    id="clientMyProfileEmailPreview"
+                >
+                    Loading email...
+                </p>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             PERSONAL INFORMATION
+        ================================================== -->
+
+        <section class="client-my-profile-card">
+
+
+            <div class="client-my-profile-card-header">
+
+                <p class="section-label">
+                    PERSONAL INFORMATION
+                </p>
+
+                <h2>
+                    Account Details
+                </h2>
+
+                <p>
+                    Keep your profile information
+                    up to date.
+                </p>
+
+            </div>
+
+
+
+            <div class="client-my-profile-form">
+
+
+                <!-- FULL NAME -->
+
+                <div class="client-my-profile-field">
+
+                    <label
+                        for="clientMyProfileName"
+                    >
+                        FULL NAME
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="clientMyProfileName"
+                        placeholder="Your full name"
+                        maxlength="100"
+                        autocomplete="name"
+                    >
+
+                </div>
+
+
+
+                <!-- EMAIL -->
+
+                <div class="client-my-profile-field">
+
+                    <label
+                        for="clientMyProfileEmail"
+                    >
+                        EMAIL ADDRESS
+                    </label>
+
+
+                    <input
+                        type="email"
+                        id="clientMyProfileEmail"
+                        readonly
+                    >
+
+
+                    <small>
+                        Your account email cannot be changed
+                        from this page.
+                    </small>
+
+                </div>
+
+
+
+                <!-- ACCOUNT TYPE -->
+
+                <div class="client-my-profile-field">
+
+                    <label
+                        for="clientMyProfileAccountType"
+                    >
+                        ACCOUNT TYPE
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="clientMyProfileAccountType"
+                        value="CLIENT"
+                        readonly
+                    >
+
+                </div>
+
+
+
+                <!-- ACCOUNT ID -->
+
+                <div class="client-my-profile-field">
+
+                    <label
+                        for="clientMyProfileAccountId"
+                    >
+                        ACCOUNT ID
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="clientMyProfileAccountId"
+                        readonly
+                    >
+
+                </div>
+
+
+
+                <!-- ABOUT -->
+
+                <div
+                    class="client-my-profile-field client-my-profile-field-full"
+                >
+
+                    <label
+                        for="clientMyProfileAbout"
+                    >
+                        ABOUT ME
+                    </label>
+
+
+                    <textarea
+                        id="clientMyProfileAbout"
+                        rows="6"
+                        maxlength="500"
+                        placeholder="Tell Fofana a little about yourself..."
+                    ></textarea>
+
+
+                    <small>
+                        Maximum 500 characters.
+                    </small>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             PROFILE THEME
+        ================================================== -->
+
+        <section class="client-my-profile-card">
+
+
+            <div class="client-my-profile-card-header">
+
+                <p class="section-label">
+                    APPEARANCE
+                </p>
+
+                <h2>
+                    Profile Theme
+                </h2>
+
+                <p>
+                    Choose the theme you want for
+                    your profile.
+                </p>
+
+            </div>
+
+
+
+            <div class="client-my-profile-theme-grid">
+
+
+                <!-- BLACK -->
+
+                <button
+                    type="button"
+                    class="client-my-profile-theme"
+                    data-profile-theme="black"
+                >
+
+                    <span
+                        class="theme-preview theme-black"
+                    ></span>
+
+                    <span>
+                        BLACK
+                    </span>
+
+                </button>
+
+
+
+                <!-- BLUE -->
+
+                <button
+                    type="button"
+                    class="client-my-profile-theme"
+                    data-profile-theme="blue"
+                >
+
+                    <span
+                        class="theme-preview theme-blue"
+                    ></span>
+
+                    <span>
+                        BLUE
+                    </span>
+
+                </button>
+
+
+
+                <!-- GREY -->
+
+                <button
+                    type="button"
+                    class="client-my-profile-theme"
+                    data-profile-theme="grey"
+                >
+
+                    <span
+                        class="theme-preview theme-grey"
+                    ></span>
+
+                    <span>
+                        GREY
+                    </span>
+
+                </button>
+
+
+
+                <!-- MILK -->
+
+                <button
+                    type="button"
+                    class="client-my-profile-theme"
+                    data-profile-theme="milk"
+                >
+
+                    <span
+                        class="theme-preview theme-milk"
+                    ></span>
+
+                    <span>
+                        MILK
+                    </span>
+
+                </button>
+
+
+
+                <!-- PURPLE -->
+
+                <button
+                    type="button"
+                    class="client-my-profile-theme"
+                    data-profile-theme="black-purple"
+                >
+
+                    <span
+                        class="theme-preview theme-purple"
+                    ></span>
+
+                    <span>
+                        PURPLE
+                    </span>
+
+                </button>
+
+
+
+                <!-- GREEN -->
+
+                <button
+                    type="button"
+                    class="client-my-profile-theme"
+                    data-profile-theme="black-green"
+                >
+
+                    <span
+                        class="theme-preview theme-green"
+                    ></span>
+
+                    <span>
+                        GREEN
+                    </span>
+
+                </button>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             SAVE CHANGES
+        ================================================== -->
+
+        <section class="client-my-profile-save-card">
+
+
+            <div>
+
+                <p class="section-label">
+                    PROFILE SETTINGS
+                </p>
+
+                <h2>
+                    Save Your Changes
+                </h2>
+
+                <p>
+                    Your changes will be saved to
+                    your client account.
+                </p>
+
+            </div>
+
+
+            <div class="client-my-profile-save-area">
+
+                <p
+                    id="clientMyProfileStatus"
+                    class="client-my-profile-status"
+                ></p>
+
+
+                <button
+                    type="button"
+                    id="saveClientMyProfileButton"
+                    class="secondary-button"
+                >
+                    SAVE CHANGES
+                </button>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             MESSAGE
+        ================================================== -->
+
+        <p
+            id="clientMyProfileMessage"
+            class="client-my-profile-message"
+        ></p>
+
+
+    </main>
+
+
+
+    <!-- =====================================================
+         SUPABASE
+    ====================================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
+
+
+
+    <!-- =====================================================
+         PROFILE JAVASCRIPT
+    ====================================================== -->
+
+    <script>
+
+        /* =====================================================
+           SUPABASE
+        ===================================================== */
+
+        const SUPABASE_URL =
+            "https://uryfgatzyesolwwmugin.supabase.co";
+
+
+        const SUPABASE_KEY =
+            "sb_publishable_QL4lxGKETA1_xMFFJ7RV5g_Wuyi_x-d";
+
+
+        const supabaseClient =
+            window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_KEY
+            );
+
+
+
+        /* =====================================================
+           ELEMENTS
+        ===================================================== */
+
+        const backButton =
+            document.getElementById(
+                "clientMyProfileBackButton"
+            );
+
+
+        const avatar =
+            document.getElementById(
+                "clientMyProfileAvatar"
+            );
+
+
+        const namePreview =
+            document.getElementById(
+                "clientMyProfileNamePreview"
+            );
+
+
+        const rolePreview =
+            document.getElementById(
+                "clientMyProfileRole"
+            );
+
+
+        const emailPreview =
+            document.getElementById(
+                "clientMyProfileEmailPreview"
+            );
+
+
+        const nameInput =
+            document.getElementById(
+                "clientMyProfileName"
+            );
+
+
+        const emailInput =
+            document.getElementById(
+                "clientMyProfileEmail"
+            );
+
+
+        const accountTypeInput =
+            document.getElementById(
+                "clientMyProfileAccountType"
+            );
+
+
+        const accountIdInput =
+            document.getElementById(
+                "clientMyProfileAccountId"
+            );
+
+
+        const aboutInput =
+            document.getElementById(
+                "clientMyProfileAbout"
+            );
+
+
+        const saveButton =
+            document.getElementById(
+                "saveClientMyProfileButton"
+            );
+
+
+        const statusMessage =
+            document.getElementById(
+                "clientMyProfileStatus"
+            );
+
+
+        const pageMessage =
+            document.getElementById(
+                "clientMyProfileMessage"
+            );
+
+
+        const themeButtons =
+            document.querySelectorAll(
+                ".client-my-profile-theme"
+            );
+
+
+
+        /* =====================================================
+           STATE
+        ===================================================== */
+
+        let currentUser = null;
+
+        let selectedTheme = "black";
+
+
+
+        /* =====================================================
+           STATUS
+        ===================================================== */
+
+        function showStatus(
+            message,
+            isError = false
+        ) {
+
+            if (!statusMessage) {
+                return;
+            }
+
+
+            statusMessage.textContent =
+                message;
+
+
+            statusMessage.style.color =
+                isError
+                    ? "#ff6b6b"
+                    : "#78adff";
+
+        }
+
+
+
+        function showPageMessage(
+            message,
+            isError = false
+        ) {
+
+            if (!pageMessage) {
+                return;
+            }
+
+
+            pageMessage.textContent =
+                message;
+
+
+            pageMessage.style.color =
+                isError
+                    ? "#ff6b6b"
+                    : "#78adff";
+
+        }
+
+
+
+        /* =====================================================
+           AVATAR
+        ===================================================== */
+
+        function updateAvatar(
+            name
+        ) {
+
+            const cleanName =
+                String(name || "")
+                    .trim();
+
+
+            if (!cleanName) {
+
+                avatar.textContent =
+                    "C";
+
+                return;
+
+            }
+
+
+            const words =
+                cleanName
+                    .split(/\s+/)
+                    .filter(Boolean);
+
+
+            let initials = "";
+
+
+            if (words.length >= 2) {
+
+                initials =
+                    words[0].charAt(0) +
+                    words[words.length - 1].charAt(0);
+
+            } else {
+
+                initials =
+                    words[0]
+                        .substring(0, 2);
+
+            }
+
+
+            avatar.textContent =
+                initials.toUpperCase();
+
+        }
+
+
+
+        /* =====================================================
+           PREVIEW
+        ===================================================== */
+
+        function updatePreview(
+            name,
+            email,
+            role
+        ) {
+
+            namePreview.textContent =
+                name || "Client";
+
+
+            emailPreview.textContent =
+                email || "Email unavailable";
+
+
+            rolePreview.textContent =
+                String(role || "client")
+                    .toUpperCase();
+
+
+            updateAvatar(name);
+
+        }
+
+
+
+        /* =====================================================
+           THEME
+        ===================================================== */
+
+        function selectTheme(
+            theme
+        ) {
+
+            selectedTheme =
+                theme || "black";
+
+
+            themeButtons.forEach(
+                function (button) {
+
+                    button.classList.toggle(
+                        "active",
+                        button.dataset.profileTheme ===
+                            selectedTheme
+                    );
+
+                }
+            );
+
+        }
+
+
+
+        /* =====================================================
+           LOAD PROFILE
+        ===================================================== */
+
+        async function loadMyProfile() {
+
+            try {
+
+                showStatus(
+                    "Loading profile..."
+                );
+
+
+                const {
+                    data: {
+                        user
+                    },
+                    error: authError
+                } =
+                    await supabaseClient.auth.getUser();
+
+
+                if (
+                    authError ||
+                    !user
+                ) {
+
+                    window.location.href =
+                        "client-login.html";
+
+                    return;
+
+                }
+
+
+                currentUser =
+                    user;
+
+
+
+                /* =============================================
+                   LOAD CLIENT PROFILE
+                ============================================== */
+
+                const {
+                    data: profile,
+                    error: profileError
+                } =
+                    await supabaseClient
+                        .from("client_profiles")
+                        .select(
+                            "id, full_name, role, about, profile_theme"
+                        )
+                        .eq(
+                            "id",
+                            user.id
+                        )
+                        .maybeSingle();
+
+
+                if (profileError) {
+                    throw profileError;
+                }
+
+
+
+                /* =============================================
+                   SECURITY CHECK
+                ============================================== */
+
+                if (
+                    profile &&
+                    profile.role !== "client"
+                ) {
+
+                    window.location.href =
+                        "dashboard.html";
+
+                    return;
+
+                }
+
+
+
+                const fullName =
+                    profile?.full_name ||
+                    user.user_metadata?.full_name ||
+                    "Client";
+
+
+                const role =
+                    profile?.role ||
+                    "client";
+
+
+                const about =
+                    profile?.about ||
+                    "";
+
+
+                const profileTheme =
+                    profile?.profile_theme ||
+                    "black";
+
+
+
+                /* =============================================
+                   FORM
+                ============================================== */
+
+                nameInput.value =
+                    fullName;
+
+
+                emailInput.value =
+                    user.email || "";
+
+
+                accountTypeInput.value =
+                    String(role).toUpperCase();
+
+
+                accountIdInput.value =
+                    user.id;
+
+
+                aboutInput.value =
+                    about;
+
+
+
+                /* =============================================
+                   PREVIEW
+                ============================================== */
+
+                updatePreview(
+                    fullName,
+                    user.email || "",
+                    role
+                );
+
+
+                selectTheme(
+                    profileTheme
+                );
+
+
+                showStatus(
+                    "Profile loaded."
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "MY PROFILE LOAD ERROR:",
+                    error
+                );
+
+
+                showStatus(
+                    "Could not load your profile.",
+                    true
+                );
+
+
+                showPageMessage(
+                    "Something went wrong while loading your profile.",
+                    true
+                );
+
+            }
+
+        }
+
+
+
+        /* =====================================================
+           THEME EVENTS
+        ===================================================== */
+
+        themeButtons.forEach(
+            function (button) {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        selectTheme(
+                            this.dataset.profileTheme
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+
+
+        /* =====================================================
+           LIVE NAME PREVIEW
+        ===================================================== */
+
+        nameInput.addEventListener(
+            "input",
+            function () {
+
+                updatePreview(
+                    this.value.trim(),
+                    currentUser?.email || "",
+                    accountTypeInput.value || "CLIENT"
+                );
+
+            }
+        );
+
+
+
+        /* =====================================================
+           SAVE PROFILE
+        ===================================================== */
+
+        saveButton.addEventListener(
+            "click",
+            async function () {
+
+                if (!currentUser) {
+
+                    showStatus(
+                        "You are not logged in.",
+                        true
+                    );
+
+                    return;
+
+                }
+
+
+                const fullName =
+                    nameInput.value.trim();
+
+
+                const about =
+                    aboutInput.value.trim();
+
+
+
+                if (!fullName) {
+
+                    showStatus(
+                        "Please enter your full name.",
+                        true
+                    );
+
+                    nameInput.focus();
+
+                    return;
+
+                }
+
+
+                if (fullName.length > 100) {
+
+                    showStatus(
+                        "Your name is too long.",
+                        true
+                    );
+
+                    return;
+
+                }
+
+
+                if (about.length > 500) {
+
+                    showStatus(
+                        "About Me cannot exceed 500 characters.",
+                        true
+                    );
+
+                    return;
+
+                }
+
+
+
+                try {
+
+                    saveButton.disabled =
+                        true;
+
+
+                    saveButton.textContent =
+                        "SAVING...";
+
+
+                    showStatus(
+                        "Saving your changes..."
+                    );
+
+
+
+                    const {
+                        error
+                    } =
+                        await supabaseClient
+                            .from("client_profiles")
+                            .update({
+
+                                full_name:
+                                    fullName,
+
+                                about:
+                                    about,
+
+                                profile_theme:
+                                    selectedTheme
+
+                            })
+                            .eq(
+                                "id",
+                                currentUser.id
+                            );
+
+
+                    if (error) {
+                        throw error;
+                    }
+
+
+
+                    updatePreview(
+                        fullName,
+                        currentUser.email || "",
+                        accountTypeInput.value
+                    );
+
+
+                    showStatus(
+                        "Profile updated successfully."
+                    );
+
+
+                    showPageMessage(
+                        "Your profile has been saved successfully."
+                    );
+
+
+                } catch (error) {
+
+                    console.error(
+                        "MY PROFILE SAVE ERROR:",
+                        error
+                    );
+
+
+                    showStatus(
+                        "Could not save your profile.",
+                        true
+                    );
+
+
+                    showPageMessage(
+                        error.message ||
+                        "Something went wrong while saving your profile.",
+                        true
+                    );
+
+                } finally {
+
+                    saveButton.disabled =
+                        false;
+
+
+                    saveButton.textContent =
+                        "SAVE CHANGES";
+
+                }
+
+            }
+        );
+
+
+
+        /* =====================================================
+           BACK TO DASHBOARD
+        ===================================================== */
+
+        backButton.addEventListener(
+            "click",
+            function () {
+
+                window.location.href =
+                    "client-dashboard.html";
+
+            }
+        );
+
+
+
+        /* =====================================================
+           AUTH STATE
+        ===================================================== */
+
+        supabaseClient.auth.onAuthStateChange(
+            function (
+                event,
+                session
+            ) {
+
+                if (
+                    event === "SIGNED_OUT" ||
+                    !session
+                ) {
+
+                    window.location.href =
+                        "client-login.html";
+
+                }
+
+            }
+        );
+
+
+
+        /* =====================================================
+           START
+        ===================================================== */
+
+        loadMyProfile();
+
+    </script>
+
+
+</body>
+
+</html>
