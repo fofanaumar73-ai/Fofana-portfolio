@@ -944,29 +944,39 @@ if (selectedAdminAttachment) {
 }
                 
 
-                const {
-                    error
-                } =
-                    await supabaseClient
-                        .from("client_messages")
-                        .insert({
+const {
+    error
+} =
+    await supabaseClient
+        .from("client_messages")
+        .insert({
+            client_id:
+                clientId,
 
-                            client_id:
-                                clientId,
+            sender_id:
+                currentUser.id,
 
-                            sender_id:
-                                currentUser.id,
+            sender_role:
+                "admin",
 
-                            sender_role:
-                                "admin",
+            message:
+                message,
 
-                            message:
-                                message,
+            attachment_path:
+                attachmentPath,
 
-                            delivery_status:
-                                "sent"
+            attachment_name:
+                attachmentName,
 
-                        });
+            attachment_type:
+                attachmentType,
+
+            attachment_size:
+                attachmentSize,
+
+            delivery_status:
+                "sent"
+        });
 
 
                 if (error) {
