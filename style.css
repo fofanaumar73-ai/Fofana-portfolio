@@ -8039,3 +8039,519 @@ body > .navbar:not(.project-navbar) {
     }
 
 }
+
+
+/* =========================================================
+   FOFANA CLIENT PORTAL — PREMIUM DASHBOARD
+========================================================= */
+
+.client-dashboard-page {
+    min-height: 100vh;
+    background:
+        radial-gradient(
+            circle at 15% 10%,
+            rgba(35, 95, 170, 0.16),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 85% 80%,
+            rgba(0, 160, 255, 0.08),
+            transparent 28%
+        ),
+        #050505;
+
+    color: #fff;
+}
+
+
+/* =========================================================
+   DASHBOARD HEADER
+========================================================= */
+
+.client-dashboard-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 20px 5%;
+
+    box-sizing: border-box;
+
+    background: rgba(5, 5, 5, 0.82);
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+
+.client-dashboard-brand {
+    color: #fff;
+
+    text-decoration: none;
+
+    font-size: 25px;
+    font-weight: 800;
+
+    letter-spacing: 2px;
+}
+
+
+.client-dashboard-brand span {
+    color: #5dbbff;
+}
+
+
+.client-dashboard-user {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+
+.client-header-name {
+    color: rgba(255, 255, 255, 0.82);
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+.client-logout-button {
+    padding: 9px 15px;
+
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 8px;
+
+    background: rgba(255, 255, 255, 0.04);
+
+    color: #fff;
+
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.25s ease,
+        border-color 0.25s ease,
+        transform 0.25s ease;
+}
+
+
+.client-logout-button:hover {
+    background: rgba(255, 255, 255, 0.09);
+
+    border-color: rgba(255, 255, 255, 0.3);
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   MAIN DASHBOARD
+========================================================= */
+
+.client-dashboard-container {
+    width: min(1180px, 90%);
+
+    margin: 0 auto;
+
+    padding: 70px 0 100px;
+}
+
+
+/* =========================================================
+   WELCOME AREA
+========================================================= */
+
+.client-welcome-card {
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 48px;
+
+    margin-bottom: 35px;
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    border-radius: 24px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.055),
+            rgba(255, 255, 255, 0.015)
+        );
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.35);
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+
+.client-welcome-card::before {
+    content: "";
+
+    position: absolute;
+
+    width: 260px;
+    height: 260px;
+
+    top: -130px;
+    right: -80px;
+
+    border-radius: 50%;
+
+    background: rgba(40, 150, 255, 0.12);
+
+    filter: blur(35px);
+
+    pointer-events: none;
+}
+
+
+.client-welcome-card .section-label {
+    position: relative;
+
+    margin-bottom: 12px;
+
+    color: #5dbbff;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    letter-spacing: 2.5px;
+}
+
+
+.client-welcome-card h1 {
+    position: relative;
+
+    margin: 0 0 12px;
+
+    font-size: clamp(34px, 5vw, 54px);
+
+    line-height: 1.05;
+
+    letter-spacing: -2px;
+}
+
+
+.client-welcome-card h1 span {
+    color: #5dbbff;
+}
+
+
+.client-welcome-card > p:last-child {
+    position: relative;
+
+    max-width: 600px;
+
+    margin: 0;
+
+    color: rgba(255, 255, 255, 0.55);
+
+    font-size: 14px;
+
+    line-height: 1.8;
+}
+
+
+/* =========================================================
+   DASHBOARD GRID
+========================================================= */
+
+.client-dashboard-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 20px;
+}
+
+
+/* =========================================================
+   DASHBOARD CARDS
+========================================================= */
+
+.client-dashboard-card {
+    position: relative;
+
+    min-height: 255px;
+
+    padding: 30px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    overflow: hidden;
+
+    box-sizing: border-box;
+
+    border: 1px solid rgba(255, 255, 255, 0.09);
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.055),
+            rgba(255, 255, 255, 0.018)
+        );
+
+    box-shadow:
+        0 18px 50px rgba(0, 0, 0, 0.28);
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    transition:
+        transform 0.35s ease,
+        border-color 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+
+.client-dashboard-card::after {
+    content: "";
+
+    position: absolute;
+
+    width: 180px;
+    height: 180px;
+
+    right: -80px;
+    bottom: -90px;
+
+    border-radius: 50%;
+
+    background: rgba(50, 160, 255, 0.07);
+
+    filter: blur(25px);
+
+    pointer-events: none;
+}
+
+
+.client-dashboard-card:hover {
+    transform: translateY(-7px);
+
+    border-color: rgba(93, 187, 255, 0.35);
+
+    box-shadow:
+        0 25px 65px rgba(0, 0, 0, 0.42),
+        0 0 30px rgba(40, 150, 255, 0.07);
+}
+
+
+/* =========================================================
+   CARD ICON / LABEL
+========================================================= */
+
+.client-card-icon {
+    width: fit-content;
+
+    padding: 8px 12px;
+
+    margin-bottom: 25px;
+
+    border: 1px solid rgba(93, 187, 255, 0.22);
+
+    border-radius: 7px;
+
+    background: rgba(93, 187, 255, 0.06);
+
+    color: #5dbbff;
+
+    font-size: 9px;
+    font-weight: 800;
+
+    letter-spacing: 1.8px;
+}
+
+
+.client-dashboard-card h2 {
+    margin: 0 0 10px;
+
+    color: #fff;
+
+    font-size: 25px;
+
+    letter-spacing: -0.5px;
+}
+
+
+.client-dashboard-card p {
+    max-width: 390px;
+
+    margin: 0;
+
+    color: rgba(255, 255, 255, 0.48);
+
+    font-size: 13px;
+
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   CARD BUTTON
+========================================================= */
+
+.client-dashboard-card .secondary-button {
+    position: relative;
+    z-index: 2;
+
+    align-self: flex-start;
+
+    margin-top: 28px;
+
+    padding: 11px 17px;
+
+    border: 1px solid rgba(255, 255, 255, 0.14);
+
+    border-radius: 8px;
+
+    background: rgba(255, 255, 255, 0.04);
+
+    color: #fff;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    letter-spacing: 1.2px;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        background 0.25s ease,
+        border-color 0.25s ease,
+        transform 0.25s ease;
+}
+
+
+.client-dashboard-card .secondary-button:hover {
+    background: #fff;
+
+    border-color: #fff;
+
+    color: #000;
+
+    transform: translateX(3px);
+}
+
+
+/* =========================================================
+   STATUS MESSAGE
+========================================================= */
+
+.client-dashboard-message {
+    margin-top: 25px;
+
+    text-align: center;
+
+    color: rgba(255, 255, 255, 0.6);
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .client-dashboard-header {
+        padding: 17px 5%;
+    }
+
+    .client-dashboard-brand {
+        font-size: 21px;
+    }
+
+    .client-header-name {
+        display: none;
+    }
+
+    .client-dashboard-container {
+        width: 92%;
+
+        padding-top: 40px;
+    }
+
+    .client-welcome-card {
+        padding: 30px 24px;
+
+        border-radius: 20px;
+    }
+
+    .client-welcome-card h1 {
+        font-size: 36px;
+        letter-spacing: -1.5px;
+    }
+
+    .client-dashboard-grid {
+        grid-template-columns: 1fr;
+
+        gap: 15px;
+    }
+
+    .client-dashboard-card {
+        min-height: 225px;
+
+        padding: 25px;
+
+        border-radius: 19px;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL PHONES
+========================================================= */
+
+@media (max-width: 400px) {
+
+    .client-dashboard-container {
+        width: 94%;
+    }
+
+    .client-welcome-card {
+        padding: 27px 20px;
+    }
+
+    .client-welcome-card h1 {
+        font-size: 32px;
+    }
+
+    .client-dashboard-card {
+        padding: 22px;
+    }
+
+    .client-dashboard-card h2 {
+        font-size: 22px;
+    }
+
+    .client-logout-button {
+        padding: 8px 11px;
+    }
+
+}
