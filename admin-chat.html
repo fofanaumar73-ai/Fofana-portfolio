@@ -534,9 +534,9 @@ adminChatAttachmentInput.addEventListener(
             } =
                 await supabaseClient
                     .from("client_messages")
-                    .select(
-                        "id, sender_id, sender_role, message, is_read, delivery_status, delivered_at, seen_at, created_at"
-                    )
+.select(
+    "id, sender_id, sender_role, message, is_read, delivery_status, delivered_at, seen_at, created_at, attachment_path, attachment_name, attachment_type, attachment_size"
+)
                     .eq(
                         "client_id",
                         clientId
