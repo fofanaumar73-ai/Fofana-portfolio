@@ -400,18 +400,35 @@ const {
 } =
     await supabaseClient
         .from("client_profiles")
-        .select(
-            "id, full_name, role, about"
-        )
-        .eq(
-            "id",
-            ADMIN_UID
-        )
-        .eq(
-            "role",
-            "admin"
-        )
-        .single();
+        .select("id, full_name, role, about")
+        .eq("id", ADMIN_UID)
+        .maybeSingle();
+
+if (profileError) {
+    console.error(
+        "FOFANA PROFILE DATABASE ERROR:",
+        profileError
+    );
+
+    showAdminProfileError(
+        "Could not load FOFANA's profile."
+    );
+
+    return;
+}
+
+if (!profile) {
+    console.error(
+        "FOFANA PROFILE NOT FOUND:",
+        ADMIN_UID
+    );
+
+    showAdminProfileError(
+        "FOFANA's profile was not found."
+    );
+
+    return;
+}
 
 
 if (
