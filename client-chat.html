@@ -2994,6 +2994,42 @@ chatMessages.addEventListener(
         
 
         /* =====================================================
+   DOWNLOAD ATTACHMENT CLICK
+===================================================== */
+
+chatMessages.addEventListener(
+    "click",
+    function (event) {
+
+        const downloadButton =
+            event.target.closest(
+                ".chat-attachment-download"
+            );
+
+        if (!downloadButton) {
+            return;
+        }
+
+        const fileUrl =
+            downloadButton.dataset.fileUrl;
+
+        const fileName =
+            downloadButton.dataset.fileName;
+
+        if (!fileUrl) {
+            return;
+        }
+
+        downloadChatAttachment(
+            fileUrl,
+            fileName
+        );
+
+    }
+);
+
+        
+        /* =====================================================
            SCROLL TO LATEST
         ====================================================== */
 
