@@ -481,7 +481,7 @@ const {
 } =
     await supabaseClient
         .from("client_profiles")
-        .select("id, full_name, role, about")
+        .select("id, full_name, role, about, profile_theme")
         .eq("id", ADMIN_UID)
         .maybeSingle();
 
