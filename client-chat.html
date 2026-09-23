@@ -1437,6 +1437,129 @@ body {
     }
 
 }
+
+
+    /* =====================================================
+   RECEIVED ATTACHMENT STYLING
+===================================================== */
+
+.chat-image-attachment {
+    width: fit-content;
+    max-width: 260px;
+}
+
+
+.chat-message-image {
+    display: block;
+
+    width: auto;
+    max-width: 260px;
+    max-height: 260px;
+
+    margin-bottom: 7px;
+
+    border-radius: 12px;
+
+    object-fit: contain;
+
+    cursor: pointer;
+}
+
+
+/* =====================================================
+   FILE CARD
+===================================================== */
+
+.chat-file-card {
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    max-width: 260px;
+
+    padding: 9px 10px;
+
+    border-radius: 10px;
+
+    background:
+        rgba(255,255,255,0.07);
+
+    color: #ffffff;
+}
+
+
+/* =====================================================
+   ATTACHMENT ACTIONS
+===================================================== */
+
+.chat-attachment-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    margin-top: 7px;
+}
+
+
+/* =====================================================
+   VIEW / OPEN / DOWNLOAD
+===================================================== */
+
+.chat-attachment-open,
+.chat-attachment-download {
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-height: 30px;
+
+    padding: 0 10px;
+
+    border:
+        1px solid
+        rgba(255,255,255,0.12);
+
+    border-radius: 8px;
+
+    background:
+        rgba(255,255,255,0.06);
+
+    color: #ffffff;
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.6px;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.15s ease;
+}
+
+
+.chat-attachment-open:hover,
+.chat-attachment-download:hover {
+
+    background:
+        rgba(255,255,255,0.14);
+
+    transform:
+        translateY(-1px);
+}
+
+
+.chat-attachment-download {
+    font-family: inherit;
+}
     
 
     </style>
