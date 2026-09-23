@@ -895,6 +895,80 @@ ${
 
 
         /* =================================================
+   REALTIME CHAT
+================================================= */
+
+let adminChatRealtimeChannel = null;
+
+
+function isAdminChatNearBottom() {
+
+    const threshold = 100;
+
+    return (
+        adminChatMessages.scrollHeight -
+        adminChatMessages.scrollTop -
+        adminChatMessages.clientHeight
+    ) <= threshold;
+
+}
+
+
+function subscribeToAdminChatRealtime() {
+
+    if (!clientId) {
+        return;
+    }
+
+    if (adminChatRealtimeChannel) {
+        supabaseClient.removeChannel(
+            adminChatRealtimeChannel
+        );
+    }
+
+    adminChatRealtimeChannel =
+        supabaseClient
+            .channel(
+                `admin-chat-${clientId}`
+            )
+            .on(
+                "postgres_changes",
+                {
+                    event: "INSERT",
+                    schema: "public",
+                    table: "client_messages",
+                    filter:
+                        `client_id=eq.${clientId}`
+                },
+                async function(payload) {
+
+                    /*
+                       Our own sent messages are already
+                       refreshed after sending.
+                    */
+                    if (
+                        currentUser &&
+                        payload.new.sender_id ===
+                        currentUser.id
+                    ) {
+                        return;
+                    }
+
+                    const wasNearBottom =
+                        isAdminChatNearBottom();
+
+                    await loadAdminMessages(
+                        wasNearBottom
+                    );
+
+                }
+            )
+            .subscribe();
+
+}
+        
+
+        /* =================================================
    DELETE ADMIN MESSAGE
 ================================================= */
 
