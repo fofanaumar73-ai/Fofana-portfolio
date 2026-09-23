@@ -9477,3 +9477,65 @@ body > .navbar:not(.project-navbar) {
 .theme-green {
     background: #082b1c;
 }
+
+
+/* =========================================================
+   ADMIN CHAT MESSAGE MENU
+========================================================= */
+
+.admin-chat-message {
+    position: relative;
+}
+
+.admin-chat-message-menu {
+    position: absolute;
+
+    width: 24px;
+    height: 24px;
+
+    padding: 0;
+    margin: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+    color: rgba(255, 255, 255, 0.45);
+
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
+
+    cursor: pointer;
+
+    box-shadow: none;
+}
+
+/* ADMIN MESSAGE — dots underneath */
+.admin-chat-message.admin
+.admin-chat-message-menu {
+    right: 4px;
+    bottom: -25px;
+}
+
+/* CLIENT MESSAGE — just in case */
+.admin-chat-message.client
+.admin-chat-message-menu {
+    left: 4px;
+    bottom: -25px;
+}
+
+.admin-chat-message-menu:hover {
+    background: transparent;
+    color: #ffffff;
+    transform: none;
+}
+
+.admin-chat-message-menu:focus {
+    outline: none;
+    box-shadow: none;
+}
