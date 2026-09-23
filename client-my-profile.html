@@ -1211,7 +1211,7 @@
         loadMyProfile();
 
 
-        /* =========================================================
+/* =========================================================
    PROFILE THEMES
 ========================================================= */
 
@@ -1277,18 +1277,24 @@ function applyProfileTheme(theme) {
         PROFILE_THEMES[selectedTheme];
 
 
-    document.body.style.background =
+    /* PAGE */
+
+    document.body.style.backgroundColor =
         colors.background;
 
     document.body.style.color =
         colors.text;
 
 
+    /* PROFILE CARDS */
+
     document
-        .querySelectorAll(".client-my-profile-card")
+        .querySelectorAll(
+            ".client-my-profile-card"
+        )
         .forEach(function(card) {
 
-            card.style.background =
+            card.style.backgroundColor =
                 colors.surface;
 
             card.style.color =
@@ -1297,18 +1303,27 @@ function applyProfileTheme(theme) {
         });
 
 
+    /* THEME BUTTONS */
+
     document
-        .querySelectorAll(".client-my-profile-theme")
+        .querySelectorAll(
+            ".client-my-profile-theme"
+        )
         .forEach(function(button) {
 
-            button.classList.remove("active");
+            button.classList.remove(
+                "active"
+            );
+
 
             if (
                 button.dataset.profileTheme ===
                 selectedTheme
             ) {
 
-                button.classList.add("active");
+                button.classList.add(
+                    "active"
+                );
 
             }
 
@@ -1322,7 +1337,9 @@ function applyProfileTheme(theme) {
 ========================================================= */
 
 document
-    .querySelectorAll(".client-my-profile-theme")
+    .querySelectorAll(
+        ".client-my-profile-theme"
+    )
     .forEach(function(button) {
 
         button.addEventListener(
@@ -1338,11 +1355,3 @@ document
         );
 
     });
-
-        
-    </script>
-
-
-</body>
-
-</html>
