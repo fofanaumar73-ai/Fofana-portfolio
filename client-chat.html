@@ -2425,6 +2425,68 @@ async function buildAttachmentHtml(item) {
 
 
         /* =====================================================
+   DOWNLOAD ATTACHMENT
+===================================================== */
+
+async function downloadChatAttachment(
+    fileUrl,
+    fileName
+) {
+
+    try {
+
+        clearChatError();
+
+        const response =
+            await fetch(fileUrl);
+
+        if (!response.ok) {
+            throw new Error(
+                "Could not download this file."
+            );
+        }
+
+        const blob =
+            await response.blob();
+
+        const blobUrl =
+            URL.createObjectURL(blob);
+
+        const link =
+            document.createElement("a");
+
+        link.href = blobUrl;
+
+        link.download =
+            fileName || "download";
+
+        document.body.appendChild(link);
+
+        link.click();
+
+        link.remove();
+
+        setTimeout(
+            function () {
+                URL.revokeObjectURL(blobUrl);
+            },
+            1000
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Attachment download error:",
+            error
+        );
+
+        showChatError(
+            "Could not download this attachment."
+        );
+    }
+}
+
+        /* =====================================================
    LOAD MESSAGES
 ====================================================== */
 
