@@ -7955,55 +7955,72 @@ body > .navbar:not(.project-navbar) {
 
 
 /* =========================================================
-   CLIENT FLOATING LOGO
+   CLIENT AUTH LOGO
 ========================================================= */
 
-.client-floating-logo {
-    position: fixed;
+.client-auth-logo-wrapper {
+    width: 108px;
+    height: 108px;
 
-    width: 150px;
-    height: auto;
+    margin: -8px auto 24px;
 
-    top: 50%;
-    left: 8%;
+    border-radius: 50%;
 
-    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    opacity: 0.18;
+    position: relative;
+    z-index: 3;
 
-    pointer-events: none;
+    background: #050505;
 
-    z-index: 0;
+    border: 2px solid rgba(255, 255, 255, 0.7);
 
-    animation: clientFloatingLogo 4s ease-in-out infinite;
+    box-shadow:
+        0 0 0 5px rgba(255, 255, 255, 0.03),
+        0 0 25px rgba(0, 180, 255, 0.22);
+
+    animation: clientLogoFloat 4s ease-in-out infinite;
+}
+
+
+.client-auth-logo {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+
+    display: block;
 }
 
 
 /* =========================================================
-   FLOATING ANIMATION
+   LOGO FLOATING ANIMATION
 ========================================================= */
 
-@keyframes clientFloatingLogo {
+@keyframes clientLogoFloat {
 
     0%,
     100% {
-        transform: translateY(-50%) translateY(0);
+        transform: translateY(0);
     }
 
     50% {
-        transform: translateY(-50%) translateY(-22px);
+        transform: translateY(-8px);
     }
 
 }
 
 
 /* =========================================================
-   KEEP LOGIN CARD ABOVE LOGO
+   CLIENT PORTAL HEADING
 ========================================================= */
 
-.client-auth-card {
-    position: relative;
-    z-index: 2;
+.client-auth-heading {
+    text-align: left;
 }
 
 
@@ -8011,33 +8028,14 @@ body > .navbar:not(.project-navbar) {
    MOBILE
 ========================================================= */
 
-@media (max-width: 700px) {
+@media (max-width: 600px) {
 
-    .client-floating-logo {
-        width: 100px;
+    .client-auth-logo-wrapper {
+        width: 92px;
+        height: 92px;
 
-        left: 50%;
-        top: 8%;
-
-        transform: translateX(-50%);
-
-        opacity: 0.12;
-
-        animation: clientFloatingLogoMobile 4s ease-in-out infinite;
-    }
-
-}
-
-
-@keyframes clientFloatingLogoMobile {
-
-    0%,
-    100% {
-        transform: translateX(-50%) translateY(0);
-    }
-
-    50% {
-        transform: translateX(-50%) translateY(-15px);
+        margin-top: -5px;
+        margin-bottom: 22px;
     }
 
 }
