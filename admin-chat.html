@@ -863,6 +863,22 @@ ${attachmentHtml}
 
                         </div>
 
+${
+    isAdmin
+        ? `
+            <button
+                type="button"
+                class="admin-chat-message-menu"
+                data-message-id="${item.id}"
+                aria-label="Message options"
+                title="Message options"
+            >
+                ⋯
+            </button>
+        `
+        : ""
+}
+
                     `;
 
 
