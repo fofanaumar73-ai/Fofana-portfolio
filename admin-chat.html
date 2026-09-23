@@ -894,6 +894,142 @@ ${
         }
 
 
+        /* =================================================
+   DELETE ADMIN MESSAGE
+================================================= */
+
+async function deleteAdminMessage(messageId) {
+
+    if (!messageId) {
+        return;
+    }
+
+    const confirmed =
+        window.confirm(
+            "Unsend this message?"
+        );
+
+    if (!confirmed) {
+        return;
+    }
+
+    clearAdminChatError();
+
+    /* GET MESSAGE + ATTACHMENT PATH */
+
+    const {
+        data: messageData,
+        error: fetchError
+    } =
+        await supabaseClient
+            .from("client_messages")
+            .select(
+                "id, attachment_path"
+            )
+            .eq(
+                "id",
+                messageId
+            )
+            .eq(
+                "sender_id",
+                currentUser.id
+            )
+            .eq(
+                "sender_role",
+                "admin"
+            )
+            .single();
+
+    if (
+        fetchError ||
+        !messageData
+    ) {
+
+        console.error(
+            "Admin message fetch before delete error:",
+            fetchError
+        );
+
+        showAdminChatError(
+            "Could not find this message."
+        );
+
+        return;
+    }
+
+
+    /* DELETE ATTACHMENT FROM STORAGE */
+
+    if (messageData.attachment_path) {
+
+        const {
+            error: storageError
+        } =
+            await supabaseClient
+                .storage
+                .from("client-chat-files")
+                .remove([
+                    messageData.attachment_path
+                ]);
+
+        if (storageError) {
+
+            console.error(
+                "Admin attachment delete error:",
+                storageError
+            );
+
+            showAdminChatError(
+                "Could not delete the attached file."
+            );
+
+            return;
+        }
+    }
+
+
+    /* DELETE MESSAGE */
+
+    const {
+        error
+    } =
+        await supabaseClient
+            .from("client_messages")
+            .delete()
+            .eq(
+                "id",
+                messageId
+            )
+            .eq(
+                "sender_id",
+                currentUser.id
+            )
+            .eq(
+                "sender_role",
+                "admin"
+            );
+
+    if (error) {
+
+        console.error(
+            "Admin message delete error:",
+            error
+        );
+
+        showAdminChatError(
+            "Could not delete this message."
+        );
+
+        return;
+    }
+
+
+    /* REFRESH CHAT */
+
+    await loadAdminMessages();
+
+}
+        
 
         /* =================================================
            LOADING STATE
