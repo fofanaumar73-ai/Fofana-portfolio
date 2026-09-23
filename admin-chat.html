@@ -307,6 +307,62 @@ let selectedAdminAttachment = null;
         }
 
 
+        /* =================================================
+   ADMIN CHAT ATTACHMENT PICKER
+================================================= */
+
+adminChatAttachmentButton.addEventListener(
+    "click",
+    function () {
+
+        adminChatAttachmentInput.click();
+
+    }
+);
+
+
+adminChatAttachmentInput.addEventListener(
+    "change",
+    function () {
+
+        const file =
+            adminChatAttachmentInput.files[0];
+
+        if (!file) {
+            selectedAdminAttachment = null;
+            return;
+        }
+
+        /* 50MB maximum */
+        const MAX_FILE_SIZE =
+            50 * 1024 * 1024;
+
+        if (file.size > MAX_FILE_SIZE) {
+
+            showAdminChatError(
+                "File is too large. Maximum size is 50MB."
+            );
+
+            adminChatAttachmentInput.value = "";
+            selectedAdminAttachment = null;
+
+            return;
+        }
+
+        selectedAdminAttachment = file;
+
+        clearAdminChatError();
+
+        console.log(
+            "Admin attachment selected:",
+            file.name,
+            file.type,
+            file.size
+        );
+
+    }
+);
+        
 
         /* =================================================
            LOAD CHAT
