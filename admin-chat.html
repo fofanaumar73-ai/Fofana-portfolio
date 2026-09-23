@@ -391,13 +391,16 @@ async function buildAdminAttachmentHtml(item) {
 }
         
 
-        /* =================================================
+/* =================================================
    ADMIN CHAT ATTACHMENT PICKER
 ================================================= */
 
 adminChatAttachmentButton.addEventListener(
     "click",
-    function () {
+    function (event) {
+
+        event.preventDefault();
+        event.stopPropagation();
 
         adminChatAttachmentInput.click();
 
@@ -410,14 +413,15 @@ adminChatAttachmentInput.addEventListener(
     function () {
 
         const file =
-            adminChatAttachmentInput.files[0];
+            this.files && this.files.length
+                ? this.files[0]
+                : null;
 
         if (!file) {
             selectedAdminAttachment = null;
             return;
         }
 
-        /* 50MB maximum */
         const MAX_FILE_SIZE =
             50 * 1024 * 1024;
 
@@ -427,7 +431,7 @@ adminChatAttachmentInput.addEventListener(
                 "File is too large. Maximum size is 50MB."
             );
 
-            adminChatAttachmentInput.value = "";
+            this.value = "";
             selectedAdminAttachment = null;
 
             return;
@@ -438,12 +442,11 @@ adminChatAttachmentInput.addEventListener(
         clearAdminChatError();
 
         console.log(
-            "Admin attachment selected:",
+            "Attachment selected:",
             file.name,
             file.type,
             file.size
         );
-
     }
 );
         
