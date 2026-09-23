@@ -862,14 +862,12 @@ ${attachmentHtml}
                 clearAdminChatError();
 
 
-                const message =
-                    adminChatInput.value.trim();
+const message =
+    adminChatInput.value.trim();
 
-
-                if (!message) {
-
-                    return;
-                }
+if (!message && !selectedAdminAttachment) {
+    return;
+}
 
 
                 adminChatSendButton.disabled =
