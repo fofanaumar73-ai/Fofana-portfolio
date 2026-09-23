@@ -1210,6 +1210,136 @@
 
         loadMyProfile();
 
+
+        /* =========================================================
+   PROFILE THEMES
+========================================================= */
+
+const PROFILE_THEMES = {
+
+    black: {
+        background: "#000000",
+        surface: "#0d0d0d",
+        text: "#ffffff",
+        muted: "#999999"
+    },
+
+    blue: {
+        background: "#071a33",
+        surface: "#0d2748",
+        text: "#ffffff",
+        muted: "#a9bdd6"
+    },
+
+    grey: {
+        background: "#252525",
+        surface: "#333333",
+        text: "#ffffff",
+        muted: "#b5b5b5"
+    },
+
+    milk: {
+        background: "#f4f1e8",
+        surface: "#ffffff",
+        text: "#171717",
+        muted: "#666666"
+    },
+
+    "black-purple": {
+        background: "#0b0612",
+        surface: "#160d20",
+        text: "#ffffff",
+        muted: "#b9a9c8"
+    },
+
+    "black-green": {
+        background: "#06100b",
+        surface: "#0c1c13",
+        text: "#ffffff",
+        muted: "#a7c2b0"
+    }
+
+};
+
+
+/* =========================================================
+   APPLY PROFILE THEME
+========================================================= */
+
+function applyProfileTheme(theme) {
+
+    const selectedTheme =
+        PROFILE_THEMES[theme]
+            ? theme
+            : "black";
+
+    const colors =
+        PROFILE_THEMES[selectedTheme];
+
+
+    document.body.style.background =
+        colors.background;
+
+    document.body.style.color =
+        colors.text;
+
+
+    document
+        .querySelectorAll(".client-my-profile-card")
+        .forEach(function(card) {
+
+            card.style.background =
+                colors.surface;
+
+            card.style.color =
+                colors.text;
+
+        });
+
+
+    document
+        .querySelectorAll(".client-my-profile-theme")
+        .forEach(function(button) {
+
+            button.classList.remove("active");
+
+            if (
+                button.dataset.profileTheme ===
+                selectedTheme
+            ) {
+
+                button.classList.add("active");
+
+            }
+
+        });
+
+}
+
+
+/* =========================================================
+   THEME BUTTON CLICK
+========================================================= */
+
+document
+    .querySelectorAll(".client-my-profile-theme")
+    .forEach(function(button) {
+
+        button.addEventListener(
+            "click",
+            function() {
+
+                const theme =
+                    this.dataset.profileTheme;
+
+                applyProfileTheme(theme);
+
+            }
+        );
+
+    });
+
+        
     </script>
 
 
