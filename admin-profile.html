@@ -436,7 +436,7 @@ currentAdmin =
     profile;
 
 
-            /* =================================================
+/* =================================================
    ONLY ADMIN CAN EDIT
 ================================================= */
 
@@ -444,7 +444,12 @@ const isAdminViewer =
     user.id === ADMIN_UID;
 
 
-if (!isAdminViewer) {
+if (isAdminViewer) {
+
+    editAboutButton.style.display =
+        "inline-flex";
+
+} else {
 
     editAboutButton.style.display =
         "none";
