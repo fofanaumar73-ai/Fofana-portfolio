@@ -3595,6 +3595,127 @@ async function saveChatTheme(theme) {
 }
 
 
+        /* =====================================================
+   CHAT THEME SELECTOR
+====================================================== */
+
+const chatThemeButton =
+    document.getElementById(
+        "chatThemeButton"
+    );
+
+const chatThemePanel =
+    document.getElementById(
+        "chatThemePanel"
+    );
+
+const chatThemeOptions =
+    document.querySelectorAll(
+        ".chat-theme-option"
+    );
+
+
+/* =====================================================
+   OPEN / CLOSE THEME PANEL
+====================================================== */
+
+if (chatThemeButton && chatThemePanel) {
+
+    chatThemeButton.addEventListener(
+        "click",
+        function (event) {
+
+            event.stopPropagation();
+
+            const isOpen =
+                chatThemePanel.style.display === "block";
+
+            chatThemePanel.style.display =
+                isOpen
+                    ? "none"
+                    : "block";
+
+        }
+    );
+
+
+    document.addEventListener(
+        "click",
+        function (event) {
+
+            if (
+                !chatThemePanel.contains(event.target) &&
+                !chatThemeButton.contains(event.target)
+            ) {
+
+                chatThemePanel.style.display =
+                    "none";
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   SELECT CHAT THEME
+====================================================== */
+
+chatThemeOptions.forEach(
+    function (button) {
+
+        button.addEventListener(
+            "click",
+            async function () {
+
+                const theme =
+                    button.dataset.theme;
+
+                if (!theme) return;
+
+
+                /* Apply immediately */
+
+                applyChatTheme(theme);
+
+
+                /* Highlight selected theme */
+
+                chatThemeOptions.forEach(
+                    function (option) {
+
+                        option.classList.toggle(
+                            "active",
+                            option.dataset.theme === theme
+                        );
+
+                    }
+                );
+
+
+                /* Save to Supabase */
+
+                await saveChatTheme(theme);
+
+
+                /* Close panel */
+
+                if (chatThemePanel) {
+
+                    chatThemePanel.style.display =
+                        "none";
+
+                }
+
+            }
+        );
+
+    }
+);
+        
+
 /* =====================================================
    START CHAT
 ====================================================== */
