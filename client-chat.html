@@ -2613,7 +2613,9 @@ async function downloadChatAttachment(
    LOAD MESSAGES
 ====================================================== */
 
-async function loadMessages() {
+async function loadMessages(
+    shouldScrollToBottom = true
+) {
 
     if (!currentClientId) {
         return;
