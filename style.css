@@ -7202,3 +7202,222 @@ body > .navbar:not(.project-navbar) {
     }
 
 }
+
+
+/* =========================================================
+   ADMIN PROFILE
+========================================================= */
+
+.admin-profile-page {
+    min-height: 100vh;
+    background: #000;
+    color: #fff;
+    padding: 40px 20px;
+    box-sizing: border-box;
+}
+
+.admin-profile-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.admin-profile-card {
+    background: #0d0d0d;
+    border: 1px solid #242424;
+    border-radius: 20px;
+    padding: 32px;
+    box-sizing: border-box;
+}
+
+.admin-profile-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.admin-profile-avatar {
+    width: 90px;
+    height: 90px;
+    margin: 0 auto 18px;
+    border-radius: 50%;
+    background: #fff;
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 34px;
+    font-weight: 800;
+}
+
+.admin-profile-name {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 800;
+    color: #fff;
+}
+
+.admin-profile-role {
+    margin-top: 7px;
+    color: #aaa;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.admin-profile-section {
+    margin-top: 28px;
+}
+
+.admin-profile-section-title {
+    margin-bottom: 10px;
+    color: #999;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.admin-profile-about {
+    min-height: 100px;
+    padding: 18px;
+    background: #050505;
+    border: 1px solid #222;
+    border-radius: 14px;
+    color: #ddd;
+    font-size: 15px;
+    line-height: 1.6;
+    box-sizing: border-box;
+}
+
+.admin-profile-about.empty {
+    color: #777;
+    font-style: italic;
+}
+
+.admin-profile-edit-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 14px;
+    padding: 11px 22px;
+    border: 1px solid #fff;
+    border-radius: 10px;
+    background: #fff;
+    color: #000;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.admin-profile-edit-button:hover {
+    background: #ddd;
+}
+
+.admin-profile-editor {
+    margin-top: 15px;
+}
+
+.admin-profile-editor textarea {
+    width: 100%;
+    min-height: 130px;
+    padding: 15px;
+    resize: vertical;
+    box-sizing: border-box;
+    border: 1px solid #333;
+    border-radius: 12px;
+    outline: none;
+    background: #050505;
+    color: #fff;
+    font-family: inherit;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.admin-profile-editor textarea:focus {
+    border-color: #fff;
+}
+
+.admin-profile-editor-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.admin-profile-save-button,
+.admin-profile-cancel-button,
+.admin-profile-delete-button {
+    padding: 10px 18px;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.admin-profile-save-button {
+    border: 1px solid #fff;
+    background: #fff;
+    color: #000;
+}
+
+.admin-profile-cancel-button {
+    border: 1px solid #333;
+    background: #151515;
+    color: #fff;
+}
+
+.admin-profile-delete-button {
+    border: 1px solid #5a1d1d;
+    background: #1a0808;
+    color: #ff5c5c;
+}
+
+.admin-profile-error {
+    margin-top: 20px;
+    padding: 14px;
+    border: 1px solid #5a1d1d;
+    border-radius: 10px;
+    background: #150606;
+    color: #ff6b6b;
+    font-size: 14px;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .admin-profile-page {
+        padding: 20px 14px;
+    }
+
+    .admin-profile-card {
+        padding: 24px 18px;
+        border-radius: 16px;
+    }
+
+    .admin-profile-avatar {
+        width: 76px;
+        height: 76px;
+        font-size: 28px;
+    }
+
+    .admin-profile-name {
+        font-size: 24px;
+    }
+
+    .admin-profile-about {
+        font-size: 14px;
+    }
+
+    .admin-profile-editor-actions {
+        flex-wrap: wrap;
+    }
+
+    .admin-profile-save-button,
+    .admin-profile-cancel-button,
+    .admin-profile-delete-button {
+        flex: 1;
+    }
+}
