@@ -749,35 +749,145 @@
         }
 
 
-
         /* =====================================================
-           THEME
-        ===================================================== */
+   THEME
+===================================================== */
 
-        function selectTheme(
-            theme
-        ) {
+function selectTheme(
+    theme
+) {
 
-            selectedTheme =
-                theme || "black";
+    selectedTheme =
+        theme || "black";
 
 
-            themeButtons.forEach(
-                function (button) {
+    /* =================================================
+       THEME COLORS
+    ================================================= */
 
-                    button.classList.toggle(
-                        "active",
-                        button.dataset.profileTheme ===
-                            selectedTheme
-                    );
+    const themes = {
 
-                }
+        black: {
+            background: "#000000",
+            card: "#0d0d0d",
+            text: "#ffffff",
+            muted: "#999999"
+        },
+
+        blue: {
+            background: "#071a33",
+            card: "#0d2748",
+            text: "#ffffff",
+            muted: "#a9bdd6"
+        },
+
+        grey: {
+            background: "#252525",
+            card: "#333333",
+            text: "#ffffff",
+            muted: "#b5b5b5"
+        },
+
+        milk: {
+            background: "#f4f1e8",
+            card: "#ffffff",
+            text: "#171717",
+            muted: "#666666"
+        },
+
+        "black-purple": {
+            background: "#0b0612",
+            card: "#160d20",
+            text: "#ffffff",
+            muted: "#b9a9c8"
+        },
+
+        "black-green": {
+            background: "#06100b",
+            card: "#0c1c13",
+            text: "#ffffff",
+            muted: "#a7c2b0"
+        }
+
+    };
+
+
+    const colors =
+        themes[selectedTheme] ||
+        themes.black;
+
+
+    /* =================================================
+       PAGE
+    ================================================= */
+
+    document.body.style.backgroundColor =
+        colors.background;
+
+    document.body.style.color =
+        colors.text;
+
+
+    /* =================================================
+       PROFILE PAGE
+    ================================================= */
+
+    const profilePage =
+        document.querySelector(
+            ".client-my-profile-page"
+        );
+
+    if (profilePage) {
+
+        profilePage.style.backgroundColor =
+            colors.background;
+
+        profilePage.style.color =
+            colors.text;
+
+    }
+
+
+    /* =================================================
+       PROFILE CARDS
+    ================================================= */
+
+    document
+        .querySelectorAll(
+            ".client-my-profile-card"
+        )
+        .forEach(
+            function (card) {
+
+                card.style.backgroundColor =
+                    colors.card;
+
+                card.style.color =
+                    colors.text;
+
+            }
+        );
+
+
+    /* =================================================
+       ACTIVE THEME BUTTON
+    ================================================= */
+
+    themeButtons.forEach(
+        function (button) {
+
+            button.classList.toggle(
+                "active",
+                button.dataset.profileTheme ===
+                    selectedTheme
             );
 
         }
+    );
 
+}
 
-
+        
         /* =====================================================
            LOAD PROFILE
         ===================================================== */
