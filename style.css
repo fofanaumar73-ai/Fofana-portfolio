@@ -7642,3 +7642,313 @@ body > .navbar:not(.project-navbar) {
     position: relative;
     word-break: break-word;
 }
+
+
+/* =========================================================
+   CLIENT PORTAL LOGIN
+========================================================= */
+
+.client-auth-page {
+    min-height: 100vh;
+    margin: 0;
+    background: #000;
+    color: #fff;
+    font-family: inherit;
+}
+
+.client-auth-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    box-sizing: border-box;
+}
+
+.client-auth-card {
+    width: 100%;
+    max-width: 460px;
+    padding: 48px 42px;
+    background: #0b0b0b;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 18px;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.55);
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   BRAND / LOGO
+========================================================= */
+
+.client-auth-brand {
+    display: inline-block;
+    margin-bottom: 45px;
+
+    color: #fff;
+    text-decoration: none;
+
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.client-auth-brand span {
+    color: #fff;
+}
+
+
+/* =========================================================
+   HEADING
+========================================================= */
+
+.client-auth-heading {
+    margin-bottom: 35px;
+}
+
+.client-auth-heading .section-label {
+    margin: 0 0 12px;
+
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.client-auth-heading h1 {
+    margin: 0 0 12px;
+
+    font-size: 38px;
+    line-height: 1.1;
+    font-weight: 700;
+    letter-spacing: -1px;
+}
+
+.client-auth-heading > p:last-child {
+    margin: 0;
+
+    max-width: 380px;
+
+    color: rgba(255, 255, 255, 0.58);
+
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.client-auth-form {
+    width: 100%;
+}
+
+.client-form-group {
+    margin-bottom: 22px;
+}
+
+.client-form-group label {
+    display: block;
+    margin-bottom: 9px;
+
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.client-form-group input {
+    width: 100%;
+    height: 52px;
+
+    padding: 0 16px;
+
+    box-sizing: border-box;
+
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 10px;
+
+    outline: none;
+
+    background: #111;
+    color: #fff;
+
+    font-family: inherit;
+    font-size: 14px;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.client-form-group input::placeholder {
+    color: rgba(255, 255, 255, 0.35);
+}
+
+.client-form-group input:focus {
+    border-color: rgba(255, 255, 255, 0.55);
+    background: #151515;
+
+    box-shadow:
+        0 0 0 3px rgba(255, 255, 255, 0.05);
+}
+
+
+/* =========================================================
+   SIGN IN BUTTON
+========================================================= */
+
+.client-auth-submit {
+    width: 100%;
+    min-height: 52px;
+
+    margin-top: 8px;
+
+    border: none;
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+
+    transition:
+        transform 0.2s ease,
+        opacity 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.client-auth-submit:hover {
+    transform: translateY(-1px);
+    opacity: 0.92;
+}
+
+.client-auth-submit:active {
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   LOGIN MESSAGE
+========================================================= */
+
+.client-auth-message {
+    min-height: 20px;
+
+    margin: 14px 0 0;
+
+    text-align: center;
+
+    font-size: 13px;
+    line-height: 1.5;
+
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.client-auth-message.error {
+    color: #ff5c5c;
+}
+
+
+/* =========================================================
+   SIGN UP SECTION
+========================================================= */
+
+.client-auth-footer {
+    margin-top: 30px;
+    padding-top: 25px;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+    text-align: center;
+}
+
+.client-auth-footer p {
+    margin: 0 0 10px;
+
+    color: rgba(255, 255, 255, 0.45);
+
+    font-size: 13px;
+}
+
+.client-signup-link {
+    color: #fff;
+
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.3px;
+
+    text-decoration: none;
+
+    transition: opacity 0.2s ease;
+}
+
+.client-signup-link:hover {
+    opacity: 0.6;
+}
+
+
+/* =========================================================
+   BACK TO WEBSITE
+========================================================= */
+
+.client-back-link {
+    display: block;
+
+    margin-top: 28px;
+
+    text-align: center;
+
+    color: rgba(255, 255, 255, 0.45);
+
+    font-size: 12px;
+
+    text-decoration: none;
+
+    transition: color 0.2s ease;
+}
+
+.client-back-link:hover {
+    color: #fff;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .client-auth-container {
+        padding: 25px 16px;
+    }
+
+    .client-auth-card {
+        padding: 35px 24px;
+        border-radius: 15px;
+    }
+
+    .client-auth-brand {
+        margin-bottom: 35px;
+        font-size: 25px;
+    }
+
+    .client-auth-heading h1 {
+        font-size: 31px;
+    }
+
+    .client-auth-heading {
+        margin-bottom: 30px;
+    }
+
+    .client-form-group input {
+        height: 50px;
+    }
+
+}
