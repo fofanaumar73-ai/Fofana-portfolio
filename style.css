@@ -9714,3 +9714,355 @@ body > .navbar:not(.project-navbar) {
 
     z-index: 99999 !important;
 }
+
+
+/* =========================================================
+   ADMIN NOTIFICATIONS PAGE
+   BLACK + DARK PURPLE
+========================================================= */
+
+.admin-notifications-page {
+    min-height: 100vh;
+
+    background:
+        radial-gradient(
+            circle at 15% 10%,
+            rgba(74, 32, 110, 0.22),
+            transparent 32%
+        ),
+        radial-gradient(
+            circle at 85% 85%,
+            rgba(46, 20, 72, 0.20),
+            transparent 34%
+        ),
+        #050505;
+
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   NOTIFICATION MAIN CONTAINER
+========================================================= */
+
+.admin-notifications-page
+.dashboard-main {
+    padding-top: 70px;
+    padding-bottom: 100px;
+}
+
+
+/* =========================================================
+   PAGE HEADING
+========================================================= */
+
+.admin-notifications-page
+.dashboard-heading {
+    margin-bottom: 45px;
+}
+
+.admin-notifications-page
+.dashboard-heading h1 {
+    color: #ffffff;
+    margin-bottom: 12px;
+}
+
+.admin-notifications-page
+.dashboard-heading > p:last-child {
+    color: rgba(255, 255, 255, 0.58);
+}
+
+
+/* =========================================================
+   NOTIFICATION CARD
+========================================================= */
+
+.admin-notification-card,
+.admin-notification-list {
+    width: 100%;
+    max-width: 850px;
+    margin: 0 auto 45px;
+
+    padding: 38px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(30, 16, 45, 0.96),
+            rgba(8, 8, 10, 0.98)
+        );
+
+    border: 1px solid
+        rgba(139, 92, 246, 0.20);
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.45),
+        0 0 45px rgba(91, 38, 125, 0.08);
+}
+
+
+/* =========================================================
+   CARD HEADING
+========================================================= */
+
+.admin-notification-heading {
+    margin-bottom: 30px;
+}
+
+.admin-notification-heading .admin-label {
+    color: #a855f7;
+    letter-spacing: 0.18em;
+}
+
+.admin-notification-heading h2 {
+    margin: 8px 0 10px;
+
+    color: #ffffff;
+
+    font-size: 28px;
+}
+
+.admin-notification-heading p:last-child {
+    color: rgba(255, 255, 255, 0.52);
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+#notificationForm {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+
+/* =========================================================
+   FIELD
+========================================================= */
+
+.notification-field {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.notification-field label {
+    color: rgba(255, 255, 255, 0.82);
+
+    font-size: 13px;
+    font-weight: 600;
+
+    letter-spacing: 0.04em;
+}
+
+.notification-field label span {
+    margin-left: 6px;
+
+    color: rgba(255, 255, 255, 0.38);
+
+    font-size: 11px;
+    font-weight: 400;
+}
+
+
+/* =========================================================
+   INPUTS
+========================================================= */
+
+.notification-field input,
+.notification-field textarea,
+.notification-field select {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 15px 16px;
+
+    background:
+        rgba(0, 0, 0, 0.48);
+
+    color: #ffffff;
+
+    border: 1px solid
+        rgba(255, 255, 255, 0.10);
+
+    border-radius: 10px;
+
+    outline: none;
+
+    font-family: inherit;
+    font-size: 14px;
+
+    transition:
+        border-color 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.notification-field textarea {
+    min-height: 160px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+.notification-field select {
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   PLACEHOLDER
+========================================================= */
+
+.notification-field input::placeholder,
+.notification-field textarea::placeholder {
+    color: rgba(255, 255, 255, 0.30);
+}
+
+
+/* =========================================================
+   FOCUS
+========================================================= */
+
+.notification-field input:focus,
+.notification-field textarea:focus,
+.notification-field select:focus {
+    border-color:
+        rgba(168, 85, 247, 0.65);
+
+    background:
+        rgba(16, 8, 24, 0.80);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(168, 85, 247, 0.10);
+}
+
+
+/* =========================================================
+   SELECT OPTIONS
+========================================================= */
+
+.notification-field select option {
+    background: #12091a;
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   SEND BUTTON
+========================================================= */
+
+#sendNotificationButton {
+    width: 100%;
+
+    min-height: 52px;
+
+    margin-top: 8px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #7e22ce,
+            #4c1d95
+        );
+
+    border: 1px solid
+        rgba(168, 85, 247, 0.45);
+
+    color: #ffffff;
+
+    font-weight: 700;
+
+    letter-spacing: 0.04em;
+
+    box-shadow:
+        0 12px 30px
+        rgba(76, 29, 149, 0.25);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        opacity 0.2s ease;
+}
+
+#sendNotificationButton:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 16px 38px
+        rgba(126, 34, 206, 0.32);
+}
+
+#sendNotificationButton:active {
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+#notificationStatus {
+    min-height: 20px;
+
+    margin: 0;
+
+    color: #c084fc;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   SENT NOTIFICATION LIST
+========================================================= */
+
+.admin-notification-list {
+    margin-top: 20px;
+}
+
+#notificationList {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+#notificationList > .dashboard-card {
+    background:
+        rgba(12, 8, 16, 0.88);
+
+    border: 1px solid
+        rgba(168, 85, 247, 0.12);
+
+    border-radius: 12px;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .admin-notification-card,
+    .admin-notification-list {
+        padding: 24px 18px;
+
+        border-radius: 14px;
+    }
+
+    .admin-notification-heading h2 {
+        font-size: 23px;
+    }
+
+    .admin-notifications-page
+    .dashboard-main {
+        padding-top: 40px;
+    }
+
+}
