@@ -1095,6 +1095,45 @@ const supabaseClient =
     );
 
 
+        /* =========================================================
+   CHECK EXISTING CLIENT SESSION
+========================================================= */
+
+async function checkExistingClientSession() {
+
+    const {
+        data: {
+            session
+        },
+        error
+    } =
+        await supabaseClient.auth.getSession();
+
+
+    if (error) {
+
+        console.error(
+            "SESSION CHECK ERROR:",
+            error
+        );
+
+        return;
+    }
+
+
+    if (session) {
+
+        window.location.href =
+            "client-dashboard.html";
+
+    }
+
+}
+
+
+checkExistingClientSession();
+        
+
         const dashboardMessage =
             document.getElementById(
                 "clientDashboardMessage"
