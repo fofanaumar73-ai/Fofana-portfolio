@@ -2936,12 +2936,12 @@ message.innerHTML = `
     </div>
 `;
 
+const wasNearBottom =
+    isClientChatNearBottom();
+
 chatMessages.appendChild(
     message
 );
-
-const wasNearBottom =
-    isClientChatNearBottom();
 
 if (wasNearBottom) {
     scrollToLatest();
