@@ -583,6 +583,77 @@ async function loadNotifications() {
     }
 
 }
+
+
+        /* =========================================================
+   GET CLIENT NAME
+========================================================= */
+
+async function getNotificationClientName(
+    clientId
+) {
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("client_profiles")
+            .select("full_name")
+            .eq(
+                "id",
+                clientId
+            )
+            .maybeSingle();
+
+
+    if (
+        error ||
+        !data
+    ) {
+
+        return "Unknown Client";
+
+    }
+
+
+    return (
+        data.full_name ||
+        "Unnamed Client"
+    );
+
+}
+
+
+/* =========================================================
+   FORMAT NOTIFICATION DATE
+========================================================= */
+
+function formatNotificationDate(
+    dateValue
+) {
+
+    if (!dateValue) {
+        return "";
+    }
+
+
+    const date =
+        new Date(dateValue);
+
+
+    return date.toLocaleString(
+        undefined,
+        {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+            hour: "numeric",
+            minute: "2-digit"
+        }
+    );
+
+}
         
 
         /* =========================================================
