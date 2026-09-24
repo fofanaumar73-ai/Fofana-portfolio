@@ -1361,20 +1361,75 @@ const {
                         "Could not send message."
                     );
 
-                } else {
+} else {
 
-                    adminChatInput.value =
-    "";
+    /* =================================================
+       CREATE CLIENT NOTIFICATION
+    ================================================= */
 
-adminChatAttachmentInput.value =
-    "";
+    const notificationMessage =
+        message ||
+        "You have received a new message from FOFANA.";
 
-selectedAdminAttachment =
-    null;
+    const {
+        error: notificationError
+    } =
+        await supabaseClient
+            .from("client_notifications")
+            .insert({
 
-await loadAdminMessages();
+                client_id:
+                    clientId,
 
-                }
+                title:
+                    "New message from FOFANA",
+
+                message:
+                    notificationMessage,
+
+                notification_type:
+                    "message",
+
+                action_text:
+                    "OPEN CHAT",
+
+                action_url:
+                    "client-chat.html"
+
+            });
+
+
+    if (notificationError) {
+
+        console.error(
+            "Notification creation error:",
+            notificationError
+        );
+
+    }
+
+
+    /* =================================================
+       CLEAR MESSAGE
+    ================================================= */
+
+    adminChatInput.value =
+        "";
+
+    adminChatAttachmentInput.value =
+        "";
+
+    selectedAdminAttachment =
+        null;
+
+
+    /* =================================================
+       RELOAD CHAT
+    ================================================= */
+
+    await loadAdminMessages();
+
+}
 
 
                 adminChatInput.disabled =
