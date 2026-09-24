@@ -751,6 +751,93 @@
     }
 
 }
+
+
+        /* =========================================================
+   CLIENT DASHBOARD — STICKY HEADER
+========================================================= */
+
+.client-dashboard-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    width: 100%;
+
+    background:
+        rgba(7, 3, 11, 0.90);
+
+    border-bottom:
+        1px solid
+        rgba(255, 255, 255, 0.08);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+
+/* Keep the header content aligned properly */
+
+.client-dashboard-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    min-height: 72px;
+
+    padding:
+        14px
+        max(20px, calc((100% - 1100px) / 2));
+}
+
+
+/* FOFANA */
+
+.client-dashboard-brand {
+    flex-shrink: 0;
+}
+
+
+/* Client name + logout */
+
+.client-dashboard-user {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+
+/* Logout button */
+
+.client-logout-button {
+    cursor: pointer;
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+    .client-dashboard-header {
+        min-height: 64px;
+
+        padding:
+            12px
+            16px;
+    }
+
+    .client-dashboard-user {
+        gap: 9px;
+    }
+
+    .client-header-name {
+        max-width: 120px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+}
         
     </style>
 
