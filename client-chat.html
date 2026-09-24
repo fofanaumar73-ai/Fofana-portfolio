@@ -2916,6 +2916,9 @@ message.className =
     "chat-message " +
     item.sender_role;
 
+const isOwnMessage =
+    item.sender_id === currentUser.id;
+
 message.innerHTML = `
     <div class="chat-message-content">
 
@@ -2934,6 +2937,22 @@ message.innerHTML = `
         </span>
 
     </div>
+
+    ${
+        isOwnMessage
+            ? `
+                <button
+                    type="button"
+                    class="chat-message-menu"
+                    data-message-id="${item.id}"
+                    aria-label="Message options"
+                    title="Message options"
+                >
+                    ⋯
+                </button>
+            `
+            : ""
+    }
 `;
 
 const wasNearBottom =
