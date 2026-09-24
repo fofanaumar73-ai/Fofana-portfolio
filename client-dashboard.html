@@ -1078,11 +1078,19 @@
             "sb_publishable_QL4lxGKETA1_xMFFJ7RV5g_Wuyi_x-d";
 
 
-        const supabaseClient =
-            window.supabase.createClient(
-                SUPABASE_URL,
-                SUPABASE_PUBLISHABLE_KEY
-            );
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY,
+        {
+            auth: {
+                persistSession: true,
+                autoRefreshToken: true,
+                detectSessionInUrl: false,
+                storage: window.localStorage
+            }
+        }
+    );
 
 
         const dashboardMessage =
