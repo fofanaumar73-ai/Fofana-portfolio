@@ -187,11 +187,58 @@
             "sb_publishable_QL4lxGKETA1_xMFFJ7RV5g_Wuyi_x-d";
 
 
-        const supabaseClient =
-            window.supabase.createClient(
-                SUPABASE_URL,
-                SUPABASE_PUBLISHABLE_KEY
-            );
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY,
+        {
+            auth: {
+                persistSession: true,
+                autoRefreshToken: true,
+                detectSessionInUrl: false,
+                storage: window.localStorage
+            }
+        }
+    );
+
+
+        /* =========================================================
+   CHECK EXISTING CLIENT SESSION
+========================================================= */
+
+async function checkExistingClientSession() {
+
+    const {
+        data: {
+            session
+        },
+        error
+    } =
+        await supabaseClient.auth.getSession();
+
+
+    if (error) {
+
+        console.error(
+            "SESSION CHECK ERROR:",
+            error
+        );
+
+        return;
+    }
+
+
+    if (session) {
+
+        window.location.href =
+            "client-dashboard.html";
+
+    }
+
+}
+
+
+checkExistingClientSession();
 
 
         const loginForm =
