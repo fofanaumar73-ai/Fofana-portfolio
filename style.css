@@ -9642,19 +9642,42 @@ body > .navbar:not(.project-navbar) {
 
 
 /* =========================================================
-   ADMIN CHAT — MESSAGE MENU
+   ADMIN CHAT — MESSAGE ALIGNMENT
 ========================================================= */
 
 .admin-chat-message {
-    position: relative !important;
+    position: relative;
+    display: flex;
+    width: 100%;
+    margin-bottom: 14px;
 }
 
+/* CLIENT MESSAGE — LEFT */
+.admin-chat-message.client {
+    justify-content: flex-start;
+}
+
+.admin-chat-message.client .admin-chat-bubble {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+/* ADMIN MESSAGE — RIGHT */
+.admin-chat-message.admin {
+    justify-content: flex-end;
+}
+
+.admin-chat-message.admin .admin-chat-bubble {
+    margin-left: auto;
+    margin-right: 0;
+}
+
+
+/* =========================================================
+   ADMIN CHAT — THREE DOT MENU
+========================================================= */
+
 .admin-chat-message-menu {
-    display: flex !important;
-
-    width: 24px !important;
-    height: 24px !important;
-
     position: absolute !important;
 
     right: 6px !important;
@@ -9662,28 +9685,26 @@ body > .navbar:not(.project-navbar) {
 
     transform: translateY(-50%) !important;
 
+    width: 24px !important;
+    height: 24px !important;
+
     padding: 0 !important;
     margin: 0 !important;
 
     border: none !important;
-    outline: none !important;
-
     background: transparent !important;
-    color: rgba(255, 255, 255, 0.55) !important;
+
+    color: rgba(255,255,255,0.55) !important;
 
     font-size: 18px !important;
     font-weight: 700 !important;
-    line-height: 1 !important;
 
+    display: flex !important;
     align-items: center !important;
     justify-content: center !important;
 
     cursor: pointer !important;
-
     z-index: 9999 !important;
-
-    visibility: visible !important;
-    opacity: 1 !important;
 }
 
 .admin-chat-message-menu:hover {
