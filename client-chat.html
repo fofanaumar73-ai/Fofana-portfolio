@@ -2940,7 +2940,12 @@ chatMessages.appendChild(
     message
 );
 
-scrollToLatest();
+const wasNearBottom =
+    isClientChatNearBottom();
+
+if (wasNearBottom) {
+    scrollToLatest();
+}
                     
                 }
             )
