@@ -9539,3 +9539,57 @@ body > .navbar:not(.project-navbar) {
     outline: none;
     box-shadow: none;
 }
+
+
+/* =========================================================
+   CLIENT CHAT MESSAGE MENU
+========================================================= */
+
+.chat-message {
+    position: relative;
+}
+
+.chat-message-menu {
+    position: absolute;
+
+    width: 24px;
+    height: 22px;
+
+    padding: 0;
+    margin: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+    color: rgba(255, 255, 255, 0.45);
+
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
+
+    cursor: pointer;
+
+    box-shadow: none;
+}
+
+/* Client's own message — dots underneath */
+.chat-message.client .chat-message-menu {
+    right: 4px;
+    bottom: -23px;
+}
+
+.chat-message-menu:hover {
+    background: transparent;
+    color: #ffffff;
+    transform: none;
+}
+
+.chat-message-menu:focus {
+    outline: none;
+    box-shadow: none;
+}
