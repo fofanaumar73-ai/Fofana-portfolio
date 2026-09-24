@@ -415,6 +415,177 @@
 
 
         /* =========================================================
+   LOAD SENT NOTIFICATIONS
+========================================================= */
+
+async function loadNotifications() {
+
+    const notificationList =
+        document.getElementById(
+            "notificationList"
+        );
+
+
+    notificationList.innerHTML = `
+        <div class="dashboard-card">
+            <p>
+                Loading notifications...
+            </p>
+        </div>
+    `;
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("client_notifications")
+            .select(`
+                id,
+                client_id,
+                title,
+                message,
+                notification_type,
+                action_text,
+                action_url,
+                is_read,
+                created_at
+            `)
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            );
+
+
+    if (error) {
+
+        console.error(
+            "Notification history error:",
+            error
+        );
+
+        notificationList.innerHTML = `
+            <div class="dashboard-card">
+                <p>
+                    Could not load notifications.
+                </p>
+            </div>
+        `;
+
+        return;
+    }
+
+
+    if (
+        !data ||
+        data.length === 0
+    ) {
+
+        notificationList.innerHTML = `
+            <div class="dashboard-card">
+                <p>
+                    No notifications have been sent yet.
+                </p>
+            </div>
+        `;
+
+        return;
+    }
+
+
+    notificationList.innerHTML = "";
+
+
+    for (const notification of data) {
+
+        const card =
+            document.createElement(
+                "div"
+            );
+
+        card.className =
+            "dashboard-card admin-sent-notification";
+
+
+        const clientName =
+            await getNotificationClientName(
+                notification.client_id
+            );
+
+
+        card.innerHTML = `
+
+            <div class="admin-sent-notification-type">
+                ${escapeHtml(
+                    notification.notification_type
+                )}
+            </div>
+
+            <h3>
+                ${escapeHtml(
+                    notification.title
+                )}
+            </h3>
+
+            <p>
+                ${escapeHtml(
+                    notification.message
+                )}
+            </p>
+
+            <div class="admin-sent-notification-meta">
+
+                <span>
+                    Client:
+                    ${escapeHtml(
+                        clientName
+                    )}
+                </span>
+
+                <span>
+                    ${formatNotificationDate(
+                        notification.created_at
+                    )}
+                </span>
+
+            </div>
+
+            ${
+                notification.action_text &&
+                notification.action_url
+                    ? `
+                        <a
+                            href="${escapeHtml(
+                                notification.action_url
+                            )}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="dashboard-button"
+                        >
+                            ${escapeHtml(
+                                notification.action_text
+                            )}
+                        </a>
+                    `
+                    : ""
+            }
+
+        `;
+
+
+        notificationList.appendChild(
+            card
+        );
+
+    }
+
+}
+        
+
+        /* =========================================================
            FORM
         ========================================================== */
 
