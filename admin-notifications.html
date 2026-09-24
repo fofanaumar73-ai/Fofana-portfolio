@@ -758,26 +758,83 @@ function formatNotificationDate(
                         });
 
 
-                if (error) {
+if (error) {
 
-                    console.error(
-                        "Notification error:",
-                        error
-                    );
+    console.error(
+        "Notification error:",
+        error
+    );
 
-                    notificationStatus.textContent =
-                        "Could not send notification.";
+    notificationStatus.textContent =
+        "Could not send notification.";
 
-                    return;
+    return;
 
-                }
+}
 
 
-                notificationStatus.textContent =
-                    "Notification sent successfully.";
+/* =========================================================
+   SEND EMAIL NOTIFICATION
+========================================================= */
 
-                notificationForm.reset();
+const {
+    data: emailData,
+    error: emailError
+} =
+    await supabaseClient.functions.invoke(
+        "send-notification-email",
+        {
+            body: {
 
+                client_id:
+                    clientId,
+
+                title:
+                    title,
+
+                message:
+                    message,
+
+                notification_type:
+                    type,
+
+                action_text:
+                    actionText ||
+                    null,
+
+                action_url:
+                    actionUrl ||
+                    null
+
+            }
+        }
+    );
+
+
+if (emailError) {
+
+    console.error(
+        "Notification email error:",
+        emailError
+    );
+
+    notificationStatus.textContent =
+        "Notification sent to portal, but email could not be sent.";
+
+} else {
+
+    console.log(
+        "Notification email sent:",
+        emailData
+    );
+
+    notificationStatus.textContent =
+        "Notification sent successfully.";
+
+}
+
+
+notificationForm.reset();
             }
         );
 
