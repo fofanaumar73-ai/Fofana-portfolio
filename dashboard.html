@@ -388,6 +388,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================================
+   CLIENT NOTIFICATIONS BUTTON
+========================================================= */
+
+const clientNotificationsButton =
+    document.getElementById(
+        "clientNotificationsButton"
+    );
+
+if (clientNotificationsButton) {
+
+    clientNotificationsButton.addEventListener(
+        "click",
+        function () {
+
+            window.location.href =
+                "client-notifications-admin.html";
+
+        }
+    );
+
+}
+    
+
+    /* =========================================================
    MY PROFILE BUTTON
 ========================================================= */
 
