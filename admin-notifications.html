@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Client Notifications | FOFANA.</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body class="admin-notifications-page">
+
+
+    <!-- =========================================================
+         HEADER
+    ========================================================== -->
+
+    <header class="dashboard-header">
+
+        <div class="dashboard-container">
+
+            <a
+                href="dashboard.html"
+                class="brand"
+            >
+                FOFANA<span>.</span>
+            </a>
+
+            <a
+                href="dashboard.html"
+                class="dashboard-logout"
+                style="text-decoration: none;"
+            >
+                Dashboard
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================================================
+         MAIN
+    ========================================================== -->
+
+    <main class="dashboard-main">
+
+        <div class="dashboard-container">
+
+
+            <div class="dashboard-heading">
+
+                <p class="admin-label">
+                    CLIENT COMMUNICATION
+                </p>
+
+                <h1>
+                    Notifications
+                </h1>
+
+                <p>
+                    Send updates, announcements and service
+                    offers directly to your clients.
+                </p>
+
+            </div>
+
+
+            <!-- =================================================
+                 CREATE NOTIFICATION
+            ================================================== -->
+
+            <section class="admin-notification-card">
+
+                <div class="admin-notification-heading">
+
+                    <p class="admin-label">
+                        CREATE
+                    </p>
+
+                    <h2>
+                        Send a Notification
+                    </h2>
+
+                    <p>
+                        Choose a client and create a notification
+                        for their private portal.
+                    </p>
+
+                </div>
+
+
+                <form id="notificationForm">
+
+
+                    <!-- CLIENT -->
+
+                    <div class="notification-field">
+
+                        <label
+                            for="notificationClient"
+                        >
+                            Client
+                        </label>
+
+                        <select
+                            id="notificationClient"
+                            required
+                        >
+
+                            <option value="">
+                                Select a client
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- TYPE -->
+
+                    <div class="notification-field">
+
+                        <label
+                            for="notificationType"
+                        >
+                            Notification Type
+                        </label>
+
+                        <select
+                            id="notificationType"
+                            required
+                        >
+
+                            <option value="general">
+                                General
+                            </option>
+
+                            <option value="project">
+                                Project Update
+                            </option>
+
+                            <option value="message">
+                                Message
+                            </option>
+
+                            <option value="delivery">
+                                Project Delivery
+                            </option>
+
+                            <option value="promotion">
+                                Service Promotion
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- TITLE -->
+
+                    <div class="notification-field">
+
+                        <label
+                            for="notificationTitle"
+                        >
+                            Title
+                        </label>
+
+                        <input
+                            type="text"
+                            id="notificationTitle"
+                            placeholder="Enter notification title"
+                            maxlength="150"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- MESSAGE -->
+
+                    <div class="notification-field">
+
+                        <label
+                            for="notificationMessage"
+                        >
+                            Message
+                        </label>
+
+                        <textarea
+                            id="notificationMessage"
+                            placeholder="Write your notification..."
+                            rows="7"
+                            maxlength="2000"
+                            required
+                        ></textarea>
+
+                    </div>
+
+
+                    <!-- ACTION BUTTON -->
+
+                    <div class="notification-field">
+
+                        <label
+                            for="notificationActionText"
+                        >
+                            Action Button Text
+                            <span>
+                                Optional
+                            </span>
+                        </label>
+
+                        <input
+                            type="text"
+                            id="notificationActionText"
+                            placeholder="Example: View Service"
+                            maxlength="50"
+                        >
+
+                    </div>
+
+
+                    <!-- ACTION URL -->
+
+                    <div class="notification-field">
+
+                        <label
+                            for="notificationActionUrl"
+                        >
+                            Action URL
+                            <span>
+                                Optional
+                            </span>
+                        </label>
+
+                        <input
+                            type="url"
+                            id="notificationActionUrl"
+                            placeholder="https://..."
+                        >
+
+                    </div>
+
+
+                    <!-- SEND -->
+
+                    <button
+                        type="submit"
+                        class="dashboard-button"
+                        id="sendNotificationButton"
+                    >
+                        SEND NOTIFICATION
+                    </button>
+
+
+                    <p
+                        id="notificationStatus"
+                        class="dashboard-message"
+                    ></p>
+
+
+                </form>
+
+            </section>
+
+
+            <!-- =================================================
+                 EXISTING NOTIFICATIONS
+            ================================================== -->
+
+            <section class="admin-notification-list">
+
+                <div class="admin-notification-heading">
+
+                    <p class="admin-label">
+                        HISTORY
+                    </p>
+
+                    <h2>
+                        Sent Notifications
+                    </h2>
+
+                    <p>
+                        Notifications you have previously sent.
+                    </p>
+
+                </div>
+
+
+                <div id="notificationList">
+
+                    <div class="dashboard-card">
+
+                        <p>
+                            Loading notifications...
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================================================
+         SUPABASE
+    ========================================================== -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+    <!-- =========================================================
+         JAVASCRIPT
+    ========================================================== -->
+
+    <script>
+
+        const SUPABASE_URL =
+            "https://uryfgatzyesolwwmugin.supabase.co";
+
+        const SUPABASE_PUBLISHABLE_KEY =
+            "sb_publishable_QL4lxGKETA1_xMFFJ7RV5g_Wuyi_x-d";
+
+
+        const supabaseClient =
+            window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_PUBLISHABLE_KEY
+            );
+
+
+        const notificationForm =
+            document.getElementById(
+                "notificationForm"
+            );
+
+        const notificationClient =
+            document.getElementById(
+                "notificationClient"
+            );
+
+        const notificationStatus =
+            document.getElementById(
+                "notificationStatus"
+            );
+
+
+        /* =========================================================
+           LOAD CLIENTS
+        ========================================================== */
+
+        async function loadClients() {
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient
+                    .from("client_profiles")
+                    .select(
+                        "id, full_name"
+                    )
+                    .eq(
+                        "role",
+                        "client"
+                    )
+                    .order(
+                        "full_name",
+                        {
+                            ascending: true
+                        }
+                    );
+
+
+            if (error) {
+
+                console.error(
+                    "Client loading error:",
+                    error
+                );
+
+                notificationStatus.textContent =
+                    "Could not load clients.";
+
+                return;
+
+            }
+
+
+            data.forEach(
+                function(client) {
+
+                    const option =
+                        document.createElement(
+                            "option"
+                        );
+
+                    option.value =
+                        client.id;
+
+                    option.textContent =
+                        client.full_name ||
+                        "Unnamed Client";
+
+                    notificationClient.appendChild(
+                        option
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* =========================================================
+           FORM
+        ========================================================== */
+
+        notificationForm.addEventListener(
+            "submit",
+            async function(event) {
+
+                event.preventDefault();
+
+
+                notificationStatus.textContent =
+                    "";
+
+
+                const clientId =
+                    notificationClient.value;
+
+                const type =
+                    document.getElementById(
+                        "notificationType"
+                    ).value;
+
+                const title =
+                    document.getElementById(
+                        "notificationTitle"
+                    ).value.trim();
+
+                const message =
+                    document.getElementById(
+                        "notificationMessage"
+                    ).value.trim();
+
+                const actionText =
+                    document.getElementById(
+                        "notificationActionText"
+                    ).value.trim();
+
+                const actionUrl =
+                    document.getElementById(
+                        "notificationActionUrl"
+                    ).value.trim();
+
+
+                if (!clientId) {
+
+                    notificationStatus.textContent =
+                        "Please select a client.";
+
+                    return;
+
+                }
+
+
+                const {
+                    error
+                } =
+                    await supabaseClient
+                        .from(
+                            "client_notifications"
+                        )
+                        .insert({
+
+                            client_id:
+                                clientId,
+
+                            title:
+                                title,
+
+                            message:
+                                message,
+
+                            notification_type:
+                                type,
+
+                            action_text:
+                                actionText ||
+                                null,
+
+                            action_url:
+                                actionUrl ||
+                                null
+
+                        });
+
+
+                if (error) {
+
+                    console.error(
+                        "Notification error:",
+                        error
+                    );
+
+                    notificationStatus.textContent =
+                        "Could not send notification.";
+
+                    return;
+
+                }
+
+
+                notificationStatus.textContent =
+                    "Notification sent successfully.";
+
+                notificationForm.reset();
+
+            }
+        );
+
+
+        /* =========================================================
+           INITIALIZE
+        ========================================================== */
+
+        loadClients();
+
+    </script>
+
+
+</body>
+
+</html>
