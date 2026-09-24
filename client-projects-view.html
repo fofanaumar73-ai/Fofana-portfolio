@@ -10,383 +10,1007 @@
     <title>My Projects | FOFANA</title>
 
     <style>
-        * {
-            box-sizing: border-box;
-        }
 
-        body {
-            margin: 0;
-            min-height: 100vh;
-            font-family: Arial, Helvetica, sans-serif;
-            background:
-                radial-gradient(
-                    circle at top right,
-                    rgba(145, 65, 255, 0.18),
-                    transparent 35%
-                ),
-                #07030b;
-            color: #ffffff;
-        }
+    * {
+        box-sizing: border-box;
+    }
+
+
+    /* =====================================================
+       BODY
+    ===================================================== */
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+
+        font-family:
+            Arial,
+            Helvetica,
+            sans-serif;
+
+        background:
+            radial-gradient(
+                circle at 85% 0%,
+                rgba(145, 65, 255, 0.20),
+                transparent 32%
+            ),
+            radial-gradient(
+                circle at 10% 35%,
+                rgba(91, 35, 140, 0.08),
+                transparent 30%
+            ),
+            #07030b;
+
+        color: #ffffff;
+    }
+
+
+    /* =====================================================
+       STICKY PAGE HEADER
+    ===================================================== */
+
+    .page-header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+
+        width: 100%;
+
+        padding:
+            18px
+            max(20px, calc((100% - 1100px) / 2))
+            20px;
+
+        background:
+            rgba(7, 3, 11, 0.88);
+
+        border-bottom:
+            1px solid
+            rgba(255,255,255,0.08);
+
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+    }
+
+
+    /* =====================================================
+       BACK TO DASHBOARD
+    ===================================================== */
+
+    .back-button {
+        display: inline-flex;
+
+        align-items: center;
+        justify-content: center;
+
+        gap: 8px;
+
+        border:
+            1px solid
+            rgba(255,255,255,0.16);
+
+        background:
+            rgba(255,255,255,0.06);
+
+        color: #ffffff;
+
+        padding:
+            10px
+            15px;
+
+        border-radius: 11px;
+
+        cursor: pointer;
+
+        font-size: 14px;
+        font-weight: 600;
+
+        text-decoration: none;
+
+        transition:
+            background 0.2s ease,
+            border-color 0.2s ease,
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+    .back-button:hover {
+        background:
+            rgba(181,108,255,0.14);
+
+        border-color:
+            rgba(181,108,255,0.45);
+
+        box-shadow:
+            0 8px 25px
+            rgba(145,65,255,0.15);
+
+        transform:
+            translateY(-1px);
+    }
+
+
+    /* =====================================================
+       PAGE INTRO
+    ===================================================== */
+
+    .eyebrow {
+        max-width: 1100px;
+
+        margin:
+            34px
+            auto
+            0;
+
+        color: #b56cff;
+
+        font-size: 12px;
+        font-weight: 800;
+
+        letter-spacing: 5px;
+
+        text-transform: uppercase;
+    }
+
+
+    h1 {
+        max-width: 1100px;
+
+        margin:
+            12px
+            auto
+            8px;
+
+        font-size:
+            clamp(
+                36px,
+                6vw,
+                56px
+            );
+
+        line-height: 1.05;
+
+        letter-spacing: -1.5px;
+    }
+
+
+    .page-description {
+        max-width: 1100px;
+
+        margin:
+            0
+            auto;
+
+        color:
+            rgba(255,255,255,0.66);
+
+        font-size: 16px;
+
+        line-height: 1.7;
+    }
+
+
+    /* =====================================================
+       PROJECT WRAPPER
+    ===================================================== */
+
+    .projects-wrapper {
+        max-width: 1100px;
+
+        margin:
+            38px
+            auto
+            90px;
+
+        padding:
+            0 20px;
+    }
+
+
+    /* =====================================================
+       FILTERS
+    ===================================================== */
+
+    .project-filters {
+        display: flex;
+
+        flex-wrap: wrap;
+
+        gap: 9px;
+
+        margin-bottom: 28px;
+    }
+
+
+    .filter-button {
+        border:
+            1px solid
+            rgba(255,255,255,0.13);
+
+        background:
+            rgba(255,255,255,0.045);
+
+        color:
+            rgba(255,255,255,0.82);
+
+        padding:
+            10px
+            17px;
+
+        border-radius: 999px;
+
+        cursor: pointer;
+
+        font-size: 13px;
+        font-weight: 700;
+
+        transition:
+            all 0.2s ease;
+    }
+
+
+    .filter-button:hover {
+        border-color:
+            rgba(181,108,255,0.45);
+
+        background:
+            rgba(181,108,255,0.10);
+
+        color: #ffffff;
+    }
+
+
+    .filter-button.active {
+        background: #ffffff;
+
+        color: #111111;
+
+        border-color: #ffffff;
+
+        box-shadow:
+            0 6px 20px
+            rgba(255,255,255,0.08);
+    }
+
+
+    /* =====================================================
+       PROJECT GRID
+    ===================================================== */
+
+    .projects-grid {
+        display: grid;
+
+        grid-template-columns:
+            repeat(
+                auto-fit,
+                minmax(280px, 1fr)
+            );
+
+        gap: 22px;
+    }
+
+
+    /* =====================================================
+       PROJECT CARD
+    ===================================================== */
+
+    .project-card {
+        position: relative;
+
+        background:
+            linear-gradient(
+                145deg,
+                #ffffff,
+                #f7f7f9
+            );
+
+        color: #111111;
+
+        border:
+            1px solid
+            rgba(255,255,255,0.65);
+
+        border-radius: 24px;
+
+        padding: 26px;
+
+        min-height: 285px;
+
+        display: flex;
+
+        flex-direction: column;
+
+        overflow: hidden;
+
+        box-shadow:
+            0 20px 65px
+            rgba(0,0,0,0.28);
+
+        transition:
+            transform 0.25s ease,
+            box-shadow 0.25s ease;
+    }
+
+
+    .project-card::before {
+        content: "";
+
+        position: absolute;
+
+        top: 0;
+        left: 0;
+        right: 0;
+
+        height: 3px;
+
+        background:
+            linear-gradient(
+                90deg,
+                #8f3dff,
+                #c27aff,
+                transparent
+            );
+
+        opacity: 0.8;
+    }
+
+
+    .project-card:hover {
+        transform:
+            translateY(-4px);
+
+        box-shadow:
+            0 28px 75px
+            rgba(0,0,0,0.36);
+    }
+
+
+    .project-card.hidden {
+        display: none;
+    }
+
+
+    /* =====================================================
+       PROJECT TOP
+    ===================================================== */
+
+    .project-top {
+        display: flex;
+
+        justify-content: space-between;
+
+        align-items: flex-start;
+
+        gap: 14px;
+
+        margin-bottom: 18px;
+    }
+
+
+    .project-title {
+        margin: 0;
+
+        font-size: 23px;
+
+        line-height: 1.25;
+
+        letter-spacing: -0.3px;
+    }
+
+
+    /* =====================================================
+       STATUS BADGES
+    ===================================================== */
+
+    .status-badge {
+        flex-shrink: 0;
+
+        padding:
+            7px
+            11px;
+
+        border-radius: 999px;
+
+        font-size: 10px;
+
+        font-weight: 900;
+
+        letter-spacing: 0.6px;
+    }
+
+
+    .status-incomplete {
+        background: #ffe5e5;
+        color: #a00000;
+    }
+
+
+    .status-pending {
+        background: #fff1c9;
+        color: #865900;
+    }
+
+
+    .status-complete {
+        background: #dcf7e7;
+        color: #16743b;
+    }
+
+
+    /* =====================================================
+       PROJECT TYPE
+    ===================================================== */
+
+    .project-type {
+        display: inline-block;
+
+        width: fit-content;
+
+        margin-bottom: 15px;
+
+        padding:
+            7px
+            11px;
+
+        border-radius: 999px;
+
+        background:
+            #eeeeF2;
+
+        color:
+            #4a4f5c;
+
+        font-size: 11px;
+
+        font-weight: 800;
+
+        letter-spacing: 0.2px;
+    }
+
+
+    /* =====================================================
+       DESCRIPTION
+    ===================================================== */
+
+    .project-description {
+        color: #62646b;
+
+        font-size: 14px;
+
+        line-height: 1.75;
+
+        margin:
+            0
+            0
+            22px;
+    }
+
+
+    /* =====================================================
+       DATE
+    ===================================================== */
+
+    .project-date {
+        color: #8a8c92;
+
+        font-size: 11px;
+
+        margin-top: auto;
+
+        margin-bottom: 16px;
+    }
+
+
+    /* =====================================================
+       VIEW DETAILS BUTTON
+    ===================================================== */
+
+    .view-project-button {
+        width: 100%;
+
+        border: none;
+
+        border-radius: 12px;
+
+        padding:
+            14px
+            16px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #111111,
+                #1c1721
+            );
+
+        color: #ffffff;
+
+        font-size: 11px;
+
+        font-weight: 900;
+
+        letter-spacing: 0.8px;
+
+        cursor: pointer;
+
+        transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease,
+            background 0.2s ease;
+    }
+
+
+    .view-project-button:hover {
+        background:
+            linear-gradient(
+                135deg,
+                #17101d,
+                #35104f
+            );
+
+        transform:
+            translateY(-1px);
+
+        box-shadow:
+            0 8px 24px
+            rgba(91,35,140,0.25);
+    }
+
+
+    /* =====================================================
+       EMPTY / LOADING / ERROR
+    ===================================================== */
+
+    .empty-state,
+    .loading-state,
+    .error-state {
+        grid-column: 1 / -1;
+
+        background:
+            rgba(255,255,255,0.97);
+
+        color: #555555;
+
+        border-radius: 22px;
+
+        padding:
+            45px
+            25px;
+
+        text-align: center;
+
+        font-size: 15px;
+
+        line-height: 1.6;
+    }
+
+
+    .error-state {
+        color: #9b0000;
+    }
+
+
+    /* =====================================================
+       PROJECT MODAL
+    ===================================================== */
+
+    .project-modal {
+        position: fixed;
+
+        inset: 0;
+
+        z-index: 9999;
+
+        display: none;
+
+        align-items: center;
+        justify-content: center;
+
+        padding: 20px;
+
+        background:
+            rgba(0,0,0,0.80);
+
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
+
+
+    .project-modal.open {
+        display: flex;
+    }
+
+
+    .modal-content {
+        width:
+            min(
+                650px,
+                100%
+            );
+
+        max-height: 90vh;
+
+        overflow-y: auto;
+
+        background:
+            linear-gradient(
+                145deg,
+                #ffffff,
+                #f7f7f9
+            );
+
+        color: #111111;
+
+        border-radius: 26px;
+
+        padding: 30px;
+
+        position: relative;
+
+        box-shadow:
+            0 35px 100px
+            rgba(0,0,0,0.5);
+    }
+
+
+    .modal-close {
+        position: absolute;
+
+        top: 15px;
+        right: 15px;
+
+        width: 38px;
+        height: 38px;
+
+        border: none;
+
+        border-radius: 50%;
+
+        background: #eeeeee;
+
+        color: #111111;
+
+        font-size: 20px;
+
+        cursor: pointer;
+
+        transition:
+            transform 0.2s ease,
+            background 0.2s ease;
+    }
+
+
+    .modal-close:hover {
+        background: #e1d5eb;
+
+        transform:
+            rotate(90deg);
+    }
+
+
+    .modal-status {
+        display: inline-block;
+
+        margin-bottom: 15px;
+    }
+
+
+    .modal-content h2 {
+        margin:
+            0
+            45px
+            12px
+            0;
+
+        font-size: 28px;
+
+        line-height: 1.2;
+    }
+
+
+    .modal-content p {
+        color: #666666;
+
+        line-height: 1.75;
+    }
+
+
+    /* =====================================================
+       PROJECT INFORMATION
+    ===================================================== */
+
+    .project-info {
+        margin-top: 25px;
+
+        padding: 18px;
+
+        border-radius: 16px;
+
+        background:
+            #f1f1f4;
+    }
+
+
+    .project-info-row {
+        display: flex;
+
+        justify-content: space-between;
+
+        gap: 20px;
+
+        padding: 11px 0;
+
+        border-bottom:
+            1px solid
+            #e1e1e3;
+    }
+
+
+    .project-info-row:last-child {
+        border-bottom: none;
+    }
+
+
+    .project-info-label {
+        color: #777777;
+
+        font-size: 13px;
+    }
+
+
+    .project-info-value {
+        font-weight: 700;
+
+        text-align: right;
+
+        font-size: 13px;
+    }
+
+
+    /* =====================================================
+       STATUS MESSAGE
+    ===================================================== */
+
+    .status-message {
+        margin-top: 22px;
+
+        padding: 18px;
+
+        border-radius: 15px;
+
+        line-height: 1.65;
+
+        font-size: 14px;
+    }
+
+
+    .status-message.incomplete {
+        background: #fff0f0;
+
+        color: #8c0000;
+    }
+
+
+    .status-message.pending {
+        background: #fff8df;
+
+        color: #795000;
+    }
+
+
+    .status-message.complete {
+        background: #eafaf0;
+
+        color: #176b38;
+    }
+
+
+    /* =====================================================
+       ACCESS PROJECT
+    ===================================================== */
+
+    .access-project-button {
+        display: block;
+
+        width: 100%;
+
+        margin-top: 22px;
+
+        padding: 15px;
+
+        border: none;
+
+        border-radius: 13px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #111111,
+                #35104f
+            );
+
+        color: #ffffff;
+
+        text-align: center;
+
+        text-decoration: none;
+
+        font-size: 12px;
+
+        font-weight: 900;
+
+        letter-spacing: 0.7px;
+
+        transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+
+    .access-project-button:hover {
+        transform:
+            translateY(-1px);
+
+        box-shadow:
+            0 10px 28px
+            rgba(91,35,140,0.25);
+    }
+
+
+    /* =====================================================
+       MOBILE
+    ===================================================== */
+
+    @media (max-width: 600px) {
 
         .page-header {
-            padding: 28px 20px 10px;
-            max-width: 1100px;
-            margin: 0 auto;
+            padding:
+                13px
+                16px
+                15px;
         }
+
 
         .back-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            border: 1px solid rgba(255,255,255,0.18);
-            background: rgba(255,255,255,0.06);
-            color: #ffffff;
-            padding: 10px 15px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 14px;
-            text-decoration: none;
+            font-size: 13px;
+
+            padding:
+                9px
+                13px;
         }
 
-        .back-button:hover {
-            background: rgba(255,255,255,0.12);
-        }
 
         .eyebrow {
-            margin-top: 38px;
-            color: #b56cff;
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 5px;
-            text-transform: uppercase;
+            margin-top: 27px;
+
+            font-size: 11px;
+
+            letter-spacing: 4px;
         }
+
 
         h1 {
-            margin: 12px 0 8px;
-            font-size: clamp(32px, 6vw, 54px);
-            line-height: 1.05;
+            margin-top: 10px;
+
+            font-size: 38px;
+
+            letter-spacing: -1px;
         }
+
 
         .page-description {
-            margin: 0;
-            color: rgba(255,255,255,0.72);
-            font-size: 17px;
+            font-size: 14px;
+
             line-height: 1.6;
         }
+
 
         .projects-wrapper {
-            max-width: 1100px;
-            margin: 35px auto 80px;
-            padding: 0 20px;
+            padding:
+                0
+                16px;
+
+            margin:
+                28px
+                auto
+                60px;
         }
+
 
         .project-filters {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 25px;
+            gap: 7px;
+
+            overflow-x: auto;
+
+            flex-wrap: nowrap;
+
+            padding-bottom: 5px;
+
+            scrollbar-width: none;
         }
+
+
+        .project-filters::-webkit-scrollbar {
+            display: none;
+        }
+
 
         .filter-button {
-            border: 1px solid rgba(255,255,255,0.14);
-            background: rgba(255,255,255,0.06);
-            color: #ffffff;
-            padding: 10px 17px;
-            border-radius: 999px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 700;
+            flex-shrink: 0;
+
+            padding:
+                9px
+                14px;
+
+            font-size: 12px;
         }
 
-        .filter-button.active {
-            background: #ffffff;
-            color: #111111;
-        }
 
         .projects-grid {
-            display: grid;
-            grid-template-columns:
-                repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
+            grid-template-columns: 1fr;
+
+            gap: 16px;
         }
+
 
         .project-card {
-            background: #ffffff;
-            color: #111111;
-            border-radius: 24px;
-            padding: 25px;
+            border-radius: 21px;
+
+            padding: 21px;
+
             min-height: 270px;
-            display: flex;
-            flex-direction: column;
-            box-shadow:
-                0 20px 60px rgba(0,0,0,0.25);
         }
 
-        .project-card.hidden {
-            display: none;
-        }
 
         .project-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 12px;
-            margin-bottom: 20px;
+            gap: 10px;
         }
+
 
         .project-title {
-            margin: 0;
-            font-size: 22px;
-            line-height: 1.25;
+            font-size: 21px;
         }
 
-        .status-badge {
-            flex-shrink: 0;
-            padding: 8px 12px;
-            border-radius: 999px;
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-        }
-
-        .status-incomplete {
-            background: #ffe2e2;
-            color: #a00000;
-        }
-
-        .status-pending {
-            background: #fff0c9;
-            color: #8a5a00;
-        }
-
-        .status-complete {
-            background: #d9f5e4;
-            color: #16743b;
-        }
-
-        .project-type {
-            display: inline-block;
-            width: fit-content;
-            margin-bottom: 15px;
-            padding: 8px 12px;
-            border-radius: 999px;
-            background: #f1f2f5;
-            color: #454b58;
-            font-size: 12px;
-            font-weight: 700;
-        }
 
         .project-description {
-            color: #666666;
-            font-size: 15px;
-            line-height: 1.65;
-            margin: 0 0 22px;
+            font-size: 14px;
         }
 
-        .project-date {
-            color: #888888;
-            font-size: 12px;
-            margin-top: auto;
-            margin-bottom: 16px;
-        }
-
-        .view-project-button {
-            width: 100%;
-            border: none;
-            border-radius: 12px;
-            padding: 13px 16px;
-            background: #111111;
-            color: #ffffff;
-            font-size: 12px;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-            cursor: pointer;
-        }
-
-        .view-project-button:hover {
-            opacity: 0.88;
-        }
-
-        .empty-state,
-        .loading-state,
-        .error-state {
-            background: #ffffff;
-            color: #555555;
-            border-radius: 24px;
-            padding: 45px 25px;
-            text-align: center;
-            font-size: 16px;
-            line-height: 1.6;
-        }
-
-        .error-state {
-            color: #9b0000;
-        }
-
-        /* =====================================================
-           PROJECT MODAL
-        ===================================================== */
-
-        .project-modal {
-            position: fixed;
-            inset: 0;
-            z-index: 9999;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            background: rgba(0,0,0,0.78);
-            backdrop-filter: blur(8px);
-        }
-
-        .project-modal.open {
-            display: flex;
-        }
 
         .modal-content {
-            width: min(650px, 100%);
-            max-height: 90vh;
-            overflow-y: auto;
-            background: #ffffff;
-            color: #111111;
-            border-radius: 26px;
-            padding: 28px;
-            position: relative;
+            padding:
+                24px
+                18px;
+
+            border-radius: 22px;
         }
 
-        .modal-close {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            width: 38px;
-            height: 38px;
-            border: none;
-            border-radius: 50%;
-            background: #eeeeee;
-            color: #111111;
-            font-size: 20px;
-            cursor: pointer;
-        }
-
-        .modal-status {
-            display: inline-block;
-            margin-bottom: 15px;
-        }
 
         .modal-content h2 {
-            margin: 0 45px 12px 0;
-            font-size: 28px;
+            font-size: 24px;
         }
 
-        .modal-content p {
-            color: #666666;
-            line-height: 1.7;
-        }
-
-        .project-info {
-            margin-top: 25px;
-            padding: 18px;
-            border-radius: 16px;
-            background: #f5f5f7;
-        }
 
         .project-info-row {
-            display: flex;
-            justify-content: space-between;
-            gap: 20px;
-            padding: 10px 0;
-            border-bottom: 1px solid #e5e5e5;
+            flex-direction: column;
+
+            gap: 4px;
         }
 
-        .project-info-row:last-child {
-            border-bottom: none;
-        }
-
-        .project-info-label {
-            color: #777777;
-        }
 
         .project-info-value {
-            font-weight: 700;
-            text-align: right;
+            text-align: left;
         }
 
-        .status-message {
-            margin-top: 22px;
-            padding: 18px;
-            border-radius: 15px;
-            line-height: 1.6;
-        }
+    }
 
-        .status-message.incomplete {
-            background: #fff0f0;
-            color: #8c0000;
-        }
-
-        .status-message.pending {
-            background: #fff8df;
-            color: #795000;
-        }
-
-        .status-message.complete {
-            background: #eafaf0;
-            color: #176b38;
-        }
-
-        .access-project-button {
-            display: block;
-            width: 100%;
-            margin-top: 22px;
-            padding: 15px;
-            border: none;
-            border-radius: 13px;
-            background: #111111;
-            color: #ffffff;
-            text-align: center;
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 800;
-        }
-
-        .access-project-button:hover {
-            opacity: 0.88;
-        }
-
-        @media (max-width: 600px) {
-
-            .page-header {
-                padding: 22px 16px 5px;
-            }
-
-            .projects-wrapper {
-                padding: 0 16px;
-                margin-top: 25px;
-            }
-
-            .project-card {
-                border-radius: 20px;
-                padding: 21px;
-            }
-
-            .project-top {
-                flex-direction: column;
-            }
-
-            .modal-content {
-                padding: 23px 18px;
-                border-radius: 22px;
-            }
-
-            .project-info-row {
-                flex-direction: column;
-                gap: 4px;
-            }
-
-            .project-info-value {
-                text-align: left;
-            }
-        }
-    </style>
+</style>
+    
 </head>
 
 <body>
