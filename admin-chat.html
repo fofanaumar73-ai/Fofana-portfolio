@@ -1486,6 +1486,84 @@ adminChatInput.addEventListener(
 
 
         /* =================================================
+   ADMIN CHAT REALTIME
+================================================= */
+
+let adminChatRealtimeChannel = null;
+
+function subscribeToAdminChatRealtime() {
+
+    if (!clientId) {
+        return;
+    }
+
+    if (adminChatRealtimeChannel) {
+
+        supabaseClient.removeChannel(
+            adminChatRealtimeChannel
+        );
+
+    }
+
+    adminChatRealtimeChannel =
+        supabaseClient
+            .channel(
+                `admin-chat-${clientId}`
+            )
+            .on(
+                "postgres_changes",
+                {
+                    event: "INSERT",
+                    schema: "public",
+                    table: "client_messages",
+                    filter:
+                        `client_id=eq.${clientId}`
+                },
+                async function(payload) {
+
+                    console.log(
+                        "ADMIN CHAT REALTIME:",
+                        payload
+                    );
+
+                    /*
+                       Ignore messages sent
+                       by this admin.
+                    */
+                    if (
+                        currentUser &&
+                        payload.new.sender_id ===
+                        currentUser.id
+                    ) {
+                        return;
+                    }
+
+                    /*
+                       New message from client.
+                    */
+                    await loadAdminMessages();
+
+                    /*
+                       Mark the new client message
+                       as seen.
+                    */
+                    await markClientMessagesAsSeen();
+
+                }
+            )
+            .subscribe(function(status) {
+
+                console.log(
+                    "ADMIN CHAT REALTIME STATUS:",
+                    status
+                );
+
+            });
+
+}
+        
+
+        /* =================================================
            START
         ================================================= */
 
