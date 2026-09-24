@@ -758,14 +758,17 @@
 ========================================================= */
 
 .client-dashboard-header {
-    position: sticky;
+    position: fixed;
     top: 0;
-    z-index: 1000;
+    left: 0;
+
+    z-index: 99999;
 
     width: 100%;
+    box-sizing: border-box;
 
     background:
-        rgba(7, 3, 11, 0.90);
+        rgba(7, 3, 11, 0.94);
 
     border-bottom:
         1px solid
@@ -774,7 +777,6 @@
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
 }
-
 
 /* Keep the header content aligned properly */
 
