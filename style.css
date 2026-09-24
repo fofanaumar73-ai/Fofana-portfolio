@@ -9639,3 +9639,49 @@ body > .navbar:not(.project-navbar) {
     outline: none;
     box-shadow: none !important;
 }
+
+
+/* =========================================================
+   ADMIN CHAT — MESSAGE MENU TEST
+========================================================= */
+
+.admin-chat-message {
+    position: relative !important;
+}
+
+.admin-chat-message-menu {
+    display: flex !important;
+
+    width: 28px !important;
+    height: 28px !important;
+
+    position: absolute !important;
+
+    right: -34px !important;
+    top: 50% !important;
+
+    transform: translateY(-50%) !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    border: none !important;
+    outline: none !important;
+
+    background: #222 !important;
+    color: #ffffff !important;
+
+    font-size: 20px !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    cursor: pointer !important;
+
+    z-index: 9999 !important;
+
+    visibility: visible !important;
+    opacity: 1 !important;
+}
