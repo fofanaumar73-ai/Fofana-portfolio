@@ -17,6 +17,120 @@
         href="style.css"
     >
 
+
+    <style>
+
+/* =========================================================
+   CLIENT MY PROFILE — FULL SCREEN
+========================================================= */
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+
+/* =========================================================
+   FULL PAGE
+========================================================= */
+
+.client-my-profile-page {
+    width: 100%;
+    max-width: none;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    background: #071a33;
+}
+
+
+/* =========================================================
+   STICKY PROFILE HEADER
+========================================================= */
+
+.client-my-profile-header {
+    position: sticky;
+    top: 0;
+    z-index: 9999;
+
+    width: 100%;
+    box-sizing: border-box;
+
+    background: rgba(7, 26, 51, 0.96);
+
+    border-bottom:
+        1px solid
+        rgba(255, 255, 255, 0.08);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+
+/* =========================================================
+   PROFILE CONTENT
+========================================================= */
+
+.client-my-profile-hero,
+.client-my-profile-card,
+.client-my-profile-save-card,
+.client-my-profile-message {
+    width: calc(100% - 40px);
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   LAPTOP
+========================================================= */
+
+@media (min-width: 761px) {
+
+    .client-my-profile-hero {
+        margin-top: 32px;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 760px) {
+
+    .client-my-profile-page {
+        min-height: 100vh;
+    }
+
+    .client-my-profile-header {
+        width: 100%;
+    }
+
+    .client-my-profile-hero,
+    .client-my-profile-card,
+    .client-my-profile-save-card,
+    .client-my-profile-message {
+        width: calc(100% - 24px);
+    }
+
+}
+
+</style>
+
+    
 </head>
 
 
