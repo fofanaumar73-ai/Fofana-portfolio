@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Notifications | FOFANA.</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body class="client-notifications-page">
+
+
+    <!-- =========================================================
+         HEADER
+    ========================================================== -->
+
+    <header class="dashboard-header">
+
+        <div class="dashboard-container">
+
+            <a
+                href="client-dashboard.html"
+                class="brand"
+            >
+                FOFANA<span>.</span>
+            </a>
+
+            <a
+                href="client-dashboard.html"
+                class="dashboard-logout"
+                style="text-decoration: none;"
+            >
+                Dashboard
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================================================
+         MAIN
+    ========================================================== -->
+
+    <main class="dashboard-main">
+
+        <div class="dashboard-container">
+
+
+            <div class="dashboard-heading">
+
+                <p class="admin-label">
+                    CLIENT PORTAL
+                </p>
+
+                <h1>
+                    Notifications
+                </h1>
+
+                <p>
+                    Stay updated with messages, project updates
+                    and opportunities from FOFANA.
+                </p>
+
+            </div>
+
+
+            <!-- =================================================
+                 NOTIFICATION CONTROLS
+            ================================================== -->
+
+            <div class="client-notification-controls">
+
+                <button
+                    type="button"
+                    id="markAllReadButton"
+                    class="dashboard-button"
+                >
+                    MARK ALL AS READ
+                </button>
+
+            </div>
+
+
+            <!-- =================================================
+                 NOTIFICATIONS
+            ================================================== -->
+
+            <section
+                id="clientNotificationList"
+                class="client-notification-list"
+            >
+
+                <div class="dashboard-card">
+
+                    <p>
+                        Loading notifications...
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <p
+                id="clientNotificationStatus"
+                class="dashboard-message"
+            ></p>
+
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================================================
+         SUPABASE
+    ========================================================== -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+    <!-- =========================================================
+         JAVASCRIPT
+    ========================================================== -->
+
+    <script>
+
+        const SUPABASE_URL =
+            "https://uryfgatzyesolwwmugin.supabase.co";
+
+        const SUPABASE_PUBLISHABLE_KEY =
+            "sb_publishable_QL4lxGKETA1_xMFFJ7RV5g_Wuyi_x-d";
+
+
+        const supabaseClient =
+            window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_PUBLISHABLE_KEY
+            );
+
+
+        let currentUser = null;
+
+
+        const notificationList =
+            document.getElementById(
+                "clientNotificationList"
+            );
+
+
+        const notificationStatus =
+            document.getElementById(
+                "clientNotificationStatus"
+            );
+
+
+        /* =========================================================
+           ESCAPE HTML
+        ========================================================== */
+
+        function escapeHtml(value) {
+
+            return String(value || "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+
+        }
+
+
+        /* =========================================================
+           FORMAT DATE
+        ========================================================== */
+
+        function formatNotificationDate(
+            dateValue
+        ) {
+
+            if (!dateValue) {
+                return "";
+            }
+
+
+            const date =
+                new Date(dateValue);
+
+
+            return date.toLocaleString(
+                undefined,
+                {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                    hour: "numeric",
+                    minute: "2-digit"
+                }
+            );
+
+        }
+
+
+        /* =========================================================
+           LOAD NOTIFICATIONS
+        ========================================================== */
+
+        async function loadNotifications() {
+
+            notificationList.innerHTML = `
+                <div class="dashboard-card">
+                    <p>
+                        Loading notifications...
+                    </p>
+                </div>
+            `;
+
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient
+                    .from(
+                        "client_notifications"
+                    )
+                    .select(`
+                        id,
+                        title,
+                        message,
+                        notification_type,
+                        action_text,
+                        action_url,
+                        is_read,
+                        created_at
+                    `)
+                    .eq(
+                        "client_id",
+                        currentUser.id
+                    )
+                    .order(
+                        "created_at",
+                        {
+                            ascending: false
+                        }
+                    );
+
+
+            if (error) {
+
+                console.error(
+                    "Client notifications error:",
+                    error
+                );
+
+                notificationList.innerHTML = `
+                    <div class="dashboard-card">
+                        <p>
+                            Could not load your notifications.
+                        </p>
+                    </div>
+                `;
+
+                return;
+
+            }
+
+
+            if (
+                !data ||
+                data.length === 0
+            ) {
+
+                notificationList.innerHTML = `
+                    <div class="dashboard-card">
+                        <p>
+                            You have no notifications yet.
+                        </p>
+                    </div>
+                `;
+
+                return;
+
+            }
+
+
+            notificationList.innerHTML = "";
+
+
+            data.forEach(
+                function(notification) {
+
+                    const card =
+                        document.createElement(
+                            "article"
+                        );
+
+
+                    card.className =
+                        "client-notification-card";
+
+
+                    if (
+                        notification.is_read
+                    ) {
+
+                        card.classList.add(
+                            "read"
+                        );
+
+                    } else {
+
+                        card.classList.add(
+                            "unread"
+                        );
+
+                    }
+
+
+                    card.innerHTML = `
+
+                        <div class="client-notification-top">
+
+                            <span
+                                class="client-notification-type"
+                            >
+                                ${escapeHtml(
+                                    notification.notification_type
+                                )}
+                            </span>
+
+                            ${
+                                !notification.is_read
+                                    ? `
+                                        <span
+                                            class="client-notification-new"
+                                        >
+                                            NEW
+                                        </span>
+                                    `
+                                    : ""
+                            }
+
+                        </div>
+
+
+                        <h2>
+                            ${escapeHtml(
+                                notification.title
+                            )}
+                        </h2>
+
+
+                        <p class="client-notification-message">
+                            ${escapeHtml(
+                                notification.message
+                            )}
+                        </p>
+
+
+                        <div class="client-notification-bottom">
+
+                            <span>
+                                ${formatNotificationDate(
+                                    notification.created_at
+                                )}
+                            </span>
+
+                            ${
+                                notification.action_text &&
+                                notification.action_url
+                                    ? `
+                                        <a
+                                            href="${escapeHtml(
+                                                notification.action_url
+                                            )}"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            class="dashboard-button"
+                                        >
+                                            ${escapeHtml(
+                                                notification.action_text
+                                            )}
+                                        </a>
+                                    `
+                                    : ""
+                            }
+
+                        </div>
+
+                    `;
+
+
+                    notificationList.appendChild(
+                        card
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* =========================================================
+           MARK ONE AS READ
+        ========================================================== */
+
+        async function markNotificationAsRead(
+            notificationId
+        ) {
+
+            const {
+                error
+            } =
+                await supabaseClient
+                    .from(
+                        "client_notifications"
+                    )
+                    .update({
+                        is_read: true,
+                        read_at:
+                            new Date().toISOString()
+                    })
+                    .eq(
+                        "id",
+                        notificationId
+                    )
+                    .eq(
+                        "client_id",
+                        currentUser.id
+                    );
+
+
+            if (error) {
+
+                console.error(
+                    "Mark notification read error:",
+                    error
+                );
+
+                return;
+
+            }
+
+        }
+
+
+        /* =========================================================
+           MARK ALL AS READ
+        ========================================================== */
+
+        document
+            .getElementById(
+                "markAllReadButton"
+            )
+            .addEventListener(
+                "click",
+                async function() {
+
+                    const {
+                        error
+                    } =
+                        await supabaseClient
+                            .from(
+                                "client_notifications"
+                            )
+                            .update({
+                                is_read: true,
+                                read_at:
+                                    new Date().toISOString()
+                            })
+                            .eq(
+                                "client_id",
+                                currentUser.id
+                            )
+                            .eq(
+                                "is_read",
+                                false
+                            );
+
+
+                    if (error) {
+
+                        console.error(
+                            "Mark all notifications error:",
+                            error
+                        );
+
+                        notificationStatus.textContent =
+                            "Could not mark notifications as read.";
+
+                        return;
+
+                    }
+
+
+                    notificationStatus.textContent =
+                        "All notifications marked as read.";
+
+                    await loadNotifications();
+
+                }
+            );
+
+
+        /* =========================================================
+           INITIALIZE
+        ========================================================== */
+
+        async function initializeNotifications() {
+
+            const {
+                data: {
+                    user
+                },
+                error: userError
+            } =
+                await supabaseClient
+                    .auth
+                    .getUser();
+
+
+            if (
+                userError ||
+                !user
+            ) {
+
+                window.location.href =
+                    "client-login.html";
+
+                return;
+
+            }
+
+
+            currentUser =
+                user;
+
+
+            const {
+                data: profile,
+                error: profileError
+            } =
+                await supabaseClient
+                    .from(
+                        "client_profiles"
+                    )
+                    .select(
+                        "id, role"
+                    )
+                    .eq(
+                        "id",
+                        user.id
+                    )
+                    .maybeSingle();
+
+
+            if (
+                profileError ||
+                !profile
+            ) {
+
+                notificationStatus.textContent =
+                    "Could not load your profile.";
+
+                return;
+
+            }
+
+
+            if (
+                profile.role !==
+                "client"
+            ) {
+
+                window.location.href =
+                    "admin.html";
+
+                return;
+
+            }
+
+
+            await loadNotifications();
+
+        }
+
+
+        initializeNotifications();
+
+    </script>
+
+
+</body>
+
+</html>
