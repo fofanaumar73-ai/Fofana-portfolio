@@ -1,1 +1,1947 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Manage Services | Fofana Tech</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+    <style>
+
+        /* =========================================================
+           PAGE
+        ========================================================= */
+
+        .portfolio-services-page {
+            min-height: 100vh;
+            background: #07030b;
+            color: #ffffff;
+        }
+
+
+        /* =========================================================
+           HEADER
+        ========================================================= */
+
+        .portfolio-services-header {
+            position: sticky;
+            top: 0;
+            z-index: 9999;
+
+            width: 100%;
+
+            background:
+                rgba(7, 3, 11, 0.94);
+
+            border-bottom:
+                1px solid
+                rgba(255, 255, 255, 0.08);
+
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
+
+
+        .portfolio-services-header-inner {
+            width: min(1150px, 92%);
+            min-height: 72px;
+            margin: 0 auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+
+        .portfolio-services-brand {
+            color: #ffffff;
+            text-decoration: none;
+
+            font-size: 1.25rem;
+            font-weight: 800;
+
+            letter-spacing: 0.08em;
+        }
+
+
+        .portfolio-services-brand span {
+            color: #8b5cf6;
+        }
+
+
+        .portfolio-services-back {
+            color: rgba(255,255,255,0.78);
+            text-decoration: none;
+
+            padding: 10px 15px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.10);
+
+            border-radius: 10px;
+
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+
+        .portfolio-services-back:hover {
+            color: #ffffff;
+            background:
+                rgba(255,255,255,0.06);
+        }
+
+
+        /* =========================================================
+           MAIN
+        ========================================================= */
+
+        .portfolio-services-main {
+            width: min(1150px, 92%);
+            margin: 0 auto;
+
+            padding: 50px 0 80px;
+        }
+
+
+        .services-heading {
+            margin-bottom: 30px;
+        }
+
+
+        .services-label {
+            margin: 0 0 8px;
+
+            color: #a78bfa;
+
+            font-size: 0.72rem;
+            font-weight: 800;
+
+            letter-spacing: 0.16em;
+        }
+
+
+        .services-heading h1 {
+            margin: 0 0 10px;
+
+            font-size: clamp(2rem, 5vw, 3rem);
+        }
+
+
+        .services-heading p {
+            max-width: 680px;
+            margin: 0;
+
+            color: rgba(255,255,255,0.60);
+
+            line-height: 1.7;
+        }
+
+
+        /* =========================================================
+           TOP BAR
+        ========================================================= */
+
+        .services-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .services-status {
+            color: rgba(255,255,255,0.58);
+            font-size: 0.85rem;
+        }
+
+
+        .add-service-button {
+            border: none;
+
+            padding: 12px 18px;
+
+            color: #ffffff;
+            background: #7c3aed;
+
+            border-radius: 10px;
+
+            font: inherit;
+            font-weight: 800;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .add-service-button:hover {
+            background: #8b5cf6;
+            transform: translateY(-1px);
+        }
+
+
+        /* =========================================================
+           FORM
+        ========================================================= */
+
+        .service-form-panel {
+            display: none;
+
+            margin-bottom: 30px;
+            padding: 28px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(139,92,246,0.10),
+                    rgba(255,255,255,0.025)
+                );
+
+            border:
+                1px solid
+                rgba(139,92,246,0.25);
+
+            border-radius: 18px;
+        }
+
+
+        .service-form-panel.active {
+            display: block;
+        }
+
+
+        .service-form-title {
+            margin: 0 0 25px;
+
+            font-size: 1.25rem;
+        }
+
+
+        .service-form-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap: 18px;
+        }
+
+
+        .service-field {
+            margin-bottom: 2px;
+        }
+
+
+        .service-field.full {
+            grid-column: 1 / -1;
+        }
+
+
+        .service-field label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: rgba(255,255,255,0.82);
+
+            font-size: 0.82rem;
+            font-weight: 700;
+        }
+
+
+        .service-field input,
+        .service-field textarea,
+        .service-field select {
+
+            width: 100%;
+            box-sizing: border-box;
+
+            padding: 12px 13px;
+
+            color: #ffffff;
+
+            background:
+                rgba(0,0,0,0.30);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.10);
+
+            border-radius: 10px;
+
+            outline: none;
+
+            font: inherit;
+        }
+
+
+        .service-field textarea {
+            min-height: 115px;
+            resize: vertical;
+        }
+
+
+        .service-field input:focus,
+        .service-field textarea:focus,
+        .service-field select:focus {
+
+            border-color:
+                rgba(167,139,250,0.65);
+        }
+
+
+        .service-field select option {
+            background: #100a17;
+            color: #ffffff;
+        }
+
+
+        /* =========================================================
+           CHECKBOXES
+        ========================================================= */
+
+        .service-options {
+            grid-column: 1 / -1;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 10px;
+
+            margin-top: 5px;
+        }
+
+
+        .service-check {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+
+            padding: 12px;
+
+            background:
+                rgba(255,255,255,0.035);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            border-radius: 10px;
+
+            cursor: pointer;
+
+            color: rgba(255,255,255,0.78);
+
+            font-size: 0.80rem;
+        }
+
+
+        .service-check input {
+            width: auto;
+        }
+
+
+        /* =========================================================
+           FORM BUTTONS
+        ========================================================= */
+
+        .service-form-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            margin-top: 25px;
+        }
+
+
+        .save-service-button,
+        .cancel-service-button {
+
+            padding: 11px 17px;
+
+            border-radius: 9px;
+
+            font: inherit;
+            font-weight: 800;
+
+            cursor: pointer;
+        }
+
+
+        .save-service-button {
+            border: none;
+
+            color: #ffffff;
+            background: #7c3aed;
+        }
+
+
+        .save-service-button:hover {
+            background: #8b5cf6;
+        }
+
+
+        .cancel-service-button {
+            color: rgba(255,255,255,0.75);
+
+            background:
+                rgba(255,255,255,0.05);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.10);
+        }
+
+
+        .form-message {
+            margin-top: 15px;
+
+            font-size: 0.84rem;
+        }
+
+
+        .form-message.success {
+            color: #86efac;
+        }
+
+
+        .form-message.error {
+            color: #fca5a5;
+        }
+
+
+        /* =========================================================
+           SERVICE LIST
+        ========================================================= */
+
+        .services-list {
+            display: grid;
+            gap: 16px;
+        }
+
+
+        .service-admin-card {
+
+            padding: 22px;
+
+            background:
+                rgba(255,255,255,0.035);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            border-radius: 16px;
+
+            transition:
+                border-color 0.2s ease;
+        }
+
+
+        .service-admin-card:hover {
+            border-color:
+                rgba(167,139,250,0.28);
+        }
+
+
+        .service-admin-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+
+        .service-admin-number {
+            color: #a78bfa;
+
+            font-size: 0.75rem;
+            font-weight: 800;
+
+            letter-spacing: 0.10em;
+        }
+
+
+        .service-admin-card h2 {
+            margin: 5px 0 7px;
+
+            font-size: 1.15rem;
+        }
+
+
+        .service-admin-description {
+            margin: 0;
+
+            max-width: 720px;
+
+            color: rgba(255,255,255,0.58);
+
+            line-height: 1.6;
+
+            font-size: 0.88rem;
+        }
+
+
+        .service-hidden-badge {
+            flex-shrink: 0;
+
+            padding: 5px 9px;
+
+            color: #fbbf24;
+
+            background:
+                rgba(251,191,36,0.08);
+
+            border:
+                1px solid
+                rgba(251,191,36,0.15);
+
+            border-radius: 999px;
+
+            font-size: 0.68rem;
+            font-weight: 800;
+        }
+
+
+        .service-admin-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+
+            margin-top: 17px;
+        }
+
+
+        .service-meta-item {
+            padding: 6px 9px;
+
+            color: rgba(255,255,255,0.62);
+
+            background:
+                rgba(255,255,255,0.045);
+
+            border-radius: 7px;
+
+            font-size: 0.70rem;
+        }
+
+
+        .service-admin-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+
+            margin-top: 18px;
+        }
+
+
+        .service-action-button {
+
+            padding: 8px 12px;
+
+            border-radius: 8px;
+
+            font: inherit;
+            font-size: 0.76rem;
+            font-weight: 800;
+
+            cursor: pointer;
+
+            color: rgba(255,255,255,0.82);
+
+            background:
+                rgba(255,255,255,0.05);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.09);
+        }
+
+
+        .service-action-button:hover {
+            background:
+                rgba(255,255,255,0.09);
+        }
+
+
+        .service-action-button.delete {
+            color: #fca5a5;
+
+            border-color:
+                rgba(248,113,113,0.18);
+        }
+
+
+        .service-empty {
+            padding: 45px 20px;
+
+            text-align: center;
+
+            color: rgba(255,255,255,0.48);
+
+            border:
+                1px dashed
+                rgba(255,255,255,0.12);
+
+            border-radius: 16px;
+        }
+
+
+        .loading-services {
+            color: rgba(255,255,255,0.55);
+        }
+
+
+        /* =========================================================
+           MOBILE
+        ========================================================= */
+
+        @media (max-width: 760px) {
+
+            .portfolio-services-main {
+                padding-top: 35px;
+            }
+
+
+            .service-form-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .service-field.full {
+                grid-column: auto;
+            }
+
+
+            .service-options {
+                grid-template-columns: 1fr 1fr;
+            }
+
+
+            .services-toolbar {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+
+            .add-service-button {
+                width: 100%;
+            }
+
+
+            .service-admin-top {
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="portfolio-services-page">
+
+
+    <!-- =========================================================
+         HEADER
+    ========================================================= -->
+
+    <header class="portfolio-services-header">
+
+        <div class="portfolio-services-header-inner">
+
+            <a
+                href="dashboard.html"
+                class="portfolio-services-brand"
+            >
+                FOFANA<span>.</span>
+            </a>
+
+
+            <a
+                href="portfolio-settings.html"
+                class="portfolio-services-back"
+            >
+                ← Portfolio Settings
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================================================
+         MAIN
+    ========================================================= -->
+
+    <main class="portfolio-services-main">
+
+
+        <div class="services-heading">
+
+            <p class="services-label">
+                PORTFOLIO CONTROL
+            </p>
+
+            <h1>
+                Manage Services
+            </h1>
+
+            <p>
+                Add, edit and control the services displayed
+                on your FOFANA portfolio.
+            </p>
+
+        </div>
+
+
+        <!-- =====================================================
+             TOOLBAR
+        ===================================================== -->
+
+        <div class="services-toolbar">
+
+            <span
+                id="servicesStatus"
+                class="services-status"
+            >
+                Loading services...
+            </span>
+
+
+            <button
+                type="button"
+                class="add-service-button"
+                id="addServiceButton"
+            >
+                + Add Service
+            </button>
+
+        </div>
+
+
+        <!-- =====================================================
+             SERVICE FORM
+        ===================================================== -->
+
+        <section
+            id="serviceFormPanel"
+            class="service-form-panel"
+        >
+
+            <h2
+                id="serviceFormTitle"
+                class="service-form-title"
+            >
+                Add Service
+            </h2>
+
+
+            <form id="serviceForm">
+
+
+                <div class="service-form-grid">
+
+
+                    <!-- SERVICE NUMBER -->
+
+                    <div class="service-field">
+
+                        <label for="serviceNumber">
+                            Service Number
+                        </label>
+
+                        <input
+                            type="text"
+                            id="serviceNumber"
+                            placeholder="07"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- TITLE -->
+
+                    <div class="service-field">
+
+                        <label for="serviceTitle">
+                            Service Title
+                        </label>
+
+                        <input
+                            type="text"
+                            id="serviceTitle"
+                            placeholder="UI/UX DESIGN"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- SLUG -->
+
+                    <div class="service-field full">
+
+                        <label for="serviceSlug">
+                            Service Slug
+                        </label>
+
+                        <input
+                            type="text"
+                            id="serviceSlug"
+                            placeholder="ui-ux-design"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- SHORT DESCRIPTION -->
+
+                    <div class="service-field full">
+
+                        <label for="serviceDescription">
+                            Short Description
+                        </label>
+
+                        <textarea
+                            id="serviceDescription"
+                            placeholder="Describe this service..."
+                            required
+                        ></textarea>
+
+                    </div>
+
+
+                    <!-- LEARN MORE TITLE -->
+
+                    <div class="service-field">
+
+                        <label for="learnMoreTitle">
+                            Learn More Title
+                        </label>
+
+                        <input
+                            type="text"
+                            id="learnMoreTitle"
+                            placeholder="WHY UI/UX DESIGN MATTERS"
+                        >
+
+                    </div>
+
+
+                    <!-- DISPLAY ORDER -->
+
+                    <div class="service-field">
+
+                        <label for="displayOrder">
+                            Display Order
+                        </label>
+
+                        <input
+                            type="number"
+                            id="displayOrder"
+                            min="1"
+                            value="1"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- LEARN MORE DESCRIPTION -->
+
+                    <div class="service-field full">
+
+                        <label for="learnMoreDescription">
+                            Learn More Description
+                        </label>
+
+                        <textarea
+                            id="learnMoreDescription"
+                            placeholder="Explain more about this service..."
+                        ></textarea>
+
+                    </div>
+
+
+                    <!-- OPTIONS -->
+
+                    <div class="service-options">
+
+
+                        <label class="service-check">
+
+                            <input
+                                type="checkbox"
+                                id="showOnHomepage"
+                                checked
+                            >
+
+                            Show on homepage
+
+                        </label>
+
+
+                        <label class="service-check">
+
+                            <input
+                                type="checkbox"
+                                id="showViewProjects"
+                                checked
+                            >
+
+                            View Projects
+
+                        </label>
+
+
+                        <label class="service-check">
+
+                            <input
+                                type="checkbox"
+                                id="showLearnMore"
+                                checked
+                            >
+
+                            Learn More
+
+                        </label>
+
+
+                        <label class="service-check">
+
+                            <input
+                                type="checkbox"
+                                id="autoSlide"
+                                checked
+                            >
+
+                            Auto-slide
+
+                        </label>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- FORM ACTIONS -->
+
+                <div class="service-form-actions">
+
+                    <button
+                        type="submit"
+                        class="save-service-button"
+                    >
+                        Save Service
+                    </button>
+
+
+                    <button
+                        type="button"
+                        id="cancelServiceButton"
+                        class="cancel-service-button"
+                    >
+                        Cancel
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="formMessage"
+                    class="form-message"
+                ></div>
+
+
+            </form>
+
+        </section>
+
+
+        <!-- =====================================================
+             SERVICES LIST
+        ===================================================== -->
+
+        <section
+            id="servicesList"
+            class="services-list"
+        >
+
+            <div class="loading-services">
+                Loading services...
+            </div>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+<!-- =========================================================
+     SUPABASE
+========================================================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<script>
+
+    /* =========================================================
+       SUPABASE
+    ========================================================= */
+
+    const SUPABASE_URL =
+        "https://uryfgatzyesolwwmugin.supabase.co";
+
+    const SUPABASE_KEY =
+        "sb_publishable_QL4lxGKETA1_xMFFJ7RV5g_Wuyi_x-d";
+
+
+    const supabaseClient =
+        window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_KEY,
+            {
+                auth: {
+                    persistSession: true,
+                    autoRefreshToken: true,
+                    detectSessionInUrl: false,
+                    storage: window.localStorage
+                }
+            }
+        );
+
+
+    /* =========================================================
+       ELEMENTS
+    ========================================================= */
+
+    const servicesList =
+        document.getElementById(
+            "servicesList"
+        );
+
+
+    const servicesStatus =
+        document.getElementById(
+            "servicesStatus"
+        );
+
+
+    const addServiceButton =
+        document.getElementById(
+            "addServiceButton"
+        );
+
+
+    const serviceFormPanel =
+        document.getElementById(
+            "serviceFormPanel"
+        );
+
+
+    const serviceForm =
+        document.getElementById(
+            "serviceForm"
+        );
+
+
+    const serviceFormTitle =
+        document.getElementById(
+            "serviceFormTitle"
+        );
+
+
+    const cancelServiceButton =
+        document.getElementById(
+            "cancelServiceButton"
+        );
+
+
+    const formMessage =
+        document.getElementById(
+            "formMessage"
+        );
+
+
+    let editingServiceId = null;
+
+
+    /* =========================================================
+       FORM ELEMENTS
+    ========================================================= */
+
+    const serviceNumber =
+        document.getElementById(
+            "serviceNumber"
+        );
+
+
+    const serviceTitle =
+        document.getElementById(
+            "serviceTitle"
+        );
+
+
+    const serviceSlug =
+        document.getElementById(
+            "serviceSlug"
+        );
+
+
+    const serviceDescription =
+        document.getElementById(
+            "serviceDescription"
+        );
+
+
+    const learnMoreTitle =
+        document.getElementById(
+            "learnMoreTitle"
+        );
+
+
+    const learnMoreDescription =
+        document.getElementById(
+            "learnMoreDescription"
+        );
+
+
+    const displayOrder =
+        document.getElementById(
+            "displayOrder"
+        );
+
+
+    const showOnHomepage =
+        document.getElementById(
+            "showOnHomepage"
+        );
+
+
+    const showViewProjects =
+        document.getElementById(
+            "showViewProjects"
+        );
+
+
+    const showLearnMore =
+        document.getElementById(
+            "showLearnMore"
+        );
+
+
+    const autoSlide =
+        document.getElementById(
+            "autoSlide"
+        );
+
+
+    /* =========================================================
+       AUTHENTICATION
+    ========================================================= */
+
+    async function checkAdminAccess() {
+
+        const {
+            data: {
+                user
+            }
+        } =
+            await supabaseClient
+                .auth
+                .getUser();
+
+
+        if (!user) {
+
+            window.location.href =
+                "admin.html";
+
+            return false;
+
+        }
+
+
+        const {
+            data: profile,
+            error
+        } =
+            await supabaseClient
+                .from("client_profiles")
+                .select("role")
+                .eq("id", user.id)
+                .single();
+
+
+        if (
+            error ||
+            !profile ||
+            profile.role !== "admin"
+        ) {
+
+            window.location.href =
+                "admin.html";
+
+            return false;
+
+        }
+
+
+        return true;
+
+    }
+
+
+    /* =========================================================
+       LOAD SERVICES
+    ========================================================= */
+
+    async function loadServices() {
+
+        servicesList.innerHTML =
+            '<div class="loading-services">Loading services...</div>';
+
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("portfolio_services")
+                .select("*")
+                .order(
+                    "display_order",
+                    {
+                        ascending: true
+                    }
+                );
+
+
+        if (error) {
+
+            console.error(
+                "Load services error:",
+                error
+            );
+
+            servicesList.innerHTML =
+                `
+                <div class="service-empty">
+                    Unable to load services.
+                    <br><br>
+                    ${escapeHtml(error.message)}
+                </div>
+                `;
+
+            servicesStatus.textContent =
+                "Unable to load services.";
+
+            return;
+
+        }
+
+
+        servicesStatus.textContent =
+            `${data.length} service${data.length === 1 ? "" : "s"}`;
+
+
+        if (!data.length) {
+
+            servicesList.innerHTML =
+                `
+                <div class="service-empty">
+                    No services have been created yet.
+                    <br><br>
+                    Click <strong>+ Add Service</strong> to create one.
+                </div>
+                `;
+
+            return;
+
+        }
+
+
+        servicesList.innerHTML =
+            data
+                .map(
+                    service =>
+                        createServiceCard(
+                            service
+                        )
+                )
+                .join("");
+
+    }
+
+
+    /* =========================================================
+       CREATE SERVICE CARD
+    ========================================================= */
+
+    function createServiceCard(service) {
+
+        const visibilityBadge =
+            service.show_on_homepage
+                ? ""
+                :
+                `
+                <span class="service-hidden-badge">
+                    HIDDEN
+                </span>
+                `;
+
+
+        const learnMoreStatus =
+            service.show_learn_more
+                ? "Learn More ✓"
+                : "Learn More ✕";
+
+
+        const projectsStatus =
+            service.show_view_projects
+                ? "View Projects ✓"
+                : "View Projects ✕";
+
+
+        const slideStatus =
+            service.auto_slide
+                ? "Auto-slide ✓"
+                : "Auto-slide ✕";
+
+
+        return `
+
+            <article
+                class="service-admin-card"
+            >
+
+                <div
+                    class="service-admin-top"
+                >
+
+                    <div>
+
+                        <div
+                            class="service-admin-number"
+                        >
+                            ${escapeHtml(
+                                service.service_number
+                            )}
+                        </div>
+
+                        <h2>
+                            ${escapeHtml(
+                                service.title
+                            )}
+                        </h2>
+
+                        <p
+                            class="service-admin-description"
+                        >
+                            ${escapeHtml(
+                                service.short_description
+                            )}
+                        </p>
+
+                    </div>
+
+                    ${visibilityBadge}
+
+                </div>
+
+
+                <div
+                    class="service-admin-meta"
+                >
+
+                    <span
+                        class="service-meta-item"
+                    >
+                        Order:
+                        ${escapeHtml(
+                            String(
+                                service.display_order
+                            )
+                        )}
+                    </span>
+
+
+                    <span
+                        class="service-meta-item"
+                    >
+                        ${learnMoreStatus}
+                    </span>
+
+
+                    <span
+                        class="service-meta-item"
+                    >
+                        ${projectsStatus}
+                    </span>
+
+
+                    <span
+                        class="service-meta-item"
+                    >
+                        ${slideStatus}
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="service-admin-actions"
+                >
+
+                    <button
+                        type="button"
+                        class="service-action-button"
+                        onclick="editService('${service.id}')"
+                    >
+                        Edit
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="service-action-button"
+                        onclick="toggleServiceVisibility(
+                            '${service.id}',
+                            ${service.show_on_homepage}
+                        )"
+                    >
+                        ${
+                            service.show_on_homepage
+                                ? "Hide"
+                                : "Show"
+                        }
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="service-action-button delete"
+                        onclick="deleteService('${service.id}')"
+                    >
+                        Delete
+                    </button>
+
+                </div>
+
+            </article>
+
+        `;
+
+    }
+
+
+    /* =========================================================
+       ADD SERVICE
+    ========================================================= */
+
+    addServiceButton.addEventListener(
+        "click",
+        function () {
+
+            resetForm();
+
+            serviceFormTitle.textContent =
+                "Add Service";
+
+            serviceFormPanel.classList.add(
+                "active"
+            );
+
+            serviceTitle.focus();
+
+        }
+    );
+
+
+    /* =========================================================
+       CANCEL FORM
+    ========================================================= */
+
+    cancelServiceButton.addEventListener(
+        "click",
+        function () {
+
+            closeForm();
+
+        }
+    );
+
+
+    /* =========================================================
+       SUBMIT FORM
+    ========================================================= */
+
+    serviceForm.addEventListener(
+        "submit",
+        async function (event) {
+
+            event.preventDefault();
+
+
+            formMessage.textContent =
+                "Saving...";
+
+            formMessage.className =
+                "form-message";
+
+
+            const payload = {
+
+                slug:
+                    serviceSlug.value
+                        .trim()
+                        .toLowerCase(),
+
+                service_number:
+                    serviceNumber.value
+                        .trim(),
+
+                title:
+                    serviceTitle.value
+                        .trim(),
+
+                short_description:
+                    serviceDescription.value
+                        .trim(),
+
+                learn_more_title:
+                    learnMoreTitle.value
+                        .trim() || null,
+
+                learn_more_description:
+                    learnMoreDescription.value
+                        .trim() || null,
+
+                show_on_homepage:
+                    showOnHomepage.checked,
+
+                show_view_projects:
+                    showViewProjects.checked,
+
+                show_learn_more:
+                    showLearnMore.checked,
+
+                auto_slide:
+                    autoSlide.checked,
+
+                display_order:
+                    Number(
+                        displayOrder.value
+                    )
+
+            };
+
+
+            let result;
+
+
+            if (editingServiceId) {
+
+                result =
+                    await supabaseClient
+                        .from(
+                            "portfolio_services"
+                        )
+                        .update(payload)
+                        .eq(
+                            "id",
+                            editingServiceId
+                        );
+
+            } else {
+
+                result =
+                    await supabaseClient
+                        .from(
+                            "portfolio_services"
+                        )
+                        .insert(payload);
+
+            }
+
+
+            if (result.error) {
+
+                console.error(
+                    "Save service error:",
+                    result.error
+                );
+
+                formMessage.textContent =
+                    result.error.message;
+
+                formMessage.className =
+                    "form-message error";
+
+                return;
+
+            }
+
+
+            formMessage.textContent =
+                editingServiceId
+                    ? "Service updated successfully."
+                    : "Service added successfully.";
+
+
+            formMessage.className =
+                "form-message success";
+
+
+            await loadServices();
+
+
+            setTimeout(
+                function () {
+
+                    closeForm();
+
+                },
+                700
+            );
+
+        }
+    );
+
+
+    /* =========================================================
+       EDIT SERVICE
+    ========================================================= */
+
+    async function editService(id) {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("portfolio_services")
+                .select("*")
+                .eq("id", id)
+                .single();
+
+
+        if (error) {
+
+            alert(
+                "Unable to load this service."
+            );
+
+            console.error(
+                error
+            );
+
+            return;
+
+        }
+
+
+        editingServiceId =
+            data.id;
+
+
+        serviceFormTitle.textContent =
+            "Edit Service";
+
+
+        serviceNumber.value =
+            data.service_number || "";
+
+
+        serviceTitle.value =
+            data.title || "";
+
+
+        serviceSlug.value =
+            data.slug || "";
+
+
+        serviceDescription.value =
+            data.short_description || "";
+
+
+        learnMoreTitle.value =
+            data.learn_more_title || "";
+
+
+        learnMoreDescription.value =
+            data.learn_more_description || "";
+
+
+        displayOrder.value =
+            data.display_order || 1;
+
+
+        showOnHomepage.checked =
+            data.show_on_homepage;
+
+
+        showViewProjects.checked =
+            data.show_view_projects;
+
+
+        showLearnMore.checked =
+            data.show_learn_more;
+
+
+        autoSlide.checked =
+            data.auto_slide;
+
+
+        formMessage.textContent =
+            "";
+
+
+        serviceFormPanel.classList.add(
+            "active"
+        );
+
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    }
+
+
+    /* =========================================================
+       TOGGLE VISIBILITY
+    ========================================================= */
+
+    async function toggleServiceVisibility(
+        id,
+        currentState
+    ) {
+
+        const {
+            error
+        } =
+            await supabaseClient
+                .from(
+                    "portfolio_services"
+                )
+                .update({
+                    show_on_homepage:
+                        !currentState
+                })
+                .eq(
+                    "id",
+                    id
+                );
+
+
+        if (error) {
+
+            alert(
+                "Unable to update service visibility."
+            );
+
+            console.error(
+                error
+            );
+
+            return;
+
+        }
+
+
+        await loadServices();
+
+    }
+
+
+    /* =========================================================
+       DELETE SERVICE
+    ========================================================= */
+
+    async function deleteService(id) {
+
+        const confirmed =
+            confirm(
+                "Are you sure you want to delete this service? This will not delete its existing portfolio projects."
+            );
+
+
+        if (!confirmed) {
+            return;
+        }
+
+
+        const {
+            error
+        } =
+            await supabaseClient
+                .from(
+                    "portfolio_services"
+                )
+                .delete()
+                .eq(
+                    "id",
+                    id
+                );
+
+
+        if (error) {
+
+            alert(
+                "Unable to delete this service."
+            );
+
+            console.error(
+                error
+            );
+
+            return;
+
+        }
+
+
+        await loadServices();
+
+    }
+
+
+    /* =========================================================
+       RESET FORM
+    ========================================================= */
+
+    function resetForm() {
+
+        editingServiceId = null;
+
+        serviceForm.reset();
+
+        showOnHomepage.checked =
+            true;
+
+        showViewProjects.checked =
+            true;
+
+        showLearnMore.checked =
+            true;
+
+        autoSlide.checked =
+            true;
+
+        displayOrder.value =
+            1;
+
+        formMessage.textContent =
+            "";
+
+        formMessage.className =
+            "form-message";
+
+    }
+
+
+    /* =========================================================
+       CLOSE FORM
+    ========================================================= */
+
+    function closeForm() {
+
+        serviceFormPanel.classList.remove(
+            "active"
+        );
+
+        resetForm();
+
+    }
+
+
+    /* =========================================================
+       ESCAPE HTML
+    ========================================================= */
+
+    function escapeHtml(value) {
+
+        return String(value)
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+            .replace(
+                /</g,
+                "&lt;"
+            )
+            .replace(
+                />/g,
+                "&gt;"
+            )
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+            .replace(
+                /'/g,
+                "&#039;"
+            );
+
+    }
+
+
+    /* =========================================================
+       START
+    ========================================================= */
+
+    async function initializePage() {
+
+        const allowed =
+            await checkAdminAccess();
+
+
+        if (!allowed) {
+            return;
+        }
+
+
+        await loadServices();
+
+    }
+
+
+    initializePage();
+
+</script>
+
+</body>
+
+</html>
