@@ -11145,3 +11145,74 @@ body > .navbar:not(.project-navbar) {
         font-size: 11px;
     }
 }
+
+
+/* =========================================================
+   FOOTER SERVICES - TWO PER ROW + DIVIDERS
+   Added at bottom to override existing footer styles
+========================================================= */
+
+.footer-services {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+}
+
+.footer-services a {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 42px;
+    padding: 10px 14px;
+
+    color: rgba(10, 7, 16, 0.55);
+    font-size: 0.84rem;
+    text-decoration: none;
+
+    transition: color 0.2s ease;
+}
+
+/* ---------------------------------------------------------
+   HORIZONTAL LINES BETWEEN SERVICE ROWS
+--------------------------------------------------------- */
+
+.footer-services a:nth-child(n + 3) {
+    border-top: 1px solid rgba(10, 7, 16, 0.10);
+}
+
+/* ---------------------------------------------------------
+   VERTICAL LINE BETWEEN THE TWO COLUMNS
+--------------------------------------------------------- */
+
+.footer-services a:nth-child(even) {
+    border-left: 1px solid rgba(10, 7, 16, 0.10);
+}
+
+/* ---------------------------------------------------------
+   HOVER
+--------------------------------------------------------- */
+
+.footer-services a:hover {
+    color: #7c3aed;
+}
+
+
+/* =========================================================
+   MOBILE FOOTER SERVICES
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .footer-services {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-services a {
+        border-left: none !important;
+    }
+
+    .footer-services a + a {
+        border-top: 1px solid rgba(10, 7, 16, 0.10);
+    }
+
+}
