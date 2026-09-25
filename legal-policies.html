@@ -310,18 +310,393 @@
     </main>
 
 
-    <!-- =====================================================
-         JAVASCRIPT
-    ===================================================== -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <script>
+<script>
 
-        /*
-         * Supabase connection will be added
-         * in the next step.
-         */
+    /* =========================================================
+       SUPABASE
+    ========================================================= */
 
-    </script>
+    const SUPABASE_URL =
+        "https://uryfgatzyesolwwmugin.supabase.co";
 
-</body>
-</html>
+    const SUPABASE_KEY =
+        "YOUR_EXISTING_SUPABASE_PUBLISHABLE_KEY";
+
+    const portfolioSupabase =
+        supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_KEY
+        );
+
+
+    /* =========================================================
+       LOAD POLICIES
+    ========================================================= */
+
+    async function loadPolicies() {
+
+        const container =
+            document.getElementById(
+                "policiesContainer"
+            );
+
+        try {
+
+            const {
+                data,
+                error
+            } =
+                await portfolioSupabase
+                    .from("legal_policies")
+                    .select("*")
+                    .order("created_at", {
+                        ascending: true
+                    });
+
+
+            if (error) {
+                throw error;
+            }
+
+
+            if (!data || data.length === 0) {
+
+                container.innerHTML = `
+                    <div class="loading-message">
+                        No policies found.
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            container.innerHTML = "";
+
+
+            data.forEach(function (policy) {
+
+                const card =
+                    document.createElement("article");
+
+                card.className =
+                    "policy-card";
+
+
+                const statusClass =
+                    policy.status === "published"
+                        ? "status-published"
+                        : "status-draft";
+
+
+                const statusText =
+                    policy.status === "published"
+                        ? "Published"
+                        : "Draft";
+
+
+                const updatedDate =
+                    policy.updated_at
+                        ? new Date(
+                            policy.updated_at
+                        ).toLocaleString()
+                        : "Not updated yet";
+
+
+                card.innerHTML = `
+
+                    <div class="policy-card-header">
+
+                        <div class="policy-title-area">
+
+                            <h2>
+                                ${escapeHtml(
+                                    policy.title
+                                )}
+                            </h2>
+
+                            <p>
+                                ${getPolicyDescription(
+                                    policy.policy_type
+                                )}
+                            </p>
+
+                        </div>
+
+
+                        <span
+                            class="policy-status ${statusClass}"
+                        >
+                            ${statusText}
+                        </span>
+
+                    </div>
+
+
+                    <textarea
+                        class="policy-editor"
+                        data-policy-id="${policy.id}"
+                    >${policy.content || ""}</textarea>
+
+
+                    <div class="policy-card-footer">
+
+                        <span class="last-updated">
+
+                            Last updated:
+                            ${updatedDate}
+
+                        </span>
+
+
+                        <div class="policy-actions">
+
+                            <button
+                                type="button"
+                                class="policy-button save-draft-button"
+                                data-action="draft"
+                                data-id="${policy.id}"
+                            >
+                                Save Draft
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="policy-button publish-button"
+                                data-action="publish"
+                                data-id="${policy.id}"
+                            >
+                                Publish
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+
+                container.appendChild(card);
+
+            });
+
+
+            attachPolicyButtons();
+
+        } catch (error) {
+
+            console.error(
+                "LOAD POLICIES ERROR:",
+                error
+            );
+
+
+            container.innerHTML = `
+                <div class="loading-message">
+                    Unable to load policies.
+                    Please try again.
+                </div>
+            `;
+
+        }
+
+    }
+
+
+    /* =========================================================
+       POLICY DESCRIPTIONS
+    ========================================================= */
+
+    function getPolicyDescription(
+        policyType
+    ) {
+
+        const descriptions = {
+
+            privacy:
+                "How visitor and client information is handled.",
+
+            terms:
+                "Rules and conditions for using this website and services.",
+
+            refund:
+                "Conditions relating to returns, refunds and cancellations.",
+
+            cookies:
+                "Information about cookies and similar website technologies."
+
+        };
+
+
+        return descriptions[policyType] ||
+            "Manage this legal policy.";
+
+    }
+
+
+    /* =========================================================
+       ESCAPE HTML
+    ========================================================= */
+
+    function escapeHtml(
+        value
+    ) {
+
+        const div =
+            document.createElement("div");
+
+        div.textContent =
+            value || "";
+
+        return div.innerHTML;
+
+    }
+
+
+    /* =========================================================
+       POLICY BUTTONS
+    ========================================================= */
+
+    function attachPolicyButtons() {
+
+        const buttons =
+            document.querySelectorAll(
+                ".policy-button"
+            );
+
+
+        buttons.forEach(function (button) {
+
+            button.addEventListener(
+                "click",
+                async function () {
+
+                    const policyId =
+                        this.dataset.id;
+
+                    const action =
+                        this.dataset.action;
+
+
+                    const editor =
+                        document.querySelector(
+                            `.policy-editor[data-policy-id="${policyId}"]`
+                        );
+
+
+                    if (!editor) {
+                        return;
+                    }
+
+
+                    const content =
+                        editor.value;
+
+
+                    const newStatus =
+                        action === "publish"
+                            ? "published"
+                            : "draft";
+
+
+                    this.disabled = true;
+
+
+                    const originalText =
+                        this.textContent;
+
+
+                    this.textContent =
+                        action === "publish"
+                            ? "Publishing..."
+                            : "Saving...";
+
+
+                    try {
+
+                        const {
+                            error
+                        } =
+                            await portfolioSupabase
+                                .from("legal_policies")
+                                .update({
+
+                                    content:
+                                        content,
+
+                                    status:
+                                        newStatus,
+
+                                    updated_at:
+                                        new Date().toISOString(),
+
+                                    last_updated:
+                                        new Date().toISOString()
+
+                                })
+                                .eq(
+                                    "id",
+                                    policyId
+                                );
+
+
+                        if (error) {
+                            throw error;
+                        }
+
+
+                        alert(
+                            action === "publish"
+                                ? "Policy published successfully."
+                                : "Policy saved as draft."
+                        );
+
+
+                        await loadPolicies();
+
+                    } catch (error) {
+
+                        console.error(
+                            "SAVE POLICY ERROR:",
+                            error
+                        );
+
+
+                        alert(
+                            "Unable to save policy. Please try again."
+                        );
+
+                    } finally {
+
+                        this.disabled = false;
+
+                        this.textContent =
+                            originalText;
+
+                    }
+
+                }
+            );
+
+        });
+
+    }
+
+
+    /* =========================================================
+       INITIALIZE
+    ========================================================= */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            loadPolicies();
+
+        }
+    );
+
+</script>
