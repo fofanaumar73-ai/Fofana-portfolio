@@ -527,6 +527,86 @@ async function uploadProjectFile(
 
 
 /* =========================================================
+   11B. LOAD PROJECT CATEGORIES FROM SERVICES
+========================================================= */
+
+async function loadProjectCategories() {
+
+    const categoryInput =
+        document.getElementById(
+            "projectCategory"
+        );
+
+    if (!categoryInput) {
+        return;
+    }
+
+
+    const {
+        data: services,
+        error
+    } =
+        await portfolioSupabase
+            .from("portfolio_services")
+            .select(
+                "slug, title, display_order"
+            )
+            .order(
+                "display_order",
+                {
+                    ascending: true
+                }
+            );
+
+
+    if (error) {
+
+        console.error(
+            "LOAD PROJECT CATEGORIES ERROR:",
+            error
+        );
+
+        return;
+    }
+
+
+    if (
+        !Array.isArray(services)
+    ) {
+        return;
+    }
+
+
+    categoryInput.innerHTML = `
+        <option value="">
+            Select project category
+        </option>
+    `;
+
+
+    services.forEach(
+        service => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+            option.value =
+                service.slug;
+
+            option.textContent =
+                service.title;
+
+            categoryInput.appendChild(
+                option
+            );
+        }
+    );
+}
+
+
+/* =========================================================
    12. ADD PROJECT FORM
 ========================================================= */
 
