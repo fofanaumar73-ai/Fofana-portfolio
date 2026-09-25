@@ -1978,7 +1978,366 @@ async function loadFooterServices() {
 
 
 /* =========================================================
-   24. INITIALIZE
+   24. LOAD DYNAMIC HOMEPAGE SERVICES
+========================================================= */
+
+async function loadHomepageServices(projects) {
+
+    try {
+
+        const {
+            data: services,
+            error
+        } =
+            await portfolioSupabase
+                .from("portfolio_services")
+                .select("*")
+                .eq(
+                    "show_on_homepage",
+                    true
+                )
+                .order(
+                    "display_order",
+                    {
+                        ascending: true
+                    }
+                );
+
+        if (error) {
+
+            console.error(
+                "HOMEPAGE SERVICES ERROR:",
+                error
+            );
+
+            return;
+        }
+
+        if (
+            !Array.isArray(services)
+        ) {
+            return;
+        }
+
+
+        const workSection =
+            document.getElementById("work");
+
+        if (!workSection) {
+            return;
+        }
+
+
+        const container =
+            workSection.querySelector(
+                ".container"
+            );
+
+        if (!container) {
+            return;
+        }
+
+
+        /*
+         * Find the existing hard-coded
+         * portfolio service sections.
+         */
+
+        const oldServiceSections =
+            container.querySelectorAll(
+                "section[data-category]"
+            );
+
+
+        /*
+         * Remove the old hard-coded
+         * service sections.
+         */
+
+        oldServiceSections.forEach(
+            section => {
+                section.remove();
+            }
+        );
+
+
+        /*
+         * Find the quality delivery
+         * element so services are inserted
+         * BEFORE it.
+         */
+
+        const qualityWrapper =
+            container.querySelector(
+                ".quality-delivery-wrapper"
+            );
+
+
+        /*
+         * Create each service dynamically.
+         */
+
+        services.forEach(
+            service => {
+
+                const section =
+                    document.createElement(
+                        "section"
+                    );
+
+
+                const category =
+                    normalizeCategory(
+                        service.slug
+                    );
+
+
+                section.className =
+                    "portfolio-section";
+
+
+                /*
+                 * All services except Web Development
+                 * use the same creative portfolio
+                 * layout as Brochure, Ebook, etc.
+                 */
+
+                if (
+                    category !==
+                    "web-development"
+                ) {
+
+                    section.classList.add(
+                        "design-section"
+                    );
+
+                }
+
+
+                section.dataset.category =
+                    category;
+
+                section.id =
+                    category;
+
+
+                const infoId =
+                    `${category}-info`;
+
+
+                const showLearnMore =
+                    service.show_learn_more !== false;
+
+
+                section.innerHTML = `
+
+                    <div class="service-heading">
+
+                        <p class="service-number">
+                            ${escapeHtml(
+                                service.service_number
+                            )}
+                        </p>
+
+                        <h2>
+                            ${escapeHtml(
+                                service.title
+                            )}
+                        </h2>
+
+                        <p>
+                            ${escapeHtml(
+                                service.short_description
+                            )}
+                        </p>
+
+                    </div>
+
+
+                    ${
+                        category ===
+                        "web-development"
+
+                            ? `
+
+                                <div
+                                    class="portfolio-slider"
+                                >
+
+                                    <button
+                                        class="slider-prev"
+                                        type="button"
+                                        aria-label="Previous project"
+                                    >
+                                        ←
+                                    </button>
+
+
+                                    <div
+                                        class="portfolio-slider-track"
+                                    ></div>
+
+
+                                    <button
+                                        class="slider-next"
+                                        type="button"
+                                        aria-label="Next project"
+                                    >
+                                        →
+                                    </button>
+
+                                </div>
+
+                            `
+
+                            : `
+
+                                <div
+                                    class="full-width-slider"
+                                >
+
+                                    <button
+                                        class="slider-prev"
+                                        type="button"
+                                        aria-label="Previous project"
+                                    >
+                                        ←
+                                    </button>
+
+
+                                    <div
+                                        class="portfolio-slider-track"
+                                    ></div>
+
+
+                                    <button
+                                        class="slider-next"
+                                        type="button"
+                                        aria-label="Next project"
+                                    >
+                                        →
+                                    </button>
+
+                                </div>
+
+                            `
+                    }
+
+
+                    ${
+                        showLearnMore &&
+                        (
+                            service.learn_more_title ||
+                            service.learn_more_description
+                        )
+
+                            ? `
+
+                                <div class="service-action">
+
+                                    <button
+                                        class="learn-more"
+                                        type="button"
+                                        data-learn-target="${infoId}"
+                                    >
+                                        LEARN MORE
+                                    </button>
+
+                                </div>
+
+
+                                <div
+                                    class="service-information"
+                                    id="${infoId}"
+                                    hidden
+                                >
+
+                                    ${
+                                        service.learn_more_title
+                                            ? `
+                                                <h3>
+                                                    ${escapeHtml(
+                                                        service.learn_more_title
+                                                    )}
+                                                </h3>
+                                            `
+                                            : ""
+                                    }
+
+
+                                    ${
+                                        service.learn_more_description
+                                            ? `
+                                                <p>
+                                                    ${escapeHtml(
+                                                        service.learn_more_description
+                                                    )}
+                                                </p>
+                                            `
+                                            : ""
+                                    }
+
+                                </div>
+
+                            `
+
+                            : ""
+                    }
+
+                `;
+
+
+                if (qualityWrapper) {
+
+                    container.insertBefore(
+                        section,
+                        qualityWrapper
+                    );
+
+                } else {
+
+                    container.appendChild(
+                        section
+                    );
+
+                }
+
+            }
+        );
+
+
+        /*
+         * Reconnect the existing project
+         * slider system to the new sections.
+         */
+
+        initializePortfolioSliders(
+            projects
+        );
+
+
+        /*
+         * Connect Learn More buttons
+         * created dynamically.
+         */
+
+        initializeLearnMore();
+
+
+    } catch (error) {
+
+        console.error(
+            "Unexpected homepage services error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   25. INITIALIZE
    ========================================================= */
 
 document.addEventListener(
