@@ -2358,6 +2358,13 @@ if (
 
             await protectAdminPage();
         }
+
+       if (isAddProjectPage) {
+
+    await loadProjectCategories();
+
+}
+       
     }
 );
 
