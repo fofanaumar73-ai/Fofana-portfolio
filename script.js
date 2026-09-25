@@ -778,8 +778,7 @@ async function loadPortfolioProjects() {
         await loadHomepageServices(
     projects
 );
-        );
-
+      
     } catch (error) {
 
         console.error(
