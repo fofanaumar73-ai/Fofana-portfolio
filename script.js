@@ -1888,7 +1888,97 @@ function removeOldCreativeButtons() {
 
 
 /* =========================================================
-   23. INITIALIZE
+   23. DYNAMIC FOOTER SERVICES
+========================================================= */
+
+async function loadFooterServices() {
+
+    const footerServices =
+        document.getElementById(
+            "footerServices"
+        );
+
+    if (!footerServices) {
+        return;
+    }
+
+    try {
+
+        const {
+            data: services,
+            error
+        } =
+            await portfolioSupabase
+                .from("portfolio_services")
+                .select(
+                    "slug, title, show_on_homepage, display_order"
+                )
+                .eq(
+                    "show_on_homepage",
+                    true
+                )
+                .order(
+                    "display_order",
+                    {
+                        ascending: true
+                    }
+                );
+
+        if (error) {
+
+            console.error(
+                "FOOTER SERVICES ERROR:",
+                error
+            );
+
+            return;
+        }
+
+        if (
+            !Array.isArray(services) ||
+            !services.length
+        ) {
+
+            footerServices.innerHTML = "";
+
+            return;
+        }
+
+        footerServices.innerHTML =
+            services
+                .map(
+                    service => {
+
+                        const slug =
+                            encodeURIComponent(
+                                service.slug
+                            );
+
+                        return `
+                            <a
+                                href="#${slug}"
+                            >
+                                ${escapeHtml(
+                                    service.title
+                                )}
+                            </a>
+                        `;
+                    }
+                )
+                .join("");
+
+    } catch (error) {
+
+        console.error(
+            "Unexpected footer services error:",
+            error
+        );
+    }
+}
+
+
+/* =========================================================
+   24. INITIALIZE
    ========================================================= */
 
 document.addEventListener(
