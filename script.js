@@ -2337,6 +2337,88 @@ async function loadHomepageServices(projects) {
 
 
 /* =========================================================
+   24B. FLOATING CLIENT CHAT
+========================================================= */
+
+function initializeFloatingClientChat() {
+
+    const chatButton =
+        document.querySelector(
+            ".floating-chat"
+        );
+
+    if (!chatButton) {
+        return;
+    }
+
+
+    chatButton.addEventListener(
+        "click",
+        async function (event) {
+
+            event.preventDefault();
+
+
+            try {
+
+                const {
+                    data: {
+                        session
+                    }
+                } =
+                    await portfolioSupabase
+                        .auth
+                        .getSession();
+
+
+                /*
+                 * ALREADY LOGGED IN
+                 * → Go directly to client chat
+                 */
+
+                if (session) {
+
+                    window.location.href =
+                        "client-chat.html";
+
+                    return;
+                }
+
+
+                /*
+                 * NOT LOGGED IN
+                 * → Go to client login
+                 */
+
+                window.location.href =
+                    "client-login.html";
+
+
+            } catch (error) {
+
+                console.error(
+                    "CLIENT CHAT AUTH CHECK ERROR:",
+                    error
+                );
+
+
+                /*
+                 * If the session check fails,
+                 * safely send the visitor to login.
+                 */
+
+                window.location.href =
+                    "client-login.html";
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
    25. INITIALIZE
    ========================================================= */
 
@@ -2359,6 +2441,8 @@ document.addEventListener(
         removeOldCreativeButtons();
 
        loadFooterServices();
+
+       initializeFloatingClientChat();
 
         const isProjectPage =
             window.location.pathname
