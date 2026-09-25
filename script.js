@@ -775,8 +775,9 @@ async function loadPortfolioProjects() {
         }
 
 
-        initializePortfolioSliders(
-            projects
+        await loadHomepageServices(
+    projects
+);
         );
 
     } catch (error) {
