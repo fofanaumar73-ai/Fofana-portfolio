@@ -1905,24 +1905,24 @@ async function loadFooterServices() {
     try {
 
         const {
-            data: services,
-            error
-        } =
-            await portfolioSupabase
-                .from("portfolio_services")
-                .select(
-                    "slug, title, show_on_homepage, display_order"
-                )
-                .eq(
-                    "show_on_homepage",
-                    true
-                )
-                .order(
-                    "display_order",
-                    {
-                        ascending: true
-                    }
-                );
+    data: services,
+    error
+} =
+    await portfolioSupabase
+        .from("portfolio_services")
+        .select(
+            "slug, title, show_in_footer, display_order"
+        )
+        .eq(
+            "show_in_footer",
+            true
+        )
+        .order(
+            "display_order",
+            {
+                ascending: true
+            }
+        );
 
         if (error) {
 
