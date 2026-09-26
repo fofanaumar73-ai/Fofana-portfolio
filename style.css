@@ -11895,3 +11895,116 @@ body > .navbar:not(.project-navbar) {
     }
 
 }
+
+
+/* =========================================================
+   TRUST / EXPERIENCE STATS
+========================================================= */
+
+.trust-stats-section {
+    width: 100%;
+    padding: 75px 20px;
+}
+
+.trust-stats-container {
+    width: min(1100px, 92%);
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    align-items: center;
+    text-align: center;
+}
+
+.trust-stat {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 15px 30px;
+}
+
+.trust-stat + .trust-stat {
+    border-left: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.trust-stat strong {
+    display: block;
+
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    line-height: 1;
+
+    font-weight: 800;
+
+    letter-spacing: -0.04em;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffffff,
+            #a855f7
+        );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    -webkit-text-fill-color: transparent;
+}
+
+.trust-stat span {
+    display: block;
+
+    color: rgba(255, 255, 255, 0.58);
+
+    font-size: 0.72rem;
+    font-weight: 700;
+
+    letter-spacing: 0.16em;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .trust-stats-section {
+        padding: 55px 20px;
+    }
+
+    .trust-stats-container {
+        width: min(420px, 92%);
+
+        grid-template-columns: 1fr;
+
+        gap: 0;
+    }
+
+    .trust-stat {
+        padding: 28px 15px;
+    }
+
+    .trust-stat + .trust-stat {
+        border-left: none;
+
+        border-top: 1px solid rgba(255, 255, 255, 0.10);
+    }
+
+    .trust-stat strong {
+        font-size: 3.2rem;
+    }
+
+    .trust-stat span {
+        font-size: 0.68rem;
+        letter-spacing: 0.13em;
+    }
+
+}
