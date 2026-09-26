@@ -11495,3 +11495,14 @@ body > .navbar:not(.project-navbar) {
     }
 
 }
+
+
+/* MANAGE PROJECTS — KEEP HEADER STICKY ON MOBILE */
+@media (max-width: 768px) {
+    .dashboard-page .dashboard-header {
+        position: -webkit-sticky !important;
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 99999 !important;
+    }
+}
