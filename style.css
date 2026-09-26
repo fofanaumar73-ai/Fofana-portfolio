@@ -11216,3 +11216,20 @@ body > .navbar:not(.project-navbar) {
     }
 
 }
+
+
+/* =========================================================
+   POLICY PAGE HEADER - SIMPLE LAYOUT
+========================================================= */
+
+.policy-page .nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: min(1200px, 92%);
+    margin: 0 auto;
+}
+
+.policy-page .nav-contact {
+    margin-left: auto;
+}
