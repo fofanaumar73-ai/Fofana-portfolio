@@ -11861,3 +11861,15 @@ body > .navbar:not(.project-navbar) {
     }
 
 }
+
+
+/* =========================================================
+   ADMIN DASHBOARD — GLOBAL STICKY HEADER
+========================================================= */
+
+.dashboard-page .dashboard-header {
+    position: -webkit-sticky !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 99999 !important;
+}
