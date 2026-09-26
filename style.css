@@ -11506,3 +11506,358 @@ body > .navbar:not(.project-navbar) {
         z-index: 99999 !important;
     }
 }
+
+
+/* =========================================================
+   MANAGE REVIEWS — POLISHED ADMIN UI
+========================================================= */
+
+/* Keep dashboard header visible */
+.dashboard-page .dashboard-header {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 99999 !important;
+}
+
+
+/* =========================================================
+   REVIEW MANAGEMENT GRID
+========================================================= */
+
+.review-management-grid {
+    display: grid;
+    grid-template-columns: repeat(
+        auto-fit,
+        minmax(310px, 1fr)
+    );
+    gap: 26px;
+    align-items: stretch;
+    margin-top: 28px;
+}
+
+
+/* =========================================================
+   REVIEW CARD
+========================================================= */
+
+.review-management-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: 24px;
+    border: 1px solid rgba(10, 7, 16, 0.08);
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow:
+        0 10px 30px rgba(10, 7, 16, 0.06);
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+.review-management-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(124, 58, 237, 0.16);
+    box-shadow:
+        0 18px 42px rgba(10, 7, 16, 0.10);
+}
+
+
+/* =========================================================
+   TOP BADGES
+========================================================= */
+
+.review-management-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    min-height: 28px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+}
+
+.review-management-top .project-status-badge,
+.review-management-top .project-featured-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 28px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   RATING
+========================================================= */
+
+.review-management-card .review-stars {
+    margin-bottom: 15px;
+    font-size: 1.05rem;
+    line-height: 1;
+    letter-spacing: 2px;
+}
+
+
+/* =========================================================
+   REVIEW TEXT
+========================================================= */
+
+.review-management-card blockquote {
+    position: relative;
+    margin: 0;
+    padding: 0 0 4px;
+    color: rgba(10, 7, 16, 0.76);
+    font-size: 0.94rem;
+    line-height: 1.75;
+    font-style: italic;
+}
+
+.review-management-card blockquote::before {
+    content: "“";
+    display: block;
+    height: 24px;
+    color: rgba(124, 58, 237, 0.20);
+    font-family: Georgia, serif;
+    font-size: 3.2rem;
+    font-style: normal;
+    line-height: 1;
+}
+
+
+/* =========================================================
+   CLIENT INFORMATION
+========================================================= */
+
+.review-management-card .review-client {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 20px;
+    padding-top: 17px;
+    border-top: 1px solid rgba(10, 7, 16, 0.08);
+}
+
+.review-management-card .review-client strong {
+    color: #0a0710;
+    font-size: 0.92rem;
+    font-weight: 700;
+}
+
+.review-management-card .review-client span {
+    color: rgba(10, 7, 16, 0.48);
+    font-size: 0.78rem;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   ACTION BUTTONS
+========================================================= */
+
+.review-management-card .manage-project-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+    margin-top: auto;
+    padding-top: 20px;
+}
+
+.review-management-card .manage-project-actions .dashboard-button {
+    width: 100%;
+    min-height: 40px;
+    padding: 9px 12px;
+    border-radius: 10px;
+    font-size: 0.76rem;
+}
+
+
+/* =========================================================
+   SEARCH + FILTER AREA
+========================================================= */
+
+.project-management-controls {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 190px;
+    gap: 14px;
+    margin-top: 26px;
+    margin-bottom: 10px;
+}
+
+.project-search-box,
+.project-filter-box {
+    width: 100%;
+}
+
+.project-search-box input,
+.project-filter-box select {
+    width: 100%;
+    min-height: 48px;
+    padding: 0 15px;
+    border: 1px solid rgba(10, 7, 16, 0.10);
+    border-radius: 12px;
+    background: #ffffff;
+    color: #0a0710;
+    font: inherit;
+    outline: none;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.project-search-box input:focus,
+.project-filter-box select:focus {
+    border-color: rgba(124, 58, 237, 0.45);
+    box-shadow:
+        0 0 0 4px rgba(124, 58, 237, 0.08);
+}
+
+
+/* =========================================================
+   EMPTY / LOADING STATE
+========================================================= */
+
+.review-management-grid .project-loading,
+.review-management-grid .project-empty {
+    grid-column: 1 / -1;
+    width: 100%;
+    padding: 55px 25px;
+    border: 1px dashed rgba(10, 7, 16, 0.14);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.7);
+    text-align: center;
+}
+
+
+/* =========================================================
+   REVIEW MESSAGE
+========================================================= */
+
+#reviewMessage {
+    margin-top: 14px;
+}
+
+
+/* =========================================================
+   REVIEW MODAL POLISH
+========================================================= */
+
+#reviewModal .edit-project-modal-card {
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow:
+        0 25px 70px rgba(10, 7, 16, 0.18);
+}
+
+#reviewModal .edit-project-modal-header {
+    padding: 24px 26px;
+    border-bottom: 1px solid rgba(10, 7, 16, 0.08);
+}
+
+#reviewModal .edit-project-form {
+    padding: 26px;
+}
+
+#reviewModal .form-group label {
+    margin-bottom: 8px;
+    font-weight: 650;
+}
+
+#reviewModal input,
+#reviewModal textarea,
+#reviewModal select {
+    border-radius: 11px;
+}
+
+#reviewModal textarea {
+    resize: vertical;
+    min-height: 130px;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .dashboard-page .dashboard-header {
+        position: -webkit-sticky !important;
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 99999 !important;
+    }
+
+    .review-management-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+        margin-top: 22px;
+    }
+
+    .review-management-card {
+        padding: 20px;
+        border-radius: 17px;
+    }
+
+    .project-management-controls {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .review-management-card .manage-project-actions {
+        gap: 8px;
+    }
+
+    .review-management-card .manage-project-actions .dashboard-button {
+        min-height: 42px;
+    }
+
+    #reviewModal .edit-project-modal-header {
+        padding: 20px;
+    }
+
+    #reviewModal .edit-project-form {
+        padding: 20px;
+    }
+}
+
+
+/* =========================================================
+   SMALL PHONES
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .review-management-card {
+        padding: 17px;
+        border-radius: 15px;
+    }
+
+    .review-management-card blockquote {
+        font-size: 0.88rem;
+        line-height: 1.7;
+    }
+
+    .review-management-card .review-stars {
+        font-size: 0.95rem;
+    }
+
+    .review-management-card .manage-project-actions {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .review-management-card .manage-project-actions .dashboard-button {
+        min-height: 40px;
+        padding: 8px 7px;
+        font-size: 0.7rem;
+    }
+
+}
