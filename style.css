@@ -11233,3 +11233,265 @@ body > .navbar:not(.project-navbar) {
 .policy-page .nav-contact {
     margin-left: auto;
 }
+
+
+/* =========================================================
+   MANAGE PROJECTS - POLISHED PROJECT CARDS
+   Add at the very bottom of style.css
+========================================================= */
+
+
+/* =========================================================
+   STICKY HEADER
+========================================================= */
+
+.dashboard-page .dashboard-header {
+    position: sticky;
+    top: 0;
+    z-index: 9999;
+}
+
+
+/* =========================================================
+   PROJECT GRID
+========================================================= */
+
+.manage-projects-grid {
+    display: grid;
+    grid-template-columns: repeat(
+        auto-fit,
+        minmax(300px, 1fr)
+    );
+    gap: 28px;
+    align-items: start;
+}
+
+
+/* =========================================================
+   PROJECT CARD
+========================================================= */
+
+.manage-project-card {
+    overflow: hidden;
+    border-radius: 18px;
+    background: #ffffff;
+    border: 1px solid rgba(10, 7, 16, 0.08);
+
+    box-shadow:
+        0 10px 30px
+        rgba(10, 7, 16, 0.06);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.manage-project-card:hover {
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 18px 40px
+        rgba(10, 7, 16, 0.10);
+}
+
+
+/* =========================================================
+   PROJECT IMAGE FRAME
+========================================================= */
+
+.manage-project-image-wrap {
+    width: 100%;
+    height: 190px;
+
+    overflow: hidden;
+
+    background:
+        #f3f0ea;
+
+    position: relative;
+}
+
+
+/* =========================================================
+   PROJECT IMAGE
+========================================================= */
+
+.manage-project-image {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    object-position: center;
+
+    transition:
+        transform 0.35s ease;
+}
+
+
+/* Subtle image zoom on card hover */
+
+.manage-project-card:hover
+.manage-project-image {
+    transform: scale(1.03);
+}
+
+
+/* =========================================================
+   NO IMAGE
+========================================================= */
+
+.manage-project-no-image {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background:
+        #f3f0ea;
+
+    color:
+        rgba(10, 7, 16, 0.45);
+
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+}
+
+
+/* =========================================================
+   PROJECT CONTENT
+========================================================= */
+
+.manage-project-content {
+    padding: 20px;
+}
+
+
+/* =========================================================
+   PROJECT TOP
+========================================================= */
+
+.manage-project-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+
+/* =========================================================
+   PROJECT TITLE
+========================================================= */
+
+.manage-project-content h2 {
+    margin: 0 0 9px;
+
+    font-size: 1.15rem;
+    line-height: 1.3;
+}
+
+
+/* =========================================================
+   PROJECT DESCRIPTION
+========================================================= */
+
+.manage-project-content > p {
+    margin: 0;
+
+    color:
+        rgba(10, 7, 16, 0.58);
+
+    font-size: 0.88rem;
+    line-height: 1.65;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   PROJECT META
+========================================================= */
+
+.manage-project-meta {
+    margin-top: 15px;
+}
+
+
+/* =========================================================
+   PROJECT ACTIONS
+========================================================= */
+
+.manage-project-actions {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 8px;
+
+    margin-top: 18px;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .manage-projects-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+
+    .manage-project-image-wrap {
+        height: 180px;
+    }
+
+
+    .manage-project-content {
+        padding: 17px;
+    }
+
+
+    .manage-project-actions {
+        grid-template-columns: 1fr 1fr;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .manage-project-image-wrap {
+        height: 165px;
+    }
+
+
+    .manage-project-top {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+
+    .manage-project-actions {
+        grid-template-columns: 1fr;
+    }
+
+}
