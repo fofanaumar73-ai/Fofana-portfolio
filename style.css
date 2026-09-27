@@ -12008,3 +12008,166 @@ body > .navbar:not(.project-navbar) {
     }
 
 }
+
+
+/* =========================================================
+   ORDER NOW — GLASSY BOUNCING BUTTON
+========================================================= */
+
+.order-now-section {
+    width: 100%;
+    padding: 90px 20px 110px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.order-now-card {
+    width: min(760px, 94%);
+    padding: 70px 30px;
+    position: relative;
+    border-radius: 32px;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+.order-basket {
+    width: 76px;
+    height: 76px;
+    margin: 0 auto 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+border-radius: 50%;
+    background: rgba(255, 210, 70, 0.16);
+    border: 1px solid rgba(255, 215, 90, 0.38);
+    box-shadow:
+        0 15px 35px rgba(255, 200, 50, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.22);
+    font-size: 2rem;
+    animation: orderBasketBounce 1.5s ease-in-out infinite;
+}
+
+@keyframes orderBasketBounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    45% {
+        transform: translateY(-18px);
+    }
+
+    55% {
+        transform: translateY(-18px);
+    }
+
+    65% {
+        transform: translateY(0);
+    }
+
+    72% {
+        transform: translateY(-7px);
+    }
+
+    80% {
+        transform: translateY(0);
+    }
+}
+
+.order-now-label {
+    margin: 0 0 12px;
+    color: rgba(255, 255, 255, 0.48);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+}
+
+.order-now-card h2 {
+    margin: 0;
+    color: #ffffff;
+    font-size: clamp(2.3rem, 6vw, 4.5rem);
+    line-height: 1;
+    letter-spacing: -0.04em;
+}
+
+.order-now-card h2 span {
+    color: #f4c542;
+}
+
+.order-now-description {
+    max-width: 540px;
+    margin: 22px auto 30px;
+    color: rgba(255, 255, 255, 0.52);
+    font-size: 0.94rem;
+    line-height: 1.75;
+}
+
+.order-now-button {
+    min-width: 180px;
+    padding: 15px 28px;
+    border: 1px solid rgba(255, 220, 100, 0.55);
+    border-radius: 999px;
+    background: rgba(255, 205, 55, 0.18);
+    color: #ffffff;
+    font: inherit;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    cursor: pointer;
+    box-shadow:
+        0 12px 30px rgba(255, 200, 50, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.22);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition:
+        transform 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.order-now-button:hover {
+    transform: translateY(-3px);
+    background: rgba(255, 205, 55, 0.28);
+    box-shadow:
+        0 18px 38px rgba(255, 200, 50, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.order-now-button:active {
+    transform: translateY(1px);
+}
+
+@media (max-width: 600px) {
+
+    .order-now-section {
+        padding: 65px 16px 80px;
+    }
+
+    .order-now-card {
+        width: 100%;
+        padding: 55px 20px;
+        border-radius: 25px;
+    }
+
+    .order-basket {
+        width: 68px;
+        height: 68px;
+        margin-bottom: 24px;
+    }
+
+    .order-now-description {
+        font-size: 0.88rem;
+    }
+
+    .order-now-button {
+        width: 100%;
+        max-width: 260px;
+    }
+}
