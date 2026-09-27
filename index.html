@@ -1265,7 +1265,46 @@
      MAIN JAVASCRIPT
 ========================================================= -->
 
-<script src="script.js"></script>
+    <!-- ORDER NOW POPUP -->
+<div class="order-popup-overlay" id="orderPopup" aria-hidden="true">
+    <div class="order-popup" role="dialog"
+         aria-modal="true"
+         aria-labelledby="orderPopupTitle">
 
+        <button type="button"
+                class="order-popup-close"
+                id="closeOrderPopup"
+                aria-label="Close popup">
+            &times;
+        </button>
+
+        <div class="order-popup-icon">🛒</div>
+
+        <span class="order-coming-soon">COMING SOON</span>
+
+        <h2 id="orderPopupTitle">ORDER NOW</h2>
+
+        <p>
+            Online ordering is currently being updated.
+            You can still place your order by chatting
+            with me directly. I'll help you choose your
+            service and package.
+        </p>
+
+        <a href="client-login.html"
+           class="order-popup-chat"
+           id="orderPopupChat">
+            Chat With Me
+        </a>
+
+        <button type="button"
+                class="order-popup-dismiss"
+                id="dismissOrderPopup">
+            Maybe Later
+        </button>
+    </div>
+</div>
+    
+<script src="script.js"></script>    
 </body>
 </html>
