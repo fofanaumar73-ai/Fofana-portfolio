@@ -2463,3 +2463,68 @@ document.addEventListener(
 
     }
 );
+
+
+/* =========================================================
+   ORDER NOW POPUP FUNCTIONALITY
+========================================================= */
+
+function initializeOrderNowPopup() {
+    const orderButton = document.getElementById("orderNowButton");
+    const popup = document.getElementById("orderPopup");
+    const closeButton = document.getElementById("closeOrderPopup");
+    const dismissButton = document.getElementById("dismissOrderPopup");
+    const chatButton = document.getElementById("orderPopupChat");
+
+    if (!orderButton || !popup) return;
+
+    function openPopup() {
+        popup.classList.add("active");
+        popup.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+        closeButton?.focus();
+    }
+
+    function closePopup() {
+        popup.classList.remove("active");
+        popup.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+        orderButton.focus();
+    }
+
+    orderButton.addEventListener("click", openPopup);
+
+    closeButton?.addEventListener("click", closePopup);
+    dismissButton?.addEventListener("click", closePopup);
+
+    popup.addEventListener("click", function(event) {
+        if (event.target === popup) {
+            closePopup();
+        }
+    });
+
+    document.addEventListener("keydown", function(event) {
+        if (event.key === "Escape" && popup.classList.contains("active")) {
+            closePopup();
+        }
+    });
+
+    chatButton?.addEventListener("click", async function(event) {
+        event.preventDefault();
+
+        try {
+            const { data: { session } } =
+                await portfolioSupabase.auth.getSession();
+
+            window.location.href = session
+                ? "client-chat.html"
+                : "client-login.html";
+
+        } catch (error) {
+            console.error("ORDER POPUP CHAT ERROR:", error);
+            window.location.href = "client-login.html";
+        }
+    });
+}
+
+document.addEventListener("DOMContentLoaded", initializeOrderNowPopup);
