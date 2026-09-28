@@ -3558,3 +3558,114 @@ if (
 
     loadReviews();
 }
+
+
+/* =========================================
+   ORDER AVAILABILITY SETTINGS
+========================================= */
+
+const ordersEnabledToggle =
+    document.getElementById("ordersEnabledToggle");
+
+const orderSettingsStatus =
+    document.getElementById("orderSettingsStatus");
+
+const orderSettingsMessage =
+    document.getElementById("orderSettingsMessage");
+
+
+if (ordersEnabledToggle && isDashboardPage) {
+
+    async function loadOrderSettings() {
+
+        const session = await protectAdminPage();
+
+        if (!session) return;
+
+        const { data, error } =
+            await portfolioSupabase
+                .from("order_settings")
+                .select("orders_enabled")
+                .eq("id", 1)
+                .single();
+
+        if (error) {
+            console.error("ORDER SETTINGS ERROR:", error);
+
+            orderSettingsStatus.textContent = "Unavailable";
+            orderSettingsMessage.textContent =
+                "Could not load order settings.";
+
+            return;
+        }
+
+        ordersEnabledToggle.checked =
+            data.orders_enabled;
+
+        ordersEnabledToggle.disabled = false;
+
+        updateOrderSettingsDisplay();
+    }
+
+
+    function updateOrderSettingsDisplay() {
+
+        orderSettingsStatus.textContent =
+            ordersEnabledToggle.checked
+                ? "Accepting new orders"
+                : "Not accepting new orders";
+    }
+
+
+    ordersEnabledToggle.addEventListener(
+        "change",
+        async function () {
+
+            const newValue =
+                ordersEnabledToggle.checked;
+
+            ordersEnabledToggle.disabled = true;
+
+            orderSettingsMessage.textContent =
+                "Saving changes...";
+
+            const { error } =
+                await portfolioSupabase
+                    .from("order_settings")
+                    .update({
+                        orders_enabled: newValue,
+                        updated_at: new Date().toISOString()
+                    })
+                    .eq("id", 1);
+
+            if (error) {
+
+                console.error(
+                    "UPDATE ORDER SETTINGS ERROR:",
+                    error
+                );
+
+                ordersEnabledToggle.checked = !newValue;
+
+                orderSettingsMessage.textContent =
+                    "Could not save the setting.";
+
+                ordersEnabledToggle.disabled = false;
+
+                updateOrderSettingsDisplay();
+
+                return;
+            }
+
+            orderSettingsMessage.textContent =
+                "Settings saved successfully.";
+
+            ordersEnabledToggle.disabled = false;
+
+            updateOrderSettingsDisplay();
+        }
+    );
+
+
+    loadOrderSettings();
+}
