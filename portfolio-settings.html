@@ -640,29 +640,70 @@
 </div>
             
 
-            <!-- PROJECTS -->
 
-            <div class="portfolio-setting-card">
+<!-- PROJECTS -->
+<div class="portfolio-setting-card" id="projectsSettingCard">
 
-                <span class="portfolio-setting-icon">
-                    📁
-                </span>
+    <span class="portfolio-setting-icon">📁</span>
 
-                <h2>
-                    Projects
-                </h2>
+    <h2>Projects</h2>
 
-                <p>
-                    Configure project creation, statuses,
-                    assignments and project management.
-                </p>
+    <p>
+        Create projects, manage assignments and statuses,
+        and handle client service orders.
+    </p>
 
-                <span class="portfolio-coming-soon-badge">
-                    Coming next
-                </span>
+    <button
+        type="button"
+        class="portfolio-settings-button"
+        id="openProjectsButton"
+        aria-expanded="false"
+        aria-controls="projectsManagementPanel"
+    >
+        Open Projects →
+    </button>
+</div>
 
-            </div>
+<!-- PROJECTS MANAGEMENT PANEL -->
+<section
+    id="projectsManagementPanel"
+    class="portfolio-setting-card"
+    style="grid-column: 1 / -1;"
+    hidden
+>
+    <h2>Projects Management</h2>
 
+    <p>
+        Manage your portfolio projects and client service orders
+        from this section.
+    </p>
+
+    <div class="projects-management-actions">
+        <button
+            type="button"
+            class="portfolio-settings-button"
+            id="addPortfolioProjectButton"
+        >
+            + Add Project
+        </button>
+
+        <button
+            type="button"
+            class="portfolio-settings-button"
+            id="managePortfolioProjectsButton"
+        >
+            Manage Projects
+        </button>
+    </div>
+
+    <div class="projects-orders-placeholder">
+        <h3>Service Orders</h3>
+        <p>
+            Order management will be integrated here,
+            alongside your portfolio project controls.
+        </p>
+    </div>
+</section>
 
             <!-- PAYMENTS -->
 
