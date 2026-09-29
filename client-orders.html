@@ -1,0 +1,297 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders | FOFANA.</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .orders-container {
+            max-width: 1100px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .orders-heading {
+            margin-bottom: 30px;
+        }
+
+        .orders-list {
+            display: grid;
+            gap: 20px;
+        }
+
+        .order-card {
+            padding: 24px;
+            border: 1px solid rgba(180,108,255,.3);
+            border-radius: 16px;
+            background: var(--card-bg, #17131f);
+        }
+
+        .order-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .order-card h2 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .order-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 18px;
+            margin: 18px 0;
+        }
+
+        .order-meta span {
+            display: block;
+            opacity: .7;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .order-meta strong {
+            overflow-wrap: anywhere;
+        }
+
+        .order-status {
+            display: inline-block;
+            padding: 7px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            background: rgba(180,108,255,.15);
+        }
+
+        .order-status.pending {
+            color: #e9b949;
+        }
+
+        .order-status.in_progress {
+            color: #60a5fa;
+        }
+
+        .order-status.complete {
+            color: #34d399;
+        }
+
+        .order-status.cancelled {
+            color: #f87171;
+        }
+
+        .order-details {
+            margin-top: 14px;
+            line-height: 1.7;
+            overflow-wrap: anywhere;
+        }
+
+        .orders-empty {
+            padding: 35px 20px;
+            text-align: center;
+            border: 1px solid rgba(180,108,255,.25);
+            border-radius: 16px;
+            background: var(--card-bg, #17131f);
+        }
+
+        .orders-error {
+            color: #f87171;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="dashboard-header">
+        <div class="dashboard-container">
+            <a href="client-dashboard.html" class="brand">
+                FOFANA<span>.</span>
+            </a>
+            <a href="client-dashboard.html"
+               class="dashboard-logout"
+               style="text-decoration:none">
+                Dashboard
+            </a>
+        </div>
+    </header>
+
+    <main class="orders-container">
+        <div class="orders-heading">
+            <p class="admin-label">CLIENT PORTAL</p>
+            <h1>My Orders</h1>
+            <p>View and track your service orders.</p>
+        </div>
+
+        <section id="ordersList" class="orders-list">
+            <div class="orders-empty">Loading your orders...</div>
+        </section>
+
+        <p id="ordersMessage" class="orders-error"
+           aria-live="polite"></p>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL =
+            "https://uryfgatzyesolwwmugin.supabase.co";
+
+        const SUPABASE_PUBLISHABLE_KEY =
+            "sb_publishable_QL4lxGKETA1_xMFFJ7RV5g_Wuyi_x-d";
+
+        const supabaseClient = window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_PUBLISHABLE_KEY,
+            {
+                auth: {
+                    persistSession: true,
+                    autoRefreshToken: true,
+                    detectSessionInUrl: false,
+                    storage: window.localStorage
+                }
+            }
+        );
+
+        const ordersList = document.getElementById("ordersList");
+        const ordersMessage = document.getElementById("ordersMessage");
+
+        function escapeHtml(value) {
+            return String(value ?? "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function formatOrderDate(value) {
+            if (!value) return "—";
+
+            const date = new Date(value);
+            if (Number.isNaN(date.getTime())) return "—";
+
+            return date.toLocaleDateString(undefined, {
+                year: "numeric",
+                month: "long",
+                day: "numeric"
+            });
+        }
+
+        async function loadOrders() {
+            const {
+                data: { user },
+                error: authError
+            } = await supabaseClient.auth.getUser();
+
+            if (authError || !user) {
+                window.location.href = "client-login.html";
+                return;
+            }
+
+            const { data: profile, error: profileError } =
+                await supabaseClient
+                    .from("client_profiles")
+                    .select("id, role")
+                    .eq("id", user.id)
+                    .single();
+
+            if (profileError || !profile) {
+                ordersList.innerHTML =
+                    '<div class="orders-empty">Unable to verify your client account.</div>';
+                return;
+            }
+
+            if (profile.role === "admin") {
+                window.location.href = "admin.html";
+                return;
+            }
+
+            if (profile.role !== "client") {
+                ordersList.innerHTML =
+                    '<div class="orders-empty">This page is for client accounts.</div>';
+                return;
+            }
+
+            const { data: orders, error } = await supabaseClient
+                .from("orders")
+                .select(`
+                    id,
+                    order_number,
+                    service,
+                    project_details,
+                    budget,
+                    status,
+                    created_at,
+                    updated_at
+                `)
+                .eq("client_id", user.id)
+                .order("created_at", { ascending: false });
+
+            if (error) {
+                console.error("LOAD ORDERS ERROR:", error);
+                ordersList.innerHTML =
+                    '<div class="orders-empty">We could not load your orders. Please try again later.</div>';
+                return;
+            }
+
+            if (!orders || orders.length === 0) {
+                ordersList.innerHTML = `
+                    <div class="orders-empty">
+                        <h2>No orders yet</h2>
+                        <p>Your submitted service orders will appear here.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            ordersList.innerHTML = orders.map(order => {
+                const status = [
+                    "pending", "in_progress", "complete", "cancelled"
+                ].includes(order.status) ? order.status : "pending";
+
+                return `
+                    <article class="order-card">
+                        <div class="order-card-header">
+                            <h2>${escapeHtml(order.service)}</h2>
+                            <span class="order-status ${status}">
+                                ${escapeHtml(status.replace("_", " "))}
+                            </span>
+                        </div>
+
+                        <div class="order-meta">
+                            <div>
+                                <span>Order ID</span>
+                                <strong>${escapeHtml(order.order_number)}</strong>
+                            </div>
+                            <div>
+                                <span>Date submitted</span>
+                                <strong>${formatOrderDate(order.created_at)}</strong>
+                            </div>
+                            <div>
+                                <span>Budget</span>
+                                <strong>${escapeHtml(order.budget || "Not specified")}</strong>
+                            </div>
+                        </div>
+
+                        <div class="order-details">
+                            <strong>Project details</strong>
+                            <p>${escapeHtml(order.project_details)}</p>
+                        </div>
+                    </article>
+                `;
+            }).join("");
+        }
+
+        loadOrders().catch(error => {
+            console.error("ORDERS PAGE ERROR:", error);
+            ordersMessage.textContent =
+                "Something went wrong while loading your orders.";
+        });
+    </script>
+</body>
+</html>
