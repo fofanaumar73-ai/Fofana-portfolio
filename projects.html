@@ -1,1 +1,146 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects | Fofana Admin</title>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .projects-page {
+            min-height: 100vh;
+            background: #07030b;
+            color: #fff;
+        }
+
+        .projects-header {
+            padding: 20px 4%;
+            border-bottom: 1px solid rgba(255,255,255,.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .projects-header a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .projects-main {
+            width: min(1150px, 92%);
+            margin: auto;
+            padding: 45px 0 80px;
+        }
+
+        .projects-main h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin: 0 0 10px;
+        }
+
+        .projects-intro {
+            color: rgba(255,255,255,.6);
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+        .projects-section {
+            padding: 25px;
+            margin-bottom: 22px;
+            border: 1px solid rgba(255,255,255,.09);
+            border-radius: 16px;
+            background: rgba(255,255,255,.035);
+        }
+
+        .projects-section h2 {
+            margin-top: 0;
+        }
+
+        .projects-section p {
+            color: rgba(255,255,255,.6);
+            line-height: 1.6;
+        }
+
+        .projects-back {
+            display: inline-block;
+            padding: 10px 15px;
+            border: 1px solid rgba(255,255,255,.15);
+            border-radius: 9px;
+        }
+
+        .projects-loading {
+            color: #a78bfa;
+        }
+    </style>
+</head>
+
+<body>
+<div class="projects-page">
+
+    <header class="projects-header">
+        <a href="dashboard.html"><strong>FOFANA.</strong></a>
+        <a class="projects-back" href="portfolio-settings.html">
+            ← Portfolio Settings
+        </a>
+    </header>
+
+    <main class="projects-main">
+        <h1>Projects</h1>
+        <p class="projects-intro">
+            Manage client service orders, project assignments
+            and project progress from one place.
+        </p>
+
+        <section class="projects-section">
+            <h2>Service Orders</h2>
+            <p>
+                View incoming orders, review client requirements,
+                update progress and archive completed orders.
+            </p>
+            <div id="serviceOrdersStatus" class="projects-loading">
+                Preparing Service Orders...
+            </div>
+        </section>
+
+        <section class="projects-section">
+            <h2>Client Projects</h2>
+            <p>
+                Manage work assigned to clients separately
+                from your public portfolio projects.
+            </p>
+            <div id="clientProjectsStatus">
+                Client project management will be integrated here.
+            </div>
+        </section>
+    </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const supabaseClient = window.supabase.createClient(
+    "https://uryfgatzyesolwwmugin.supabase.co",
+    "sb_publishable_QL4lxGKETA1_xMFFJ7RV5g_Wuyi_x-d"
+);
+
+const ADMIN_UID = "8b78dc4b-9483-488e-9eb6-22cc39fff83b";
+
+(async function protectProjectsPage() {
+    const { data, error } =
+        await supabaseClient.auth.getSession();
+
+    if (
+        error ||
+        !data.session ||
+        data.session.user.id !== ADMIN_UID
+    ) {
+        window.location.replace("admin.html");
+        return;
+    }
+
+    document.getElementById("serviceOrdersStatus")
+        .textContent = "Ready to manage service orders.";
+})();
+</script>
+</body>
+</html>
