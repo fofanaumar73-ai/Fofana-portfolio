@@ -410,6 +410,48 @@
         }
 
 
+        
+/* PROJECTS MANAGEMENT */
+
+#projectsSettingCard {
+    position: relative;
+}
+
+#projectsSettingCard button {
+    cursor: pointer;
+}
+
+.projects-management-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.projects-orders-placeholder {
+    margin-top: 28px;
+    padding: 22px;
+    border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 14px;
+    background: rgba(255,255,255,0.035);
+}
+
+.projects-orders-placeholder h3 {
+    margin: 0 0 8px;
+    font-size: 1rem;
+}
+
+.projects-orders-placeholder p {
+    margin: 0;
+    color: rgba(255,255,255,0.58);
+    line-height: 1.6;
+}
+
+#projectsManagementPanel[hidden] {
+    display: none !important;
+}
+        
+
         /* =========================================================
            MOBILE
         ========================================================= */
@@ -913,6 +955,87 @@
         );
 
     }
+
+
+    
+/* =========================================================
+   PROJECTS MANAGEMENT
+========================================================= */
+
+const openProjectsButton =
+    document.getElementById("openProjectsButton");
+
+const projectsManagementPanel =
+    document.getElementById("projectsManagementPanel");
+
+if (openProjectsButton && projectsManagementPanel) {
+
+    openProjectsButton.addEventListener("click", () => {
+
+        const isOpening =
+            projectsManagementPanel.hidden;
+
+        projectsManagementPanel.hidden = !isOpening;
+
+        openProjectsButton.setAttribute(
+            "aria-expanded",
+            String(isOpening)
+        );
+
+        openProjectsButton.textContent =
+            isOpening ? "Close Projects ↑" : "Open Projects →";
+
+        if (isOpening) {
+            projectsManagementPanel.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }
+    });
+}
+
+
+/* ADMIN-PROTECTED PROJECT NAVIGATION */
+
+async function openAdminProjectPage(page) {
+
+    const { data, error } =
+        await supabaseClient.auth.getSession();
+
+    const adminUID =
+        "8b78dc4b-9483-488e-9eb6-22cc39fff83b";
+
+    if (
+        error ||
+        !data.session ||
+        data.session.user.id !== adminUID
+    ) {
+        window.location.href = "admin.html";
+        return;
+    }
+
+    window.location.href = page;
+}
+
+
+const addPortfolioProjectButton =
+    document.getElementById("addPortfolioProjectButton");
+
+if (addPortfolioProjectButton) {
+    addPortfolioProjectButton.addEventListener("click", () => {
+        openAdminProjectPage("add-project.html");
+    });
+}
+
+
+const managePortfolioProjectsButton =
+    document.getElementById("managePortfolioProjectsButton");
+
+if (managePortfolioProjectsButton) {
+    managePortfolioProjectsButton.addEventListener("click", () => {
+        openAdminProjectPage("manage-projects.html");
+    });
+}
     
 </script>
 
